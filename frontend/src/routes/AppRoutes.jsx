@@ -1,0 +1,29 @@
+import { Routes, Route } from "react-router-dom";
+import Layout from "../components/layout/Layout";
+import Home from "../pages/Home/Home";
+const AppRoutes = () => {
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <h1>Layout Working ✅</h1>
+          </Layout>
+        }
+      />
+
+
+      <Route
+  path="/"
+  element={
+    <Layout>
+      <Home />
+    </Layout>
+  }
+/>
+    </Routes>
+  );
+};
+
+export default AppRoutes;
