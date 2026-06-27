@@ -6,17 +6,17 @@ const Button = ({
   ...props
 }) => {
   const baseClasses =
-    "px-6 py-3 rounded-lg font-semibold transition-all duration-300";
+    "px-6 py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer";
 
   const variants = {
     primary:
-      "bg-green-600 hover:bg-green-700 text-white",
+      "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg",
 
     secondary:
-      "border border-green-600 text-green-500 hover:bg-green-600 hover:text-white",
+      "bg-green-100 text-green-700 hover:bg-green-200",
 
     outline:
-      "border border-white text-white hover:bg-white hover:text-black",
+      "border border-gray-300 text-gray-700 hover:border-green-600 hover:text-green-600 bg-white",
   };
 
   return (

@@ -5,16 +5,6 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route
-        path="/"
-        element={
-          <Layout>
-            <h1>Layout Working ✅</h1>
-          </Layout>
-        }
-      />
-
-
-      <Route
   path="/"
   element={
     <Layout>

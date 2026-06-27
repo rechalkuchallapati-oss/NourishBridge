@@ -1,22 +1,30 @@
 import { Link } from "react-router-dom";
 import Button from "../common/Button";
-
+import Logo from "../common/Logo";
 const Navbar = () => {
   return (
-    <nav className="bg-slate-950 border-b border-slate-800 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto h-20 px-8 flex items-center justify-between">
+        {/* Left Section */}
+        <Link to="/" className="flex items-center gap-3">
+            {/* Logo */}
 
-        {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold text-green-500"
-        >
-          NourishBridge
+            <Logo />
+           
+            <div>
+            <h1 className="text-4xl font-extrabold tracking-tight">
+            <span className="text-green-700">Nourish</span>
+            <span className="text-slate-900">Bridge</span>
+            </h1>
+
+            <p className="text-sm text-slate-500">
+              Share Food | Share Hope | Save Lives
+            </p>
+            </div>
         </Link>
 
-        {/* Navigation Links */}
-        <div className="hidden md:flex items-center gap-8">
-
+        {/* Center Section */}
+          <div className="hidden lg:flex items-center gap-10 font-medium text-gray-700">
           <Link to="/">Home</Link>
 
           <Link to="/about">About</Link>
@@ -31,8 +39,8 @@ const Navbar = () => {
 
         </div>
 
-        {/* Buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Right Section */}
+        <div className="hidden md:flex items-center gap-4">
 
           <Button variant="outline">
             Login
