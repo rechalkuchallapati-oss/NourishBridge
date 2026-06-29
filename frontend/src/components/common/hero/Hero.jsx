@@ -1,134 +1,28 @@
-import Button from "./Button";
-import Hero from "../../components/hero/Hero";
-import heroImage from "../../assets/images/hero-food.jpg";
+import HeroContent from "./HeroContent";
+import HeroImage from "./HeroImage";
+import HeroStats from "./HeroStats";
 
 export default function Hero() {
   return (
-    <>
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-green-50 to-emerald-100 px-15 lg:px-20">
-
-  <div className="max-w-7xl mx-auto px-8 lg:px-12 py-20">
-
-    <div className="grid lg:grid-cols-2 gap-16 items-center">
-
-      {/* LEFT SIDE */}
-
-      <div>
-
-        <div className="inline-flex items-center gap-2 bg-green-100 text-green-700 rounded-full px-8 py-3 font-semibold mb-20">
-
-          🌱 Smart Food Redistribution Platform
-
-        </div>
-
-        <h1 className="text-6xl font-black leading-tight">
-
-          <span className="text-green-600">Nourish</span>
-
-          <span className="text-slate-900">Bridge</span>
-
-        </h1>
-
-        <h2 className="mt-5 text-5xl font-bold text-slate-800 leading-tight">
-
-          Reducing Food Waste.
-
-          <br />
-
-          <span className="text-green-600">
-
-            Nourishing Lives.
-
-          </span>
-
-        </h2>
-
-        <p className="mt-8 text-xl leading-9 text-slate-600 max-w-xl">
-
-          NourishBridge is a smart platform which
-           
-           connects restaurants, caterers,
-
-           NGOs and volunteers
-
-           to redistribute surplus food
-
-           safely and efficiently.
-
-        </p>
-
+    <section className="relative overflow-hidden bg-white">
+      {/* Soft background wash */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute left-0 top-0 h-full w-1/2 bg-gradient-to-r from-green-50/40 to-transparent" />
+        <div className="absolute -right-20 bottom-0 h-96 w-96 rounded-full bg-green-100/30 blur-3xl" />
       </div>
 
-      {/* RIGHT SIDE */}
-
-      <div className="relative">
-
-        <img
-
-          src={heroImage}
-
-          alt="Hero"
-
-          className="rounded-[40px] shadow-2xl w-full object-cover"
-
-        />
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-      <section className="py-20 bg-white">
-
-        <div className="max-w-7xl mx-auto px-6">
-
-          <h2 className="text-5xl font-bold text-center text-slate-900">
-
-            Building a Better Tomorrow
-
-          </h2>
-
-          <p className="text-center text-slate-500 mt-4 text-lg">
-
-            Together we reduce food waste and fight hunger.
-
-          </p>
-
-          <div className="grid md:grid-cols-5 gap-6 mt-14">
-
-            <div className="bg-green-50 rounded-2xl p-8 text-center hover:shadow-xl transition">
-              <div className="text-5xl mb-4">♻️</div>
-              <h3 className="font-bold text-xl">Reduce Food Waste</h3>
-            </div>
-
-            <div className="bg-green-50 rounded-2xl p-8 text-center hover:shadow-xl transition">
-              <div className="text-5xl mb-4">❤️</div>
-              <h3 className="font-bold text-xl">Help Communities</h3>
-            </div>
-
-            <div className="bg-green-50 rounded-2xl p-8 text-center hover:shadow-xl transition">
-              <div className="text-5xl mb-4">✔️</div>
-              <h3 className="font-bold text-xl">Verified & Safe</h3>
-            </div>
-
-            <div className="bg-green-50 rounded-2xl p-8 text-center hover:shadow-xl transition">
-              <div className="text-5xl mb-4">⚡</div>
-              <h3 className="font-bold text-xl">Smart Matching</h3>
-            </div>
-
-            <div className="bg-green-50 rounded-2xl p-8 text-center hover:shadow-xl transition">
-              <div className="text-5xl mb-4">🌱</div>
-              <h3 className="font-bold text-xl">Better Tomorrow</h3>
-            </div>
-
-          </div>
-
+      <div className="relative mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-10 xl:px-14">
+        {/* Hero grid — left content has extra inset */}
+        <div className="grid items-center gap-12 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-20 xl:gap-16">
+          <HeroContent />
+          <HeroImage />
         </div>
 
-      </section>
-    </>
+        {/* Bottom feature bar */}
+        <div id="how-it-works" className="pb-16 lg:pb-20">
+          <HeroStats />
+        </div>
+      </div>
+    </section>
   );
 }
