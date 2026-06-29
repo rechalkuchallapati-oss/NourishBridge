@@ -1,58 +1,127 @@
 import { Link } from "react-router-dom";
 import Button from "../common/Button";
-import Logo from "../common/Logo";
+import logo from "../../assets/logos/logo.png";
+
 const Navbar = () => {
   return (
-      <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto h-20 px-8 flex items-center justify-between">
-        {/* Left Section */}
-        <Link to="/" className="flex items-center gap-3">
-            {/* Logo */}
+    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm">
 
-            <Logo />
-           
-            <div>
-            <h1 className="text-4xl font-extrabold tracking-tight">
-            <span className="text-green-700">Nourish</span>
-            <span className="text-slate-900">Bridge</span>
-            </h1>
+      <div className="max-w-[1600px] mx-auto h-24 px-10 flex items-center">
 
-            <p className="text-sm text-slate-500">
-              Share Food | Share Hope | Save Lives
-            </p>
+        {/* ================= LEFT SECTION ================= */}
+
+        <div className="flex items-center flex-shrink-0">
+
+          <Link to="/" className="flex items-center gap-4">
+
+            <img
+              src={logo}
+              alt="NourishBridge Logo"
+              className="w-16 h-16 object-contain"
+            />
+
+            <div className="leading-tight">
+
+              <h1 className="text-[36px] font-extrabold">
+                <span className="text-green-700">Nourish</span>
+                <span className="text-slate-900">Bridge</span>
+              </h1>
+
+              <p className="text-[17px] text-slate-500">
+                Share Food | Share Hope | Save Lives
+              </p>
+
             </div>
-        </Link>
 
-        {/* Center Section */}
-          <div className="hidden lg:flex items-center gap-10 font-medium text-gray-700">
-          <Link to="/">Home</Link>
-
-          <Link to="/about">About</Link>
-
-          <Link to="/donate">Donate</Link>
-
-          <Link to="/ngo">NGOs</Link>
-
-          <Link to="/volunteer">Volunteer</Link>
-
-          <Link to="/contact">Contact</Link>
+          </Link>
 
         </div>
 
-        {/* Right Section */}
-        <div className="hidden md:flex items-center gap-4">
 
-          <Button variant="outline">
-            Login
+
+        {/* ================= CENTER SECTION ================= */}
+
+        <div className="flex-1 flex justify-center ml-32">
+
+          <div className="flex items-center gap-8 text-[18px] font-medium">
+
+            <Link
+              to="/"
+              className="text-green-600 font-semibold hover:text-green-700"
+            >
+              Home
+            </Link>
+
+            <Link
+             to="/"
+               className="text-green-600 font-semibold hover:text-green-700"
+            >
+              About
+            </Link>
+
+            <Link 
+             to="/"              
+             className="text-green-600 font-semibold hover:text-green-700"
+            >
+              Donate
+            </Link>
+
+            <Link
+             to="/"
+             className="text-green-600 font-semibold hover:text-green-700"
+            >
+              NGOs
+            </Link>
+
+            <Link 
+            to="/"
+            className="text-green-600 font-semibold hover:text-green-700"
+            >
+              Volunteer
+            </Link>
+            
+            <Link
+            to="/"
+            className="text-green-600 font-semibold hover:text-green-700"
+            >
+              Contact
+            </Link>
+
+          </div>
+
+        </div>
+
+
+
+        {/* ================= RIGHT SECTION ================= */}
+
+        <div className="flex items-center gap-8 flex-shrink-0">
+
+          <Button
+            variant="secondary"
+            className="!min-w-[120px] !h-12 !px-7 !rounded-xl"
+          >
+            👤 Login
           </Button>
 
-          <Button>
-            Donate Now
+          <Button
+            variant="outline"
+            className="!min-w-[180px] !h-12 !px-8 !rounded-xl"
+          >
+            🤝 Become Volunteer
+          </Button>
+
+          <Button
+            variant="primary"
+            className="!min-w-[170px] !h-12 !px-8 !rounded-xl"
+          >
+            🍱 Donate Food
           </Button>
 
         </div>
 
       </div>
+
     </nav>
   );
 };

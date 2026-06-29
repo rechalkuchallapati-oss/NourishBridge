@@ -5,18 +5,20 @@ const Button = ({
   className = "",
   ...props
 }) => {
+  // Common button styles
   const baseClasses =
-    "px-6 py-3 rounded-xl font-semibold transition-all duration-300 cursor-pointer";
+    "inline-flex items-center justify-center gap-2 min-w-[170px] h-14 px-8 rounded-xl font-semibold text-base whitespace-nowrap transition-all duration-300 cursor-pointer";
 
+  // Different button variants
   const variants = {
     primary:
-      "bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg",
-
-    secondary:
-      "bg-green-100 text-green-700 hover:bg-green-200",
+      "bg-green-400 text-white shadow-md hover:bg-green-700 hover:shadow-xl hover:-translate-y-1",
 
     outline:
-      "border border-gray-300 text-gray-700 hover:border-green-600 hover:text-green-600 bg-white",
+      "border-2 border-green-600 bg-white text-green-700 hover:bg-green-600 hover:text-white hover:-translate-y-1",
+
+    secondary:
+      "bg-slate-900 text-white shadow-md hover:bg-slate-800 hover:shadow-xl hover:-translate-y-1",
   };
 
   return (
