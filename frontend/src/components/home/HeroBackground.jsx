@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { FaLeaf } from "react-icons/fa";
+import { FaArrowRight, FaLeaf } from "react-icons/fa";
+import { GiButterfly } from "react-icons/gi";
 
 function FloatingLeaf({ className, delay = 0 }) {
   return (
@@ -10,6 +11,36 @@ function FloatingLeaf({ className, delay = 0 }) {
       aria-hidden="true"
     >
       <FaLeaf />
+    </motion.div>
+  );
+}
+
+function FloatingButterfly({ className, delay = 0 }) {
+  return (
+    <motion.div
+      className={className}
+      animate={{
+        x: [0, 18, -10, 0],
+        y: [0, -12, 4, 0],
+        rotate: [0, 10, -8, 0],
+      }}
+      transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay }}
+      aria-hidden="true"
+    >
+      <GiButterfly />
+    </motion.div>
+  );
+}
+
+function DriftingArrow({ className, delay = 0 }) {
+  return (
+    <motion.div
+      className={className}
+      animate={{ x: [0, 8, 0], opacity: [0.25, 0.55, 0.25] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay }}
+      aria-hidden="true"
+    >
+      <FaArrowRight />
     </motion.div>
   );
 }
@@ -42,6 +73,32 @@ export default function HeroBackground() {
       <FloatingLeaf
         className="absolute right-[8%] bottom-[18%] rotate-[150deg] text-lg text-[#22C55E]/[0.1]"
         delay={3.5}
+      />
+
+      <FloatingButterfly
+        className="absolute left-[18%] top-[12%] text-lg text-[#16A34A]/30 sm:text-xl"
+        delay={0.8}
+      />
+      <FloatingButterfly
+        className="absolute left-[28%] bottom-[22%] text-base text-[#22C55E]/25 sm:text-lg"
+        delay={2.2}
+      />
+      <FloatingButterfly
+        className="absolute right-[22%] top-[18%] text-base text-[#16A34A]/28"
+        delay={3.6}
+      />
+
+      <DriftingArrow
+        className="absolute left-[12%] top-[48%] text-sm text-[#16A34A]/35"
+        delay={0.4}
+      />
+      <DriftingArrow
+        className="absolute left-[22%] bottom-[38%] rotate-45 text-xs text-[#22C55E]/30"
+        delay={1.6}
+      />
+      <DriftingArrow
+        className="absolute right-[18%] top-[55%] -rotate-12 text-sm text-[#16A34A]/30"
+        delay={2.8}
       />
     </div>
   );

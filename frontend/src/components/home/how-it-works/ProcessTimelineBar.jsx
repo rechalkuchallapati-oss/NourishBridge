@@ -1,76 +1,127 @@
 import { motion } from "framer-motion";
 import { timelineSteps } from "./constants";
 
-function DottedConnector({ active }) {
+function TimelineConnector({ active }) {
   return (
-    <div className="relative mx-1 hidden min-w-[24px] flex-1 sm:mx-2 sm:block lg:mx-3">
-      <div className="h-px w-full border-t-2 border-dotted border-[#CBD5E1]" />
+    <div className="relative hidden flex-1 md:block">
+      {/* Base Line */}
+      <div className="absolute top-1/2 left-0 h-[3px] w-full -translate-y-1/2 rounded-full bg-slate-200" />
+
+      {/* Animated Green Line */}
       <motion.div
-        className="absolute inset-x-0 top-0 h-px border-t-2 border-dotted border-[#16A34A]"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: active ? 1 : 0 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        transition={{ duration: 0.5 }}
         style={{ transformOrigin: "left center" }}
+        className="absolute top-1/2 left-0 h-[3px] w-full -translate-y-1/2 rounded-full bg-green-500"
       />
     </div>
   );
 }
 
-function TimelineStep({ step, index, active, isLast }) {
+function TimelineStep({
+  step,
+  index,
+  active,
+  activeIndex,
+  isLast,
+}) {
   const Icon = step.icon;
 
   return (
     <div className="flex flex-1 items-center">
-      <div className="flex flex-col items-center gap-2">
-        <motion.div
-          className={[
-            "flex h-11 w-11 items-center justify-center rounded-xl border transition-all duration-300 sm:h-12 sm:w-12",
-            active
-              ? "border-[#16A34A] bg-[#E8F8EF] text-[#16A34A] shadow-[0_4px_16px_rgba(22,163,74,0.2)]"
-              : "border-[#E5E7EB] bg-white text-[#94A3B8]",
-          ].join(" ")}
-          animate={{ scale: active ? 1.08 : 1 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Icon className="text-base sm:text-lg" />
-        </motion.div>
+
+      <div className="flex flex-col items-center">
+
+        {/* Step Number */}
+
         <p
-          className={[
-            "hidden max-w-[72px] text-center text-[10px] font-semibold leading-tight sm:block sm:max-w-[88px] sm:text-[11px]",
-            active ? "text-[#0F172A]" : "text-[#94A3B8]",
-          ].join(" ")}
+          className={`mb-3 text-xs font-bold tracking-[0.25em]
+          ${
+            active
+              ? "text-green-600"
+              : "text-slate-400"
+          }`}
+        >
+          {step.step}
+        </p>
+
+        {/* Icon */}
+
+        <motion.div
+          whileHover={{
+            scale: 1.08,
+          }}
+          animate={{
+            scale: active ? 1.08 : 1,
+          }}
+          transition={{ duration: 0.3 }}
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl border-2 transition-all duration-300
+
+          ${
+            active
+              ? "border-green-600 bg-green-600 text-white shadow-xl"
+              : "border-slate-200 bg-white text-slate-500"
+          }`}
+        >
+          <Icon className="text-xl" />
+        </motion.div>
+
+        {/* Label */}
+
+        <p
+          className={`mt-4 max-w-[110px] text-center text-sm font-semibold leading-5 transition-colors duration-300
+
+          ${
+            active
+              ? "text-slate-900"
+              : "text-slate-500"
+          }`}
         >
           {step.timelineLabel}
         </p>
-        <p className="text-[10px] font-bold tracking-wider text-[#64748B] sm:hidden">
-          {index + 1}
-        </p>
+
       </div>
+
       {!isLast && (
-        <DottedConnector
-          active={activeIndex !== null && activeIndex > index}
+        <TimelineConnector
+          active={
+            activeIndex !== null &&
+            activeIndex > index
+          }
         />
       )}
     </div>
   );
 }
 
-export default function ProcessTimelineBar({ activeIndex }) {
+export default function ProcessTimelineBar({
+  activeIndex,
+}) {
   return (
-    <div className="mt-16 md:mt-20">
-      <div className="overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="mx-auto flex min-w-[520px] max-w-4xl items-center px-2 sm:min-w-0 sm:px-0">
+    <section className="mt-20 mb-24">
+
+      <div className="mx-auto max-w-6xl">
+
+        <div className="flex items-start justify-between gap-3">
+
           {timelineSteps.map((step, index) => (
             <TimelineStep
               key={step.step}
               step={step}
               index={index}
               active={activeIndex === index}
-              isLast={index === timelineSteps.length - 1}
+              activeIndex={activeIndex}
+              isLast={
+                index === timelineSteps.length - 1
+              }
             />
           ))}
+
         </div>
+
       </div>
-    </div>
+
+    </section>
   );
 }

@@ -19,9 +19,10 @@ export const timelineSteps = [
     title: "Food Donor",
     timelineLabel: "Food Donor",
     image: foodDonor,
-    imageAlt: "Restaurant listing surplus food on NourishBridge",
+    imageAlt: "Restaurant donating surplus food",
+    color: "#16A34A",
     description:
-      "Restaurants, hotels, caterers and event organizers list surplus food through NourishBridge by entering food quantity, freshness, pickup location and availability.",
+      "Restaurants, hotels and caterers list fresh surplus food by providing quantity, pickup location and availability through NourishBridge.",
   },
   {
     step: "02",
@@ -29,9 +30,10 @@ export const timelineSteps = [
     title: "Pickup Request",
     timelineLabel: "Pickup Request",
     image: pickupRequest,
-    imageAlt: "Platform verifying donation and notifying volunteers",
+    imageAlt: "Pickup request created",
+    color: "#22C55E",
     description:
-      "The platform instantly verifies the donation and notifies nearby verified volunteers using smart location-based matching.",
+      "The platform instantly verifies the donation and intelligently matches nearby verified volunteers for quick collection.",
   },
   {
     step: "03",
@@ -39,9 +41,10 @@ export const timelineSteps = [
     title: "Volunteer Pickup",
     timelineLabel: "Volunteer Pickup",
     image: volunteerPickup,
-    imageAlt: "Volunteer safely collecting food from donor",
+    imageAlt: "Volunteer collecting food",
+    color: "#16A34A",
     description:
-      "A verified volunteer accepts the request, reaches the donor location and safely collects the food while following food safety guidelines.",
+      "A verified volunteer safely collects the food from the donor while maintaining hygiene and food safety standards.",
   },
   {
     step: "04",
@@ -49,18 +52,20 @@ export const timelineSteps = [
     title: "NGO Receives",
     timelineLabel: "NGO Receives",
     image: ngoReceives,
-    imageAlt: "NGO verifying food quality upon delivery",
+    imageAlt: "NGO receiving food",
+    color: "#22C55E",
     description:
-      "The receiving NGO verifies the food quality, confirms delivery and prepares immediate distribution for beneficiaries.",
+      "The receiving NGO verifies the food quality, confirms delivery and prepares it for immediate community distribution.",
   },
   {
     step: "05",
     icon: FaHeart,
     title: "Food Reaches Community",
-    timelineLabel: "Food Reaches Community",
+    timelineLabel: "Community",
     image: foodReaches,
-    imageAlt: "Fresh meals distributed to communities in need",
+    imageAlt: "Meals reaching communities",
+    color: "#16A34A",
     description:
-      "Fresh meals are distributed to orphanages, shelters, old-age homes and families in need, reducing food waste while creating social impact.",
+      "Fresh meals reach orphanages, shelters, old-age homes and families in need, transforming surplus food into hope.",
   },
 ];

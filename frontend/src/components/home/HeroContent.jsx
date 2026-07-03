@@ -21,12 +21,12 @@ const itemVariants = {
 };
 
 const heroButtonClass =
-  "box-border !h-14 !min-h-14 !rounded-xl !px-8 !text-[15px] !font-semibold transition hover:!-translate-y-0.5";
+  "box-border !h-12 !min-h-12 !rounded-xl !px-6 !text-sm !font-semibold transition hover:!-translate-y-0.5";
 
 export default function HeroContent() {
   return (
     <motion.div
-      className="flex w-full flex-col justify-center pl-4 sm:pl-6 lg:h-[510px] lg:max-h-[520px] lg:justify-center lg:pl-10 xl:pl-14"
+      className="flex w-full flex-col justify-center lg:h-[430px] lg:max-h-[440px] lg:justify-center"
       variants={containerVariants}
       initial="hidden"
       animate="visible"
