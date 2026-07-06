@@ -199,14 +199,20 @@ export default function VolunteerDashboard() {
           </div>
           <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
             <div className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-2">
-              <p className="text-lg font-bold text-[#15803D]">{VOLUNTEER_IMPACT.mealsDelivered}</p>
-              <p className="text-[10px] text-[#64748B]">Meals delivered</p>
+              <p className="text-lg font-bold text-[#15803D]">{VOLUNTEER_IMPACT.missionsCompleted}</p>
+              <p className="text-[10px] text-[#64748B]">Missions completed</p>
             </div>
             <div className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-2">
-              <p className="text-lg font-bold text-[#2563EB]">{VOLUNTEER_IMPACT.foodRescuedKg} kg</p>
+              <p className="text-lg font-bold text-[#2563EB]">
+                {VOLUNTEER_IMPACT.mealsDelivered.toLocaleString("en-IN")}
+              </p>
+              <p className="text-[10px] text-[#64748B]">Meals delivered</p>
+            </div>
+            <div className="rounded-none border border-[#FEF3C7] bg-[#FFFBEB] p-2">
+              <p className="text-lg font-bold text-[#D97706]">{VOLUNTEER_IMPACT.foodRescuedKg} kg</p>
               <p className="text-[10px] text-[#64748B]">Food rescued</p>
             </div>
-            <div className="col-span-2 rounded-none border border-[#EDE9FE] bg-[#F5F3FF] p-2">
+            <div className="rounded-none border border-[#EDE9FE] bg-[#F5F3FF] p-2">
               <p className="text-lg font-bold text-[#7C3AED]">{VOLUNTEER_IMPACT.peopleSupported}</p>
               <p className="text-[10px] text-[#64748B]">People supported</p>
             </div>

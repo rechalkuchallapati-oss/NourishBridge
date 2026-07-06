@@ -74,11 +74,50 @@ export const VOLUNTEER_OVERVIEW_STATS = {
 };
 
 export const VOLUNTEER_IMPACT = {
-  mealsDelivered: 1240,
-  foodRescuedKg: 860,
-  peopleSupported: 620,
   missionsCompleted: 48,
+  mealsDelivered: 1860,
+  foodRescuedKg: 426,
+  peopleSupported: 720,
+  onTimeDeliveryRate: 96,
 };
+
+export const MONTHLY_MISSIONS_TREND = [
+  { month: "Feb", missions: 5 },
+  { month: "Mar", missions: 7 },
+  { month: "Apr", missions: 6 },
+  { month: "May", missions: 9 },
+  { month: "Jun", missions: 8 },
+  { month: "Jul", missions: 13 },
+];
+
+export const IMPACT_MILESTONES = [
+  {
+    id: "starter",
+    title: "Food Rescue Starter",
+    threshold: 25,
+    description: "Completed 25 rescue missions",
+  },
+  {
+    id: "hero",
+    title: "Community Hero",
+    threshold: 50,
+    description: "Completed 50 rescue missions",
+  },
+  {
+    id: "champion",
+    title: "Impact Champion",
+    threshold: 100,
+    description: "Completed 100 rescue missions",
+  },
+];
+
+export const PICKUP_VERIFICATION_CHECKLIST = [
+  { id: "packaging", label: "Packaging properly sealed" },
+  { id: "spoilage", label: "No visible spoilage" },
+  { id: "quantity", label: "Quantity matches donation listing" },
+  { id: "timeWindow", label: "Food collected within safe time window" },
+  { id: "storage", label: "Storage instructions received" },
+];
 
 export const AVAILABLE_PICKUP_REQUESTS = [
   {
