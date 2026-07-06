@@ -1,4 +1,6 @@
 import { getDonationFoodImage } from "../../data/donationFoodAssets";
+import DonationItemsList from "../common/DonationItemsList";
+import EventTypeBadge from "../common/EventTypeBadge";
 import NGOModal from "./NGOModal";
 
 export default function DonationDetailsModal({ donation, onClose, onAccept, onDecline }) {
@@ -18,9 +20,21 @@ export default function DonationDetailsModal({ donation, onClose, onAccept, onDe
         <div className="grid gap-[0.5cm] sm:grid-cols-2">
           <DetailRow label="Donor / Organization" value={donation.donorName} />
           <DetailRow label="Donor Type" value={donation.donorType} />
+          {donation.eventName ? (
+            <DetailRow label="Event" value={donation.eventName} span />
+          ) : null}
+          <DetailRow
+            label="Event Type"
+            value={<EventTypeBadge eventType={donation.eventType} className="text-xs" />}
+          />
           <DetailRow label="Food Category" value={donation.foodCategory} />
-          <DetailRow label="Food Item" value={donation.foodName} />
-          <DetailRow label="Quantity" value={donation.quantity} />
+          <DetailRow label="Donation Summary" value={donation.foodName} />
+          <DetailRow
+            label="Items Donated"
+            value={<DonationItemsList record={donation} />}
+            span
+          />
+          <DetailRow label="Quantity Summary" value={donation.quantity} />
           <DetailRow label="Estimated Servings" value={`~${donation.estimatedServings}`} />
           <DetailRow label="Preparation Time" value={donation.preparationTime} />
           <DetailRow label="Safe Consumption Deadline" value={donation.safeConsumptionDeadline} />

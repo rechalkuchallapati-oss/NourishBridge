@@ -9,6 +9,8 @@ import {
   INVENTORY_STATUS_COLORS,
   INVENTORY_STATUS_LABELS,
 } from "../../data/ngoInventory";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -75,8 +77,14 @@ export default function NGOInventory() {
                     className="border-b border-[#E5E7EB] transition-colors last:border-0 hover:bg-[#F8FAFC]"
                   >
                     <td className="px-4 py-3">
-                      <p className="font-semibold text-[#0F172A]">{item.food}</p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <p className="font-semibold text-[#0F172A]">{item.food}</p>
+                        <EventTypeBadge eventType={item.eventType} />
+                      </div>
                       <p className="text-xs text-[#94A3B8]">{item.category}</p>
+                      {item.itemCount > 1 ? (
+                        <DonationItemsList record={item} className="mt-1.5" maxItems={3} />
+                      ) : null}
                     </td>
                     <td className="px-4 py-3 font-medium">{item.quantity}</td>
                     <td className="px-4 py-3 text-[#64748B]">{item.received}</td>

@@ -14,6 +14,8 @@ import {
   RESCHEDULING_RULES,
   SCHEDULED_PICKUPS,
 } from "../../data/donorPickups";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getDonorDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -49,9 +51,16 @@ function PickupCard({ pickup, index }) {
           <p className="text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
             {pickup.id} · {pickup.donationId}
           </p>
-          <h3 className="text-xl font-bold leading-tight text-[#0F172A] sm:text-2xl">
-            {pickup.food}
-          </h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-xl font-bold leading-tight text-[#0F172A] sm:text-2xl">
+              {pickup.food}
+            </h3>
+            <EventTypeBadge eventType={pickup.eventType} />
+          </div>
+          {pickup.eventName ? (
+            <p className="text-sm font-medium text-[#64748B]">{pickup.eventName}</p>
+          ) : null}
+          <DonationItemsList record={pickup} className="mt-2" />
         </div>
         <span
           className={`inline-flex min-h-[48px] min-w-[140px] shrink-0 items-center justify-center self-start rounded-none px-6 py-3 text-center text-sm font-semibold sm:self-center sm:text-base ${PICKUP_STATUS_COLORS[pickup.status] ?? PICKUP_STATUS_COLORS.scheduled}`}

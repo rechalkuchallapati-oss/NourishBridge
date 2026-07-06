@@ -4,6 +4,8 @@ import {
   OVERVIEW_ACTIVE_DELIVERIES,
 } from "../../data/ngoDashboard";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import DonationItemsList from "../common/DonationItemsList";
+import EventTypeBadge from "../common/EventTypeBadge";
 import { NGOSectionHeader, NGO_SECTION_CLASS } from "./NGOSectionLink";
 
 const STATUS_BADGE = {
@@ -51,6 +53,8 @@ export default function NGOOverviewActiveDeliveries() {
                     <h3 className="text-xs font-bold text-[#0F172A] sm:text-sm">
                       {delivery.foodName}
                     </h3>
+                    <EventTypeBadge eventType={delivery.eventType} className="mt-1" />
+                    <DonationItemsList record={delivery} className="mt-1" maxItems={2} />
                   </div>
                   <span
                     className={`inline-flex shrink-0 rounded-none px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_BADGE[delivery.statusKey] ?? STATUS_BADGE.pending}`}

@@ -9,6 +9,8 @@ import {
   DELIVERY_PIPELINE_STEPS,
   DELIVERY_STATUS_BADGE,
 } from "../../data/ngoActiveDeliveries";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -34,10 +36,13 @@ function ActiveDeliveryCard({ delivery }) {
               <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                 {delivery.id} · {delivery.donationId}
               </p>
-              <h3 className="text-xl font-bold text-[#0F172A]">{delivery.foodName}</h3>
-              <p className="text-sm text-[#64748B]">
-                {delivery.donorName} · {delivery.quantity}
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-xl font-bold text-[#0F172A]">{delivery.foodName}</h3>
+                <EventTypeBadge eventType={delivery.eventType} />
+              </div>
+              <p className="text-sm text-[#64748B]">{delivery.donorName}</p>
+              <DonationItemsList record={delivery} className="mt-2" maxItems={4} />
+              <p className="mt-1 text-xs font-medium text-[#94A3B8]">{delivery.quantity}</p>
             </div>
             <span
               className={`inline-flex rounded-none px-3 py-1.5 text-xs font-semibold ${DELIVERY_STATUS_BADGE[delivery.currentStatus] ?? DELIVERY_STATUS_BADGE.accepted}`}

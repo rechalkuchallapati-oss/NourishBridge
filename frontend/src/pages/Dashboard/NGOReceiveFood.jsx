@@ -12,6 +12,8 @@ import {
   SPOILAGE_OPTIONS,
   TEMPERATURE_OPTIONS,
 } from "../../data/ngoReceiving";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -253,9 +255,16 @@ export default function NGOReceiveFood() {
                     <p className="text-xs font-semibold uppercase text-[#94A3B8]">
                       {item.id} · {item.donationId}
                     </p>
-                    <h3 className="text-lg font-bold text-[#0F172A]">{item.foodName}</h3>
-                    <p className="text-sm text-[#64748B]">
-                      {item.donorName} · {item.listedQuantity} · Volunteer: {item.volunteer}
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-lg font-bold text-[#0F172A]">{item.foodName}</h3>
+                      <EventTypeBadge eventType={item.eventType} />
+                    </div>
+                    {item.eventName ? (
+                      <p className="text-sm font-medium text-[#64748B]">{item.eventName}</p>
+                    ) : null}
+                    <DonationItemsList record={item} className="mt-2" />
+                    <p className="mt-1 text-sm text-[#64748B]">
+                      {item.donorName} · Volunteer: {item.volunteer}
                     </p>
                   </div>
                   <span className="rounded-none bg-[#FFEDD5] px-3 py-1 text-xs font-semibold text-[#C2410C]">

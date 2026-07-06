@@ -70,8 +70,8 @@ export function useVolunteerMission() {
       const mission = {
         ...pickup,
         missionId: `MIS-${Date.now().toString().slice(-4)}`,
-        status: MISSION_STATES.EN_ROUTE_TO_DONOR,
-        eta: getMissionEta(MISSION_STATES.EN_ROUTE_TO_DONOR),
+        status: MISSION_STATES.ASSIGNED,
+        eta: getMissionEta(MISSION_STATES.ASSIGNED),
         acceptedAt: new Date().toISOString(),
       };
 
@@ -99,7 +99,9 @@ export function useVolunteerMission() {
 
       const completed = {
         id: prev.missionId ?? prev.id,
+        eventType: prev.eventType,
         foodName: prev.foodName,
+        items: prev.items,
         donor: prev.donorName,
         ngo: prev.ngoName,
         meals: prev.estimatedMeals,

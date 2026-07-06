@@ -5,6 +5,8 @@ import DeclineDonationModal from "./DeclineDonationModal";
 import { getNgoFoodImage } from "../../data/ngoFoodAssets";
 import { OVERVIEW_INCOMING_DONATIONS } from "../../data/ngoDashboard";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import DonationItemsList from "../common/DonationItemsList";
+import EventTypeBadge from "../common/EventTypeBadge";
 import { NGOSectionHeader, NGO_SECTION_CLASS, NGO_SECTION_TEXT } from "./NGOSectionLink";
 
 function DetailItem({ label, value }) {
@@ -50,8 +52,12 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
           <p className="text-[9px] font-semibold uppercase tracking-wide text-[#94A3B8]">
             {donation.id}
           </p>
-          <h3 className="text-xs font-bold text-[#0F172A] sm:text-sm">{donation.foodName}</h3>
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-xs font-bold text-[#0F172A] sm:text-sm">{donation.foodName}</h3>
+            <EventTypeBadge eventType={donation.eventType} />
+          </div>
           <p className={`mt-0.5 ${NGO_SECTION_TEXT}`}>{donation.event}</p>
+          <DonationItemsList record={donation} className="mt-1" maxItems={3} />
           <p className="mt-0.5 flex items-start gap-1 text-[10px] text-[#64748B]">
             <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#16A34A]" aria-hidden="true" />
             {donation.eventLocation}

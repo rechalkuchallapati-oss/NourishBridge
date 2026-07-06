@@ -1,3 +1,5 @@
+import { enrichDonationRecord } from "./shared/donationItems";
+
 export const DELIVERY_PIPELINE_STEPS = [
   { id: "accepted", label: "Donation Accepted" },
   { id: "volunteer_assigned", label: "Volunteer Assigned" },
@@ -7,14 +9,23 @@ export const DELIVERY_PIPELINE_STEPS = [
   { id: "verified", label: "Verified" },
 ];
 
-export const ACTIVE_DELIVERIES = [
+const RAW_DELIVERIES = [
   {
     id: "DEL-001",
     donationId: "DN-2401",
-    foodName: "Vegetable Biryani & Raita",
-    foodCategory: "Prepared Meals",
-    donorName: "Spice Garden Restaurant",
-    quantity: "25 kg · ~45 servings",
+    eventType: "wedding",
+    eventName: "Mehta–Kapoor Wedding Reception",
+    foodName: "Wedding Feast · 9 items",
+    foodCategory: "Multi-Cuisine Feast",
+    donorName: "Mehta Family Events",
+    quantity: "9 item types · ~320 servings",
+    items: [
+      { name: "Hyderabadi Dum Biryani", quantity: "38 kg", cuisine: "Indian" },
+      { name: "Paneer Tikka & Seekh Kebabs", quantity: "22 kg", cuisine: "Indian" },
+      { name: "Dal Makhani & Butter Naan", quantity: "18 kg", cuisine: "Indian" },
+      { name: "Gulab Jamun & Ras Malai", quantity: "140 portions", cuisine: "Desserts" },
+      { name: "Margherita & Farmhouse Pizza", quantity: "24 boxes", cuisine: "Italian" },
+    ],
     volunteer: {
       name: "Rahul Mehta",
       phone: "+91 98765 43210",
@@ -35,10 +46,16 @@ export const ACTIVE_DELIVERIES = [
   {
     id: "DEL-002",
     donationId: "DN-2398",
-    foodName: "Fresh Vegetables & Rice",
-    foodCategory: "Fresh Produce & Grains",
-    donorName: "Indiranagar Fresh Mart",
-    quantity: "28 kg · ~70 servings",
+    eventType: "individual",
+    eventName: "Home-cooked surplus",
+    foodName: "Homemade Pasta & Garlic Bread",
+    foodCategory: "Prepared Meals",
+    donorName: "Priya Deshmukh",
+    quantity: "2 item types · ~24 servings",
+    items: [
+      { name: "Penne Arrabiata (homemade)", quantity: "6 kg", cuisine: "Italian" },
+      { name: "Garlic Bread Loaves", quantity: "8 loaves", cuisine: "Italian" },
+    ],
     volunteer: {
       name: "Priya Sharma",
       phone: "+91 91234 56789",
@@ -58,10 +75,18 @@ export const ACTIVE_DELIVERIES = [
   {
     id: "DEL-003",
     donationId: "DN-2388",
-    foodName: "Dal Makhani & Naan",
-    foodCategory: "Prepared Meals",
-    donorName: "Rajesh Kumar",
-    quantity: "15 kg · ~35 servings",
+    eventType: "ramzan",
+    eventName: "Community Iftar at Masjid-e-Noor",
+    foodName: "Ramzan Iftar · 6 items",
+    foodCategory: "Festival Meals",
+    donorName: "Masjid-e-Noor Welfare Committee",
+    quantity: "6 item types · ~280 servings",
+    items: [
+      { name: "Chicken Haleem", quantity: "25 kg", cuisine: "Indian" },
+      { name: "Dates & Fruit Chaat", quantity: "80 boxes", cuisine: "Fresh" },
+      { name: "Sheer Khurma", quantity: "60 bowls", cuisine: "Desserts" },
+      { name: "Samosas & Pakoras", quantity: "200 pieces", cuisine: "Indian" },
+    ],
     volunteer: {
       name: "Vikram Singh",
       phone: "+91 87654 32109",
@@ -78,6 +103,8 @@ export const ACTIVE_DELIVERIES = [
     ],
   },
 ];
+
+export const ACTIVE_DELIVERIES = RAW_DELIVERIES.map(enrichDonationRecord);
 
 export function getDeliveryStepIndex(status) {
   return DELIVERY_PIPELINE_STEPS.findIndex((step) => step.id === status);

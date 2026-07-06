@@ -1,4 +1,5 @@
 import { ROLE_DASHBOARD_ROUTES } from "../constants/routes";
+import { VOLUNTEER_IDENTITY } from "../data/volunteerAssets";
 
 const USER_KEY = "nb_user";
 const PROFILE_KEY = "nb_donor_profile";
@@ -86,6 +87,9 @@ export function getVolunteerProfile() {
       vehicle: saved.vehicle ?? "Bike — KA 05 VL 4521",
       availability: saved.availability ?? ["Weekday Afternoons", "Weekend Mornings"],
       isAvailable: saved.isAvailable ?? true,
+      volunteerId: saved.volunteerId ?? VOLUNTEER_IDENTITY.volunteerId,
+      avatarId: saved.avatarId ?? "primary",
+      customAvatarDataUrl: saved.customAvatarDataUrl ?? null,
     };
   } catch {
     return {
@@ -97,6 +101,9 @@ export function getVolunteerProfile() {
       vehicle: "Bike — KA 05 VL 4521",
       availability: ["Weekday Afternoons"],
       isAvailable: true,
+      volunteerId: VOLUNTEER_IDENTITY.volunteerId,
+      avatarId: "primary",
+      customAvatarDataUrl: null,
     };
   }
 }
@@ -109,6 +116,9 @@ export function saveVolunteerProfile(profile) {
     fullName: profile.fullName ?? session.fullName,
     role: session.role ?? "volunteer",
   });
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("nb-volunteer-profile-updated"));
+  }
 }
 
 export function getNgoProfile() {
@@ -278,6 +288,8 @@ export function completeAuthSession(contact) {
       vehicle: "Bike",
       availability: contact.availability?.length ? contact.availability : ["Weekday Afternoons"],
       isAvailable: true,
+      volunteerId: VOLUNTEER_IDENTITY.volunteerId,
+      avatarId: "primary",
     });
   }
 

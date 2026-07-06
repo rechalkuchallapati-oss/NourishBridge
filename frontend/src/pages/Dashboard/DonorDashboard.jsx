@@ -26,14 +26,7 @@ const DASHBOARD_BTN_CLASS = [
   "!h-16 !min-h-[64px] !w-full !px-6 !py-4 !text-base !gap-3 !justify-center sm:!text-lg",
 ].join(" ");
 
-const overviewStats = {
-  totalDonations: 24,
-  mealsContributed: 1860,
-  foodRescuedKg: 742,
-  ngosHelped: 9,
-  activeDonations: 3,
-  completedDonations: 21,
-};
+import { DONOR_OVERVIEW_STATS } from "../../data/donorImpact";
 
 function DashboardNavBox({ to, icon: Icon, title, description, accent = "green", index = 0 }) {
   const accents = {
@@ -123,42 +116,42 @@ export default function DonorDashboard() {
           <div className="grid gap-[0.5cm] p-[0.5cm] sm:grid-cols-2 xl:grid-cols-3">
             <StatCard
               label="Total Donations"
-              value={overviewStats.totalDonations}
+              value={DONOR_OVERVIEW_STATS.totalDonations}
               caption="All donations listed"
               icon={FaBoxOpen}
               accent="green"
             />
             <StatCard
               label="Meals Contributed"
-              value={overviewStats.mealsContributed.toLocaleString()}
+              value={DONOR_OVERVIEW_STATS.mealsContributed.toLocaleString()}
               caption="Estimated meals delivered"
               icon={FaUtensils}
               accent="purple"
             />
             <StatCard
               label="Food Rescued"
-              value={`${overviewStats.foodRescuedKg} kg`}
+              value={`${DONOR_OVERVIEW_STATS.foodRescuedKg} kg`}
               caption="Kept out of landfills"
               icon={FaLeaf}
               accent="green"
             />
             <StatCard
               label="NGOs Helped"
-              value={overviewStats.ngosHelped}
+              value={DONOR_OVERVIEW_STATS.ngosHelped}
               caption="Verified partners supported"
               icon={FaHandsHelping}
               accent="blue"
             />
             <StatCard
               label="Active Donations"
-              value={overviewStats.activeDonations}
+              value={DONOR_OVERVIEW_STATS.activeDonations}
               caption="Pickups in progress"
               icon={FaBoxOpen}
               accent="amber"
             />
             <StatCard
               label="Completed Donations"
-              value={overviewStats.completedDonations}
+              value={DONOR_OVERVIEW_STATS.completedDonations}
               caption="Successfully delivered"
               icon={FaCheckCircle}
               accent="slate"

@@ -1,6 +1,6 @@
 export const IMPACT_SUMMARY = {
   mealsContributed: {
-    value: 1860,
+    value: 1840,
     label: "Meals contributed",
     note: "Based on reported servings from completed donations.",
   },
@@ -11,7 +11,7 @@ export const IMPACT_SUMMARY = {
     note: "Sum of donor-reported quantities converted where needed.",
   },
   wasteReduction: {
-    value: "~620",
+    value: "~590",
     label: "Estimated food-waste reduction",
     unit: "kg diverted*",
     note: "*Estimate using an average 0.84 kg diverted per meal served. Actual impact varies by food type and portion size.",
@@ -42,6 +42,16 @@ export const MONTHLY_DONATION_TRENDS = [
   { month: "Jun", donations: 6, meals: 510 },
   { month: "Jul", donations: 4, meals: 260 },
 ];
+
+export const DONOR_OVERVIEW_STATS = {
+  totalDonations: 24,
+  mealsContributed: 1840,
+  foodRescuedKg: 742,
+  ngosHelped: 9,
+  activeDonations: 3,
+  completedDonations: 21,
+  unreadNotifications: 3,
+};
 
 export const IMPACT_METHODOLOGY_NOTE =
   "Impact figures combine completed donation records with conservative conversion assumptions. Estimates are rounded and labeled where methodology is approximate — they are meant to motivate continued giving, not serve as audited environmental reporting.";

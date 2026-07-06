@@ -1,5 +1,7 @@
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { RECENT_MISSIONS, UPCOMING_MISSIONS } from "../../data/volunteerMission";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 
 export default function VolunteerMyMissions() {
   const { recentMissions } = useVolunteerMissionContext();
@@ -13,8 +15,12 @@ export default function VolunteerMyMissions() {
         <ul className="mt-2 space-y-2">
           {UPCOMING_MISSIONS.map((item) => (
             <li key={item.id} className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-3 text-xs">
-              <p className="font-bold text-[#0F172A]">{item.foodName}</p>
-              <p className="text-[#64748B]">{item.pickup} · {item.ngo}</p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-bold text-[#0F172A]">{item.foodName}</p>
+                <EventTypeBadge eventType={item.eventType} />
+              </div>
+              <DonationItemsList record={item} className="mt-1.5" maxItems={4} />
+              <p className="mt-1 text-[#64748B]">{item.pickup} · {item.ngo}</p>
             </li>
           ))}
         </ul>
@@ -23,8 +29,14 @@ export default function VolunteerMyMissions() {
         <ul className="mt-2 space-y-2">
           {[...recentMissions, ...RECENT_MISSIONS].slice(0, 6).map((item, index) => (
             <li key={`${item.id}-${index}`} className="rounded-none border border-[#E5E7EB] p-3 text-xs">
-              <p className="font-bold text-[#0F172A]">{item.foodName}</p>
-              <p className="text-[#64748B]">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-bold text-[#0F172A]">{item.foodName}</p>
+                {item.eventType ? <EventTypeBadge eventType={item.eventType} /> : null}
+              </div>
+              {item.items?.length > 1 ? (
+                <DonationItemsList record={item} className="mt-1.5" maxItems={3} />
+              ) : null}
+              <p className="mt-1 text-[#64748B]">
                 {item.donor} → {item.ngo} · ~{item.meals} meals · {item.completedAt}
               </p>
             </li>

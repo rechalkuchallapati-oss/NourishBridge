@@ -1,3 +1,5 @@
+import { enrichDonationRecord } from "./shared/donationItems";
+
 export const RESCHEDULING_RULES = [
   "Pickups can be rescheduled up to 2 hours before the scheduled window.",
   "Use in-app messaging or call the assigned volunteer directly.",
@@ -5,18 +7,31 @@ export const RESCHEDULING_RULES = [
   "Repeated no-shows may affect future pickup priority.",
 ];
 
-export const SCHEDULED_PICKUPS = [
+const RAW_SCHEDULED = [
   {
     id: "PU-2401",
     donationId: "DN-2401",
-    food: "Vegetable Biryani & Raita",
+    eventType: "wedding",
+    eventName: "Mehta–Kapoor Wedding Reception",
+    food: "Wedding Feast · 9 items",
+    items: [
+      { name: "Hyderabadi Dum Biryani", quantity: "38 kg", cuisine: "Indian" },
+      { name: "Paneer Tikka & Seekh Kebabs", quantity: "22 kg", cuisine: "Indian" },
+      { name: "Dal Makhani & Butter Naan", quantity: "18 kg", cuisine: "Indian" },
+      { name: "Gulab Jamun & Ras Malai", quantity: "140 portions", cuisine: "Desserts" },
+      { name: "Rasmalai Trifle Cups", quantity: "85 cups", cuisine: "Desserts" },
+      { name: "Veg Spring Rolls", quantity: "60 pieces", cuisine: "Chinese" },
+      { name: "Margherita & Farmhouse Pizza", quantity: "24 boxes", cuisine: "Italian" },
+      { name: "Caesar & Greek Salads", quantity: "35 bowls", cuisine: "Continental" },
+      { name: "Fresh Fruit Platters", quantity: "28 trays", cuisine: "Fresh" },
+    ],
     pickupDate: "Jul 4, 2026",
     pickupTime: "6:30 PM",
     pickupWindow: "6:30 PM – 7:15 PM",
     volunteer: "Rahul Mehta",
     volunteerPhone: "+91 98765 43210",
-    pickupAddress: "12 MG Road, Bengaluru — Spice Garden Restaurant",
-    ngo: "Akshaya Patra Foundation",
+    pickupAddress: "Leela Palace Banquet, Old Airport Road, Bengaluru",
+    ngo: "Annapurna Seva Trust",
     status: "volunteer_en_route",
     statusLabel: "Volunteer en route",
     contactWorkflow: [
@@ -30,14 +45,20 @@ export const SCHEDULED_PICKUPS = [
   {
     id: "PU-2398",
     donationId: "DN-2398",
-    food: "Fresh Vegetables & Rice",
+    eventType: "individual",
+    eventName: "Home-cooked surplus",
+    food: "Homemade Pasta & Garlic Bread",
+    items: [
+      { name: "Penne Arrabiata (homemade)", quantity: "6 kg", cuisine: "Italian" },
+      { name: "Garlic Bread Loaves", quantity: "8 loaves", cuisine: "Italian" },
+    ],
     pickupDate: "Jul 4, 2026",
     pickupTime: "8:00 PM",
     pickupWindow: "8:00 PM – 8:45 PM",
     volunteer: "Priya Sharma",
     volunteerPhone: "+91 91234 56780",
-    pickupAddress: "88 Indiranagar 100 Ft Road, Bengaluru",
-    ngo: "Robin Hood Army",
+    pickupAddress: "45 100 Feet Road, Indiranagar, Bengaluru",
+    ngo: "Hope Kitchen Foundation",
     status: "scheduled",
     statusLabel: "Scheduled",
     contactWorkflow: [
@@ -51,13 +72,24 @@ export const SCHEDULED_PICKUPS = [
   {
     id: "PU-2395",
     donationId: "DN-2395",
-    food: "Assorted Sandwiches & Pastries",
+    eventType: "restaurant",
+    eventName: "Spice Route Restaurant — closing surplus",
+    food: "Restaurant Surplus · 7 items",
+    items: [
+      { name: "Chicken Manchurian", quantity: "12 kg", cuisine: "Indo-Chinese" },
+      { name: "Veg Hakka Noodles", quantity: "10 kg", cuisine: "Chinese" },
+      { name: "Schezwan Fried Rice", quantity: "14 kg", cuisine: "Chinese" },
+      { name: "Paneer Butter Masala", quantity: "8 kg", cuisine: "Indian" },
+      { name: "Tandoori Roti Stack", quantity: "120 pieces", cuisine: "Indian" },
+      { name: "Chocolate Lava Cake", quantity: "36 slices", cuisine: "Desserts" },
+      { name: "Cold Coffee & Lassi", quantity: "45 bottles", cuisine: "Beverages" },
+    ],
     pickupDate: "Jul 5, 2026",
     pickupTime: "9:00 AM",
     pickupWindow: "9:00 AM – 10:00 AM",
     volunteer: "Awaiting assignment",
     volunteerPhone: null,
-    pickupAddress: "5 Church Street, Bengaluru — Daily Bread Café",
+    pickupAddress: "78 Church Street, Bengaluru — Spice Route Restaurant",
     ngo: "Awaiting NGO match",
     status: "pending_assignment",
     statusLabel: "Pending volunteer",
@@ -70,6 +102,8 @@ export const SCHEDULED_PICKUPS = [
     ],
   },
 ];
+
+export const SCHEDULED_PICKUPS = RAW_SCHEDULED.map(enrichDonationRecord);
 
 export const PICKUP_STATUS_COLORS = {
   scheduled: "bg-[#DBEAFE] text-[#1D4ED8]",

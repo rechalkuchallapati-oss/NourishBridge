@@ -5,6 +5,8 @@ import { FaUsers } from "react-icons/fa";
 import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOLayout from "../../components/dashboard/NGOLayout";
 import { BENEFICIARY_GROUPS, DISTRIBUTION_RECORDS } from "../../data/ngoDistribution";
+import DonationItemsList from "../../components/common/DonationItemsList";
+import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -120,7 +122,13 @@ export default function NGODistributionRecords() {
                   </span>
                 </div>
                 <div className="mt-[0.5cm] grid gap-[0.5cm] sm:grid-cols-2 lg:grid-cols-4">
-                  <Stat label="Food" value={record.foodType} />
+                  <div className="sm:col-span-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Stat label="Food" value={record.foodType} />
+                      <EventTypeBadge eventType={record.eventType} />
+                    </div>
+                    <DonationItemsList record={record} className="mt-1.5" maxItems={3} />
+                  </div>
                   <Stat label="Distributed" value={record.quantityDistributed} />
                   <Stat label="Meals served" value={record.mealsServed} />
                   <Stat label="Beneficiaries" value={record.beneficiaries} />

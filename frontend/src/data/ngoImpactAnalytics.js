@@ -20,7 +20,7 @@ export const MONTHLY_MEALS_TREND = [
 export const FOOD_CATEGORY_DISTRIBUTION = [
   { category: "Prepared Meals", kg: 1840, share: 38 },
   { category: "Fresh Produce", kg: 980, share: 20 },
-  { category: "Bakery & Snacks", kg: 720, share: 15 },
+  { category: "Bakery & Snacks", kg: 755, share: 15 },
   { category: "Grains & Rice", kg: 650, share: 14 },
   { category: "Fruits & Beverages", kg: 430, share: 9 },
   { category: "Other", kg: 200, share: 4 },

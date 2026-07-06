@@ -5,6 +5,8 @@ import {
   getTimelineStepIndex,
 } from "../../constants/donationStatus";
 import { getDonationImage, getDonationImageAlt } from "../../data/donationFoodImages";
+import DonationItemsList from "../common/DonationItemsList";
+import EventTypeBadge from "../common/EventTypeBadge";
 import {
   dashboardBadgeClass,
   dashboardBoxClass,
@@ -123,9 +125,15 @@ function ActiveDonationCard({ donation }) {
             <p className="text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
               Donation {donation.id}
             </p>
-            <h3 className="mt-[0.5cm] text-2xl font-bold leading-tight text-[#0F172A] sm:text-3xl">
-              {donation.food ?? donation.foodType}
-            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="mt-[0.5cm] text-2xl font-bold leading-tight text-[#0F172A] sm:text-3xl">
+                {donation.food ?? donation.foodType}
+              </h3>
+              <EventTypeBadge eventType={donation.eventType} className="mt-[0.5cm]" />
+            </div>
+            {donation.eventName ? (
+              <p className="mt-1 text-sm font-medium text-[#64748B]">{donation.eventName}</p>
+            ) : null}
             <p className="mt-[0.5cm] text-base leading-6 text-[#64748B] sm:text-lg">
               Posted {donation.postedAt}
             </p>
@@ -145,8 +153,16 @@ function ActiveDonationCard({ donation }) {
         className={`grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px] ${BOX_INSET}`}
       >
         <div className="grid gap-[0.5cm] sm:grid-cols-2">
-          <DetailItem icon={FaUtensils} label="Food Type" value={donation.food ?? donation.foodType} />
-          <DetailItem icon={FaUtensils} label="Quantity" value={donation.quantity} />
+          <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm] sm:col-span-2">
+            <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
+              <FaUtensils className="shrink-0 text-[#16A34A]" aria-hidden="true" />
+              Items Donated
+            </div>
+            <div className="mt-[0.5cm]">
+              <DonationItemsList record={donation} />
+            </div>
+          </div>
+          <DetailItem icon={FaUtensils} label="Quantity Summary" value={donation.quantity} />
           <DetailItem
             icon={FaUtensils}
             label="Estimated Meals"

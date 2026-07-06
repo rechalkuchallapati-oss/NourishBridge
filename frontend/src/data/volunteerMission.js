@@ -21,11 +21,34 @@ export const MISSION_STATE_LABELS = {
   [MISSION_STATES.EN_ROUTE_TO_NGO]: "En Route to NGO",
   [MISSION_STATES.ARRIVED_AT_NGO]: "Arrived at NGO",
   [MISSION_STATES.HANDOVER_CONFIRMED]: "Handover Confirmed",
-  [MISSION_STATES.COMPLETED]: "Completed",
+  [MISSION_STATES.COMPLETED]: "Mission Accomplished",
 };
+
+export const MISSION_FLOW_STEPS = [
+  { key: MISSION_STATES.ASSIGNED, label: "Assigned" },
+  { key: MISSION_STATES.ACCEPTED, label: "Accepted" },
+  { key: MISSION_STATES.EN_ROUTE_TO_DONOR, label: "En Route to Donor" },
+  { key: MISSION_STATES.ARRIVED_AT_DONOR, label: "Arrived at Donor" },
+  { key: MISSION_STATES.PICKUP_VERIFIED, label: "Pickup Verified" },
+  { key: MISSION_STATES.FOOD_COLLECTED, label: "Food Collected" },
+  { key: MISSION_STATES.EN_ROUTE_TO_NGO, label: "En Route to NGO" },
+  { key: MISSION_STATES.ARRIVED_AT_NGO, label: "Arrived at NGO" },
+  { key: MISSION_STATES.HANDOVER_CONFIRMED, label: "Handover Confirmed" },
+  { key: MISSION_STATES.COMPLETED, label: "Mission Accomplished" },
+];
 
 /** Primary action for each state — only ONE button shown at a time. */
 export const MISSION_STATE_ACTIONS = {
+  [MISSION_STATES.ASSIGNED]: {
+    label: "Confirm Acceptance",
+    next: MISSION_STATES.ACCEPTED,
+    type: "advance",
+  },
+  [MISSION_STATES.ACCEPTED]: {
+    label: "Start Route to Donor",
+    next: MISSION_STATES.EN_ROUTE_TO_DONOR,
+    type: "advance",
+  },
   [MISSION_STATES.EN_ROUTE_TO_DONOR]: {
     label: "I've Arrived",
     next: MISSION_STATES.ARRIVED_AT_DONOR,
@@ -69,25 +92,25 @@ export const VOLUNTEER_OVERVIEW_STATS = {
   availablePickups: 6,
   activeMission: 1,
   completedToday: 2,
-  mealsDelivered: 180,
-  impactPoints: 1240,
+  mealsDelivered: 1725,
+  impactPoints: 2180,
 };
 
 export const VOLUNTEER_IMPACT = {
-  missionsCompleted: 48,
-  mealsDelivered: 1860,
-  foodRescuedKg: 426,
-  peopleSupported: 720,
-  onTimeDeliveryRate: 96,
+  missionsCompleted: 47,
+  mealsDelivered: 1725,
+  foodRescuedKg: 418,
+  peopleSupported: 638,
+  onTimeDeliveryRate: 97,
 };
 
 export const MONTHLY_MISSIONS_TREND = [
-  { month: "Feb", missions: 5 },
-  { month: "Mar", missions: 7 },
-  { month: "Apr", missions: 6 },
-  { month: "May", missions: 9 },
-  { month: "Jun", missions: 8 },
-  { month: "Jul", missions: 13 },
+  { month: "Feb", missions: 4 },
+  { month: "Mar", missions: 6 },
+  { month: "Apr", missions: 5 },
+  { month: "May", missions: 8 },
+  { month: "Jun", missions: 9 },
+  { month: "Jul", missions: 15 },
 ];
 
 export const IMPACT_MILESTONES = [
@@ -119,96 +142,52 @@ export const PICKUP_VERIFICATION_CHECKLIST = [
   { id: "storage", label: "Storage instructions received" },
 ];
 
-export const AVAILABLE_PICKUP_REQUESTS = [
+export {
+  AVAILABLE_PICKUP_REQUESTS,
+  EXTRA_PICKUP_REQUESTS,
+  TODAYS_SCHEDULE,
+  FULL_SCHEDULE,
+  RECENT_MISSIONS,
+  UPCOMING_MISSIONS,
+} from "./volunteerMissionPickups";
+
+export const VOLUNTEER_WORK_QUALITY = [
   {
-    id: "PKP-001",
-    foodKey: "VL-FOOD-001",
-    foodName: "Veg Biryani",
-    quantity: "25 kg",
-    estimatedMeals: 125,
-    donorName: "Hotel Grand Stay",
-    pickupAddress: "Madhapur, Hyderabad",
-    pickupDistanceKm: 2.4,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Kondapur, Hyderabad",
-    pickupDeadline: "4:30 PM",
-    journeyDistanceKm: 7.8,
+    id: "on_time",
+    label: "On-Time Delivery",
+    value: "97%",
+    description: "Consistently reaches pickup and NGO handover windows.",
+    accent: "green",
   },
   {
-    id: "PKP-002",
-    foodKey: "VL-FOOD-002",
-    foodName: "Corporate Lunch Trays",
-    quantity: "40 trays",
-    estimatedMeals: 80,
-    donorName: "Tech Conference Center",
-    pickupAddress: "HITEC City, Hyderabad",
-    pickupDistanceKm: 3.1,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Kondapur, Hyderabad",
-    pickupDeadline: "5:00 PM",
-    journeyDistanceKm: 9.2,
+    id: "communication",
+    label: "Proper Communication",
+    value: "94%",
+    description: "Clear updates with donors, NGOs, and dispatch.",
+    accent: "blue",
   },
   {
-    id: "PKP-003",
-    foodKey: "VL-FOOD-003",
-    foodName: "Fresh Fruit Boxes",
-    quantity: "30 boxes",
-    estimatedMeals: 60,
-    donorName: "Green Valley Banquet",
-    pickupAddress: "Jubilee Hills, Hyderabad",
-    pickupDistanceKm: 4.5,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Kondapur, Hyderabad",
-    pickupDeadline: "3:45 PM",
-    journeyDistanceKm: 11.0,
+    id: "safe_handling",
+    label: "Safe Food Handling",
+    value: "96%",
+    description: "Follows hygiene and temperature safety at every step.",
+    accent: "amber",
+  },
+  {
+    id: "coordination",
+    label: "Donor Coordination",
+    value: "92%",
+    description: "Smooth pickup coordination and verification checks.",
+    accent: "purple",
   },
 ];
 
-export const TODAYS_SCHEDULE = [
-  { id: "SCH-1", time: "2:00 PM", title: "Pickup — Hotel Grand Stay", status: "upcoming" },
-  { id: "SCH-2", time: "4:30 PM", title: "Delivery — Helping Hands Foundation", status: "upcoming" },
-  { id: "SCH-3", time: "6:00 PM", title: "Pickup — Community Kitchen", status: "scheduled" },
-];
-
-export const RECENT_MISSIONS = [
-  {
-    id: "MIS-041",
-    foodName: "Idli & Sambar",
-    donor: "South Indian Tiffin House",
-    ngo: "Helping Hands Foundation",
-    meals: 90,
-    completedAt: "Today, 11:30 AM",
-    status: "completed",
-  },
-  {
-    id: "MIS-040",
-    foodName: "Bread & Sandwiches",
-    donor: "Daily Bread Café",
-    ngo: "Helping Hands Foundation",
-    meals: 45,
-    completedAt: "Today, 9:15 AM",
-    status: "completed",
-  },
-  {
-    id: "MIS-039",
-    foodName: "Rice & Curry",
-    donor: "Rajesh Kumar",
-    ngo: "Helping Hands Foundation",
-    meals: 55,
-    completedAt: "Yesterday, 7:50 PM",
-    status: "completed",
-  },
-];
-
-export const UPCOMING_MISSIONS = [
-  {
-    id: "MIS-042",
-    foodName: "Paneer Tikka Meals",
-    pickup: "Tomorrow, 12:00 PM",
-    ngo: "Helping Hands Foundation",
-    status: "assigned",
-  },
-];
+export const VOLUNTEER_CHAMPION_MILESTONE = {
+  title: "Impact Champion",
+  current: 80,
+  target: 100,
+  description: "Complete 100 missions to unlock the champion logo on your profile.",
+};
 
 export function getMissionEta(status) {
   const map = {

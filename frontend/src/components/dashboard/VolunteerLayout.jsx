@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { FaBell, FaChevronDown, FaSignOutAlt } from "react-icons/fa";
+import { Toaster } from "react-hot-toast";
+import { FaBell, FaSignOutAlt } from "react-icons/fa";
 import Container from "../common/Container";
 import BrandLogo from "../common/BrandLogo";
 import VolunteerSidebar from "./VolunteerSidebar";
+import VolunteerAccountMenu from "../volunteer/VolunteerAccountMenu";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
-import { VOLUNTEER_AVATAR } from "../../data/volunteerAssets";
-import { getVolunteerDisplayName, getVolunteerProfile, logoutDonor } from "../../utils/authStorage";
+import { logoutDonor } from "../../utils/authStorage";
 
 const CARD_TINTS = {
   green: {
@@ -65,11 +66,9 @@ function formatTodayDate() {
 }
 
 export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
-  const profile = getVolunteerProfile();
-  const volunteerName = getVolunteerDisplayName();
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
+      <Toaster position="top-center" />
       <header className="border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
         <Container className="flex h-16 items-center justify-between gap-3 sm:h-[72px]">
           <BrandLogo
@@ -95,18 +94,7 @@ export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
                 </span>
               ) : null}
             </Link>
-            <button
-              type="button"
-              className="flex max-w-[180px] items-center gap-2 rounded-none border border-[#E5E7EB] py-1 pl-1 pr-2"
-            >
-              <img
-                src={VOLUNTEER_AVATAR}
-                alt=""
-                className="h-8 w-8 rounded-full object-cover object-center"
-              />
-              <span className="truncate text-xs font-semibold text-[#0F172A]">{volunteerName}</span>
-              <FaChevronDown className="shrink-0 text-[10px] text-[#94A3B8]" />
-            </button>
+            <VolunteerAccountMenu />
             <Link
               to="/login"
               onClick={logoutDonor}

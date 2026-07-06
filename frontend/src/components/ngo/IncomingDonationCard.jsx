@@ -10,6 +10,8 @@ import {
 } from "react-icons/fa";
 import { getDonationFoodImage } from "../../data/donationFoodAssets";
 import { URGENCY_COLORS } from "../../data/ngoIncomingDonations";
+import DonationItemsList from "../common/DonationItemsList";
+import EventTypeBadge from "../common/EventTypeBadge";
 
 function DetailChip({ icon: Icon, label, value }) {
   return (
@@ -52,8 +54,15 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
               <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                 {donation.id} · {donation.donorType}
               </p>
-              <h3 className="text-xl font-bold text-[#0F172A] sm:text-2xl">{donation.donorName}</h3>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-xl font-bold text-[#0F172A] sm:text-2xl">{donation.donorName}</h3>
+                <EventTypeBadge eventType={donation.eventType} />
+              </div>
+              {donation.eventName ? (
+                <p className="text-sm font-medium text-[#64748B]">{donation.eventName}</p>
+              ) : null}
               <p className="text-base font-semibold text-[#2563EB]">{donation.foodName}</p>
+              <DonationItemsList record={donation} className="mt-1" />
               <p className="text-sm text-[#64748B]">{donation.foodCategory}</p>
             </div>
             {!foodImage ? (
