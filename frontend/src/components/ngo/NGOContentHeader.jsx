@@ -34,10 +34,10 @@ export default function NGOContentHeader({
   return (
     <header className="flex flex-col gap-4 border-b border-[#E5E7EB] bg-white px-[0.5cm] py-[0.5cm] sm:flex-row sm:items-center sm:justify-between sm:px-5 sm:py-4">
       <div className="min-w-0 flex-1">
-        <h1 className="text-xl font-bold tracking-tight text-[#0F172A] sm:text-2xl lg:text-[1.75rem]">
+        <h1 className="text-lg font-bold tracking-tight text-[#0F172A] sm:text-xl">
           Welcome back, {displayLabel}!
         </h1>
-        <p className="mt-[0.3cm] text-sm leading-6 text-[#64748B] sm:text-base">
+        <p className="mt-1 text-xs leading-5 text-[#64748B] sm:text-sm">
           {subtitle}
         </p>
       </div>

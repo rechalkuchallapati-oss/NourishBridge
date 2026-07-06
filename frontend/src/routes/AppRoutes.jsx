@@ -26,6 +26,16 @@ import NGOImpactAnalytics from "../pages/Dashboard/NGOImpactAnalytics";
 import NGONotifications from "../pages/Dashboard/NGONotifications";
 import NGOProfileCapacity from "../pages/Dashboard/NGOProfileCapacity";
 import NGOSettings from "../pages/Dashboard/NGOSettings";
+import VolunteerDashboard from "../pages/Dashboard/VolunteerDashboard";
+import VolunteerAvailablePickups from "../pages/Dashboard/VolunteerAvailablePickups";
+import VolunteerActiveMission from "../pages/Dashboard/VolunteerActiveMission";
+import VolunteerMyMissions from "../pages/Dashboard/VolunteerMyMissions";
+import VolunteerRouteNavigation from "../pages/Dashboard/VolunteerRouteNavigation";
+import VolunteerPickupVerification from "../pages/Dashboard/VolunteerPickupVerification";
+import VolunteerDeliveryVerification from "../pages/Dashboard/VolunteerDeliveryVerification";
+import VolunteerNotifications from "../pages/Dashboard/VolunteerNotifications";
+import VolunteerImpact from "../pages/Dashboard/VolunteerImpact";
+import VolunteerProfile from "../pages/Dashboard/VolunteerProfile";
 import Notifications from "../pages/Dashboard/Notifications";
 import Profile from "../pages/Dashboard/Profile";
 import Settings from "../pages/Dashboard/Settings";
@@ -120,6 +130,16 @@ const AppRoutes = () => {
       <Route path="/dashboard/ngo/notifications" element={<NGONotifications />} />
       <Route path="/dashboard/ngo/profile" element={<NGOProfileCapacity />} />
       <Route path="/dashboard/ngo/settings" element={<NGOSettings />} />
+      <Route path="/dashboard/volunteer" element={<VolunteerDashboard />} />
+      <Route path="/dashboard/volunteer/pickups" element={<VolunteerAvailablePickups />} />
+      <Route path="/dashboard/volunteer/active" element={<VolunteerActiveMission />} />
+      <Route path="/dashboard/volunteer/missions" element={<VolunteerMyMissions />} />
+      <Route path="/dashboard/volunteer/route" element={<VolunteerRouteNavigation />} />
+      <Route path="/dashboard/volunteer/pickup-verify" element={<VolunteerPickupVerification />} />
+      <Route path="/dashboard/volunteer/delivery-verify" element={<VolunteerDeliveryVerification />} />
+      <Route path="/dashboard/volunteer/notifications" element={<VolunteerNotifications />} />
+      <Route path="/dashboard/volunteer/impact" element={<VolunteerImpact />} />
+      <Route path="/dashboard/volunteer/profile" element={<VolunteerProfile />} />
     </Routes>
   );
 };

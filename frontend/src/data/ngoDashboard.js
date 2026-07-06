@@ -124,9 +124,9 @@ export const NGO_UPCOMING_DELIVERIES = [
 
 export const OVERVIEW_INCOMING_DONATIONS = [
   {
-    id: "DN-OVR-001",
-    donationId: "DN-2401",
-    foodName: "Vegetable Biryani & Raita",
+    id: "NGO-INC-001",
+    foodKey: "NGO-INC-001",
+    foodName: "Paneer Tikka & Jeera Rice",
     event: "Sharma–Reddy Wedding Reception",
     eventLocation: "Leela Palace, Begumpet, Hyderabad",
     quantity: "40 kg",
@@ -137,9 +137,9 @@ export const OVERVIEW_INCOMING_DONATIONS = [
     verifiedDonor: true,
   },
   {
-    id: "DN-OVR-002",
-    donationId: "DN-2395",
-    foodName: "Assorted Sandwiches & Pastries",
+    id: "NGO-INC-002",
+    foodKey: "NGO-INC-002",
+    foodName: "Corporate Lunch Boxes & Wraps",
     event: "TechNova Annual Corporate Lunch",
     eventLocation: "HITEC City Convention Centre, Hyderabad",
     quantity: "120 units",
@@ -150,12 +150,12 @@ export const OVERVIEW_INCOMING_DONATIONS = [
     verifiedDonor: true,
   },
   {
-    id: "DN-OVR-003",
-    donationId: "DN-2375",
-    foodName: "Fruit Boxes & Fresh Juice",
+    id: "NGO-INC-003",
+    foodKey: "NGO-INC-003",
+    foodName: "Festival Samosas & Kachoris",
     event: "Bathukamma Community Festival",
     eventLocation: "Public Gardens, Nampally, Hyderabad",
-    quantity: "55 boxes",
+    quantity: "200 pieces",
     pickup: "Today, 4:15 PM",
     estimatedMeals: 110,
     timeRemaining: "45m",
@@ -166,33 +166,91 @@ export const OVERVIEW_INCOMING_DONATIONS = [
 
 export const OVERVIEW_ACTIVE_DELIVERIES = [
   {
-    id: "DEL-OVR-001",
-    foodName: "Vegetable Biryani & Raita",
+    id: "NGO-DEL-001",
+    foodKey: "NGO-DEL-001",
+    foodName: "Chicken Curry & Steamed Rice",
     status: "In Transit",
     statusKey: "in_transit",
     eta: "Today, 6:45 PM",
-    donor: "Spice Garden Restaurant",
+    donor: "Grand Palace Caterers",
     volunteer: "Rahul Mehta",
   },
   {
-    id: "DEL-OVR-002",
-    foodName: "Fresh Vegetables & Rice",
+    id: "NGO-DEL-002",
+    foodKey: "NGO-DEL-002",
+    foodName: "Sealed Meal Trays & Sandwiches",
     status: "Food Collected",
     statusKey: "collected",
     eta: "Today, 8:15 PM",
-    donor: "Indiranagar Fresh Mart",
+    donor: "OfficeHub Hyderabad",
     volunteer: "Priya Sharma",
   },
   {
-    id: "DEL-OVR-003",
-    foodName: "Dal Makhani & Naan",
+    id: "NGO-DEL-003",
+    foodKey: "NGO-DEL-003",
+    foodName: "Rice & Lentil Sacks",
     status: "Volunteer Assigned",
     statusKey: "volunteer_assigned",
     eta: "Tomorrow, 10:00 AM",
-    donor: "Rajesh Kumar",
+    donor: "Community Grain Drive",
     volunteer: "Vikram Singh",
   },
 ];
+
+export const OVERVIEW_INVENTORY_SUMMARY = [
+  {
+    id: "NGO-INV-COOKED",
+    foodKey: "NGO-INV-COOKED",
+    category: "Cooked Food",
+    label: "Chicken Curry & Rice",
+    quantity: "18 kg",
+    itemCount: 4,
+    status: "urgent",
+    statusLabel: "Urgent",
+  },
+  {
+    id: "NGO-INV-PACKAGED",
+    foodKey: "NGO-INV-PACKAGED",
+    category: "Packaged Food",
+    label: "Sealed Meal Trays",
+    quantity: "62 packs",
+    itemCount: 3,
+    status: "good",
+    statusLabel: "Good",
+  },
+  {
+    id: "NGO-INV-FRUITS",
+    foodKey: "NGO-INV-FRUITS",
+    category: "Fruits",
+    label: "Mixed Fruit Baskets",
+    quantity: "34 boxes",
+    itemCount: 2,
+    status: "urgent",
+    statusLabel: "Urgent",
+  },
+  {
+    id: "NGO-INV-DRY",
+    foodKey: "NGO-INV-DRY",
+    category: "Dry Goods",
+    label: "Rice, Lentils & Flour",
+    quantity: "95 kg",
+    itemCount: 5,
+    status: "good",
+    statusLabel: "Good",
+  },
+];
+
+export const OVERVIEW_IMPACT_THIS_MONTH = {
+  mealsDistributed: "1,420",
+  peopleSupported: "890",
+  foodSavedKg: "620",
+  successfulDeliveries: 28,
+};
+
+export const INVENTORY_STATUS_POPUP = {
+  urgent: "bg-red-100 text-red-700 border-red-200",
+  good: "bg-[#DCFCE7] text-[#15803D] border-[#BBF7D0]",
+};
 
 export const DELIVERY_STATUS_COLORS = {
   in_transit: "bg-[#FFEDD5] text-[#C2410C]",

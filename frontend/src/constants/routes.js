@@ -22,6 +22,15 @@ export const DASHBOARD_ROUTES = {
   ngoProfile: "/dashboard/ngo/profile",
   ngoSettings: "/dashboard/ngo/settings",
   volunteer: "/dashboard/volunteer",
+  volunteerPickups: "/dashboard/volunteer/pickups",
+  volunteerActive: "/dashboard/volunteer/active",
+  volunteerMissions: "/dashboard/volunteer/missions",
+  volunteerRoute: "/dashboard/volunteer/route",
+  volunteerPickupVerify: "/dashboard/volunteer/pickup-verify",
+  volunteerDeliveryVerify: "/dashboard/volunteer/delivery-verify",
+  volunteerNotifications: "/dashboard/volunteer/notifications",
+  volunteerImpact: "/dashboard/volunteer/impact",
+  volunteerProfile: "/dashboard/volunteer/profile",
   admin: "/dashboard/admin",
 };
 
@@ -41,6 +50,13 @@ export function matchDonorRoute(pathname, route) {
 export function matchNgoRoute(pathname, route) {
   if (route === DASHBOARD_ROUTES.ngo) {
     return pathname === DASHBOARD_ROUTES.ngo;
+  }
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
+
+export function matchVolunteerRoute(pathname, route) {
+  if (route === DASHBOARD_ROUTES.volunteer) {
+    return pathname === DASHBOARD_ROUTES.volunteer;
   }
   return pathname === route || pathname.startsWith(`${route}/`);
 }

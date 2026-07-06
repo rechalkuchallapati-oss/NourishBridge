@@ -3,6 +3,7 @@ import { ROLE_DASHBOARD_ROUTES } from "../constants/routes";
 const USER_KEY = "nb_user";
 const PROFILE_KEY = "nb_donor_profile";
 const NGO_PROFILE_KEY = "nb_ngo_profile";
+const VOLUNTEER_PROFILE_KEY = "nb_volunteer_profile";
 const REGISTERED_USERS_KEY = "nb_registered_users";
 const SETTINGS_KEY = "nb_donor_settings";
 const ADDRESSES_KEY = "nb_saved_addresses";
@@ -58,6 +59,51 @@ export function getNgoDisplayName(user) {
   if (source?.fullName?.trim()) return source.fullName.trim();
   if (source?.email) return source.email.split("@")[0];
   return "Helping Hands Foundation";
+}
+
+export function getVolunteerDisplayName(user) {
+  const profile = getVolunteerProfile();
+  const source = user ?? getSessionUser();
+
+  if (profile.fullName?.trim()) return profile.fullName.trim().split(" ")[0];
+  if (source?.fullName?.trim()) return source.fullName.trim().split(" ")[0];
+  if (source?.email) return source.email.split("@")[0];
+  return "Ravi";
+}
+
+export function getVolunteerProfile() {
+  const session = getSessionUser() ?? {};
+
+  try {
+    const stored = localStorage.getItem(VOLUNTEER_PROFILE_KEY);
+    const saved = stored ? JSON.parse(stored) : {};
+    return {
+      fullName: saved.fullName ?? session.fullName ?? "Ravi Kumar",
+      email: saved.email ?? session.email ?? "",
+      phone: saved.phone ?? session.phone ?? "",
+      city: saved.city ?? "Hyderabad",
+      serviceRadiusKm: saved.serviceRadiusKm ?? 10,
+      vehicle: saved.vehicle ?? "Bike — KA 05 VL 4521",
+      availability: saved.availability ?? ["Weekday Afternoons", "Weekend Mornings"],
+      isAvailable: saved.isAvailable ?? true,
+    };
+  } catch {
+    return {
+      fullName: session.fullName ?? "Ravi Kumar",
+      email: session.email ?? "",
+      phone: session.phone ?? "",
+      city: "Hyderabad",
+      serviceRadiusKm: 10,
+      vehicle: "Bike — KA 05 VL 4521",
+      availability: ["Weekday Afternoons"],
+      isAvailable: true,
+    };
+  }
+}
+
+export function saveVolunteerProfile(profile) {
+  localStorage.setItem(VOLUNTEER_PROFILE_KEY, JSON.stringify(profile));
+  setSessionUser({ ...getSessionUser(), fullName: profile.fullName });
 }
 
 export function getNgoProfile() {
@@ -206,6 +252,19 @@ export function completeAuthSession(contact) {
       email: contact.email ?? "",
       phone: contact.phone ?? "",
       donorType: contact.donorType ?? "Individual",
+    });
+  }
+
+  if (role === "volunteer") {
+    saveVolunteerProfile({
+      fullName: contact.fullName ?? "Ravi Kumar",
+      email: contact.email ?? "",
+      phone: contact.phone ?? "",
+      city: contact.city ?? "Hyderabad",
+      serviceRadiusKm: 10,
+      vehicle: "Bike",
+      availability: ["Weekday Afternoons"],
+      isAvailable: true,
     });
   }
 

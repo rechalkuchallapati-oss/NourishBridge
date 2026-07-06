@@ -60,10 +60,10 @@ export function NGOStatCard({
         </span>
       ) : null}
 
-      <p className="text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">{value}</p>
-      <p className="mt-[0.3cm] text-sm font-semibold text-[#334155] sm:text-base">{label}</p>
+      <p className="text-2xl font-bold tracking-tight text-[#0F172A] sm:text-3xl">{value}</p>
+      <p className="mt-[0.3cm] text-xs font-semibold text-[#334155] sm:text-sm">{label}</p>
       {contextCaption ? (
-        <p className="mt-[0.3cm] text-xs leading-5 text-[#64748B] sm:text-sm">{contextCaption}</p>
+        <p className="mt-[0.3cm] text-[10px] leading-5 text-[#64748B] sm:text-xs">{contextCaption}</p>
       ) : null}
     </article>
   );
