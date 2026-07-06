@@ -21,8 +21,13 @@ import {
   filterRecentEmails,
   getRecentEmails,
 } from "../../utils/recentEmails";
-import { DASHBOARD_ROUTES } from "../../constants/routes";
-import { setSessionUser } from "../../utils/authStorage";
+import { USER_ROLES } from "../../constants/roles";
+import {
+  getDashboardRouteForRole,
+  getRegisteredUser,
+  saveRegisteredUser,
+  setSessionUser,
+} from "../../utils/authStorage";
 
 export default function SignInForm({ onSwitchToCreate }) {
   const navigate = useNavigate();
@@ -39,6 +44,7 @@ export default function SignInForm({ onSwitchToCreate }) {
   const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
   const [showGoogleMenu, setShowGoogleMenu] = useState(false);
   const [googleMessage, setGoogleMessage] = useState("");
+  const [role, setRole] = useState("donor");
 
   const refreshRecentEmails = useCallback(() => {
     setRecentEmails(getRecentEmails());
@@ -47,6 +53,13 @@ export default function SignInForm({ onSwitchToCreate }) {
   useEffect(() => {
     refreshRecentEmails();
   }, [refreshRecentEmails]);
+
+  useEffect(() => {
+    const registered = getRegisteredUser(email);
+    if (registered?.role) {
+      setRole(registered.role);
+    }
+  }, [email]);
 
   const suggestedEmails = filterRecentEmails(email);
 
@@ -80,13 +93,22 @@ export default function SignInForm({ onSwitchToCreate }) {
     addRecentEmail(email);
     refreshRecentEmails();
 
-    setSessionUser({
-      email: email.trim(),
-      fullName: email.trim().split("@")[0],
-      role: "donor",
-    });
+    const trimmedEmail = email.trim();
+    const registered = getRegisteredUser(trimmedEmail);
+    const userRole = registered?.role || role;
 
-    navigate(DASHBOARD_ROUTES.donor);
+    const sessionUser = {
+      email: trimmedEmail,
+      fullName: registered?.fullName || trimmedEmail.split("@")[0],
+      phone: registered?.phone ?? "",
+      role: userRole,
+      organization: registered?.organization ?? "",
+    };
+
+    setSessionUser(sessionUser);
+    saveRegisteredUser(sessionUser);
+
+    navigate(getDashboardRouteForRole(userRole));
   };
 
   const handleForgotPassword = () => {
@@ -208,6 +230,37 @@ export default function SignInForm({ onSwitchToCreate }) {
           </button>
         </div>
       </div>
+
+      <fieldset className={SIGN_IN_FIELD_GAP}>
+        <legend className={fieldLabelClass}>Sign in as</legend>
+        <div className="grid grid-cols-3 gap-2">
+          {USER_ROLES.map((item) => {
+            const isSelected = role === item.id;
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => setRole(item.id)}
+                aria-pressed={isSelected}
+                className={[
+                  "flex flex-col items-center rounded-xl border px-2 py-3 text-center transition-all duration-300",
+                  isSelected
+                    ? "border-[#16A34A] bg-[#F0FDF4] shadow-[0_4px_14px_rgba(22,163,74,0.12)]"
+                    : "border-[#E5E7EB] bg-[#F8FAFC] hover:border-[#16A34A]/40 hover:bg-white",
+                ].join(" ")}
+              >
+                <span className="text-xl" aria-hidden="true">
+                  {item.emoji}
+                </span>
+                <span className="mt-1 text-xs font-semibold text-[#0F172A] sm:text-sm">
+                  {item.title}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <div className="flex items-center justify-between gap-4">
         <label className="flex cursor-pointer items-center gap-2.5">

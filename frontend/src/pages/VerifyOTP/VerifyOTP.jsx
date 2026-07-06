@@ -12,8 +12,7 @@ import {
   readVerifyContact,
 } from "../../constants/auth";
 import { maskContact } from "../../utils/maskContact";
-import { DASHBOARD_ROUTES, ROLE_DASHBOARD_ROUTES } from "../../constants/routes";
-import { setSessionUser } from "../../utils/authStorage";
+import { completeAuthSession } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -55,16 +54,8 @@ export default function VerifyOTP() {
     await new Promise((resolve) => setTimeout(resolve, 700));
 
     if (otp === DEMO_VALID_OTP) {
-      const role = contact.role || "donor";
-
-      setSessionUser({
-        email: contact.email,
-        phone: contact.phone,
-        fullName: contact.fullName,
-        role,
-      });
-
-      navigate(ROLE_DASHBOARD_ROUTES[role] || DASHBOARD_ROUTES.donor);
+      const dashboardRoute = completeAuthSession(contact);
+      navigate(dashboardRoute);
       return;
     }
 

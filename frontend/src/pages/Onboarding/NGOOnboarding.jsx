@@ -23,6 +23,16 @@ export default function NGOOnboarding() {
     goToVerifyOtp(navigate, {
       email: state?.email,
       phone: state?.phone,
+      role: state?.role || "ngo",
+      fullName: state?.fullName,
+      organizationName: orgName.trim(),
+      organization: orgName.trim(),
+      registrationId: registrationNumber.trim(),
+      address: address.trim(),
+      serviceAreas: serviceArea
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
     });
   };
 

@@ -26,8 +26,10 @@ export default function DonorOnboarding() {
     goToVerifyOtp(navigate, {
       email: state?.email,
       phone: state?.phone,
-      role: "donor",
+      role: state?.role || "donor",
       fullName: state?.fullName,
+      donorType:
+        DONOR_TYPES.find((item) => item.id === donorType)?.label ?? "Individual",
     });
   };
 

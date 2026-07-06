@@ -16,6 +16,16 @@ import MyImpact from "../pages/Dashboard/MyImpact";
 import ActiveDonations from "../pages/Dashboard/ActiveDonations";
 import DonationHistory from "../pages/Dashboard/DonationHistory";
 import ImpactReports from "../pages/Dashboard/ImpactReports";
+import NGODashboard from "../pages/Dashboard/NGODashboard";
+import NGOIncomingDonations from "../pages/Dashboard/NGOIncomingDonations";
+import NGOActiveDeliveries from "../pages/Dashboard/NGOActiveDeliveries";
+import NGOReceiveFood from "../pages/Dashboard/NGOReceiveFood";
+import NGOInventory from "../pages/Dashboard/NGOInventory";
+import NGODistributionRecords from "../pages/Dashboard/NGODistributionRecords";
+import NGOImpactAnalytics from "../pages/Dashboard/NGOImpactAnalytics";
+import NGONotifications from "../pages/Dashboard/NGONotifications";
+import NGOProfileCapacity from "../pages/Dashboard/NGOProfileCapacity";
+import NGOSettings from "../pages/Dashboard/NGOSettings";
 import Notifications from "../pages/Dashboard/Notifications";
 import Profile from "../pages/Dashboard/Profile";
 import Settings from "../pages/Dashboard/Settings";
@@ -100,6 +110,16 @@ const AppRoutes = () => {
       <Route path="/dashboard/donor/profile" element={<Profile />} />
       <Route path="/dashboard/donor/settings" element={<Settings />} />
       <Route path="/dashboard/donor/help" element={<HelpSupport />} />
+      <Route path="/dashboard/ngo" element={<NGODashboard />} />
+      <Route path="/dashboard/ngo/incoming" element={<NGOIncomingDonations />} />
+      <Route path="/dashboard/ngo/deliveries" element={<NGOActiveDeliveries />} />
+      <Route path="/dashboard/ngo/receive" element={<NGOReceiveFood />} />
+      <Route path="/dashboard/ngo/inventory" element={<NGOInventory />} />
+      <Route path="/dashboard/ngo/distribution" element={<NGODistributionRecords />} />
+      <Route path="/dashboard/ngo/impact" element={<NGOImpactAnalytics />} />
+      <Route path="/dashboard/ngo/notifications" element={<NGONotifications />} />
+      <Route path="/dashboard/ngo/profile" element={<NGOProfileCapacity />} />
+      <Route path="/dashboard/ngo/settings" element={<NGOSettings />} />
     </Routes>
   );
 };

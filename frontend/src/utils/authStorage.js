@@ -1,5 +1,9 @@
+import { ROLE_DASHBOARD_ROUTES } from "../constants/routes";
+
 const USER_KEY = "nb_user";
 const PROFILE_KEY = "nb_donor_profile";
+const NGO_PROFILE_KEY = "nb_ngo_profile";
+const REGISTERED_USERS_KEY = "nb_registered_users";
 const SETTINGS_KEY = "nb_donor_settings";
 const ADDRESSES_KEY = "nb_saved_addresses";
 
@@ -43,6 +47,32 @@ export function getDonorDisplayName(user) {
   if (source?.fullName?.trim()) return source.fullName.trim().split(" ")[0];
   if (source?.email) return source.email.split("@")[0];
   return "Donor";
+}
+
+export function getNgoDisplayName(user) {
+  const profile = getNgoProfile();
+  const source = user ?? getSessionUser();
+
+  if (profile.organizationName?.trim()) return profile.organizationName.trim();
+  if (source?.organization?.trim()) return source.organization.trim();
+  if (source?.fullName?.trim()) return source.fullName.trim();
+  if (source?.email) return source.email.split("@")[0];
+  return "Helping Hands Foundation";
+}
+
+export function getNgoProfile() {
+  try {
+    const stored = localStorage.getItem(NGO_PROFILE_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function saveNgoProfile(profile) {
+  localStorage.setItem(NGO_PROFILE_KEY, JSON.stringify(profile));
+  const session = getSessionUser() ?? {};
+  setSessionUser({ ...session, organization: profile.organizationName ?? session.organization });
 }
 
 export function getDonorProfile() {
@@ -105,4 +135,79 @@ export function saveDonorSettings(settings) {
 
 export function logoutDonor() {
   clearSessionUser();
+}
+
+function normalizeEmail(email) {
+  return email?.trim().toLowerCase() ?? "";
+}
+
+export function getRegisteredUser(email) {
+  const key = normalizeEmail(email);
+  if (!key) return null;
+
+  try {
+    const stored = localStorage.getItem(REGISTERED_USERS_KEY);
+    const users = stored ? JSON.parse(stored) : {};
+    return users[key] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveRegisteredUser(user) {
+  const key = normalizeEmail(user?.email);
+  if (!key) return;
+
+  try {
+    const stored = localStorage.getItem(REGISTERED_USERS_KEY);
+    const users = stored ? JSON.parse(stored) : {};
+    users[key] = { ...users[key], ...user, email: user.email.trim() };
+    localStorage.setItem(REGISTERED_USERS_KEY, JSON.stringify(users));
+  } catch {
+    /* ignore storage errors in demo mode */
+  }
+}
+
+export function getSessionRole() {
+  return getSessionUser()?.role ?? null;
+}
+
+export function getDashboardRouteForRole(role) {
+  return ROLE_DASHBOARD_ROUTES[role] ?? ROLE_DASHBOARD_ROUTES.donor;
+}
+
+export function completeAuthSession(contact) {
+  const role = contact.role || "donor";
+  const sessionUser = {
+    email: contact.email,
+    phone: contact.phone,
+    fullName: contact.fullName,
+    role,
+    organization: contact.organization ?? contact.organizationName ?? "",
+  };
+
+  setSessionUser(sessionUser);
+  saveRegisteredUser(sessionUser);
+
+  if (role === "ngo") {
+    saveNgoProfile({
+      organizationName: contact.organizationName ?? contact.organization ?? "",
+      registrationId: contact.registrationId ?? "",
+      address: contact.address ?? "",
+      serviceAreas: contact.serviceAreas ?? [],
+      email: contact.email ?? "",
+      phone: contact.phone ?? "",
+    });
+  }
+
+  if (role === "donor") {
+    saveDonorProfile({
+      fullName: contact.fullName ?? "",
+      email: contact.email ?? "",
+      phone: contact.phone ?? "",
+      donorType: contact.donorType ?? "Individual",
+    });
+  }
+
+  return getDashboardRouteForRole(role);
 }

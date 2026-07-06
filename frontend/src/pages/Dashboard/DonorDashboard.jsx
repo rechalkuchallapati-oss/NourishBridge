@@ -90,13 +90,7 @@ export default function DonorDashboard() {
   );
 
   return (
-    <DashboardLayout
-      emoji="🍱"
-      title="Donor Dashboard"
-      subtitle="Track donations and community impact"
-      userName={donorName}
-      actions={addDonationCta}
-    >
+    <DashboardLayout actions={addDonationCta} unreadNotifications={3}>
       <div className="flex flex-col gap-[0.5cm]">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -130,42 +124,42 @@ export default function DonorDashboard() {
             <StatCard
               label="Total Donations"
               value={overviewStats.totalDonations}
-              hint="All donations you have listed on NourishBridge"
+              caption="All donations listed"
               icon={FaBoxOpen}
               accent="green"
             />
             <StatCard
               label="Meals Contributed"
               value={overviewStats.mealsContributed.toLocaleString()}
-              hint="Estimated meals delivered from your donations"
+              caption="Estimated meals delivered"
               icon={FaUtensils}
-              accent="amber"
+              accent="purple"
             />
             <StatCard
               label="Food Rescued"
               value={`${overviewStats.foodRescuedKg} kg`}
-              hint="Surplus food kept out of landfills"
+              caption="Kept out of landfills"
               icon={FaLeaf}
               accent="green"
             />
             <StatCard
               label="NGOs Helped"
               value={overviewStats.ngosHelped}
-              hint="Verified partner NGOs supported"
+              caption="Verified partners supported"
               icon={FaHandsHelping}
               accent="blue"
             />
             <StatCard
               label="Active Donations"
               value={overviewStats.activeDonations}
-              hint="Pickups scheduled or in progress"
+              caption="Pickups in progress"
               icon={FaBoxOpen}
               accent="amber"
             />
             <StatCard
               label="Completed Donations"
               value={overviewStats.completedDonations}
-              hint="Successfully delivered to beneficiaries"
+              caption="Successfully delivered"
               icon={FaCheckCircle}
               accent="slate"
             />

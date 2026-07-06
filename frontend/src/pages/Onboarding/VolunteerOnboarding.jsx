@@ -35,6 +35,8 @@ export default function VolunteerOnboarding() {
     goToVerifyOtp(navigate, {
       email: state?.email,
       phone: state?.phone,
+      role: state?.role || "volunteer",
+      fullName: state?.fullName,
     });
   };
 

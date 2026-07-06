@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import Container from "../common/Container";
-import DonorDashboardHeader from "./DonorDashboardHeader";
-import DonorSidebar from "./DonorSidebar";
+import NGOSidebar from "./NGOSidebar";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
-import { logoutDonor } from "../../utils/authStorage";
+import { getNgoDisplayName, logoutDonor } from "../../utils/authStorage";
 
 const CARD_TINTS = {
   green: {
@@ -29,16 +28,17 @@ const CARD_TINTS = {
   },
 };
 
-export function StatCard({
+/** Legacy alias: purpose maps to caption */
+export function NGOStatCard({
   label,
   value,
-  hint,
+  purpose,
   caption,
   icon: Icon,
   accent = "green",
 }) {
   const tint = CARD_TINTS[accent] ?? CARD_TINTS.green;
-  const contextCaption = caption ?? hint;
+  const contextCaption = caption ?? purpose;
 
   return (
     <article
@@ -69,25 +69,23 @@ export function StatCard({
   );
 }
 
-export default function DashboardLayout({
-  children,
-  actions,
-  unreadNotifications = 3,
-}) {
+export default function NGOLayout({ organizationName, children }) {
   const handleLogout = () => {
     logoutDonor();
   };
 
+  const displayName = organizationName || getNgoDisplayName();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
       <header className="border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
-        <Container className="flex h-16 items-center justify-between gap-3 sm:h-[72px] sm:gap-4">
+        <Container className="flex h-16 items-center justify-between gap-4 sm:h-[72px]">
           <Link
-            to={DASHBOARD_ROUTES.donor}
-            className="group flex shrink-0 items-center gap-2.5 transition-colors duration-300"
+            to={DASHBOARD_ROUTES.ngo}
+            className="group flex items-center gap-2.5 transition-colors duration-300"
           >
             <span
-              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[#F0FDF4] text-[#16A34A] transition-transform duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[#F0FDF4] text-[#16A34A] transition-transform duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
               aria-hidden="true"
             >
               <span className="text-lg font-bold">N</span>
@@ -97,15 +95,17 @@ export default function DashboardLayout({
             </span>
           </Link>
 
-          <DonorDashboardHeader unreadNotifications={unreadNotifications} />
+          <p className="hidden max-w-[200px] truncate text-sm font-medium text-[#64748B] sm:block lg:max-w-xs">
+            {displayName}
+          </p>
 
           <Link
             to="/login"
             onClick={handleLogout}
-            className="hidden h-9 shrink-0 items-center gap-2 rounded-none border border-[#E5E7EB] px-3 text-sm font-medium text-[#64748B] transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 sm:flex sm:h-10"
+            className="flex h-9 items-center gap-2 rounded-none border border-[#E5E7EB] px-3 text-sm font-medium text-[#64748B] transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 sm:h-10"
           >
             <FaSignOutAlt aria-hidden="true" />
-            Logout
+            <span className="hidden sm:inline">Logout</span>
           </Link>
         </Container>
       </header>
@@ -113,13 +113,10 @@ export default function DashboardLayout({
       <Container className="py-6 lg:py-8">
         <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)] lg:gap-8">
           <aside className="hidden lg:block">
-            <DonorSidebar />
+            <NGOSidebar />
           </aside>
 
-          <main className="flex flex-col gap-[0.5cm]">
-            {actions ? <div className="lg:hidden">{actions}</div> : null}
-            {children}
-          </main>
+          <main className="flex min-w-0 flex-col gap-[0.5cm]">{children}</main>
         </div>
       </Container>
     </div>
