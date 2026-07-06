@@ -4,7 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaArrowRight, FaChevronDown, FaLock, FaMapMarkerAlt } from "react-icons/fa";
 import { FULL_SCHEDULE, TODAYS_SCHEDULE } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
-import { SCHEDULE_TAG_STYLES, volunteerInteractive } from "./volunteerDashboardStyles";
+import {
+  SCHEDULE_TAG_STYLES,
+  volunteerInteractive,
+  VOLUNTEER_SECTION_PAD,
+  VOLUNTEER_STACK_GAP,
+} from "./volunteerDashboardStyles";
 
 function isScheduleLocked(index, activeMission, completedToday) {
   if (index === 0) return false;
@@ -24,13 +29,15 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
   const scheduleItems = expanded ? FULL_SCHEDULE : TODAYS_SCHEDULE;
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm sm:p-5">
+    <section
+      className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}
+    >
       <h2 className="text-sm font-bold text-[#0F172A] sm:text-base">Today&apos;s Schedule</h2>
-      <p className="mt-0.5 text-[11px] text-[#64748B]">
+      <p className="mt-[0.2cm] text-[11px] text-[#64748B]">
         Finish your in-progress mission to unlock the next pickup slot.
       </p>
 
-      <ul className="mt-4 space-y-3">
+      <ul className={`mt-[0.5cm] ${VOLUNTEER_STACK_GAP}`}>
         {scheduleItems.map((item, index) => {
           const locked = isScheduleLocked(index, activeMission, completedToday);
           const tag = resolveTag(item, index, activeMission);
@@ -41,14 +48,14 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
               key={item.id}
               whileHover={locked ? undefined : { scale: 1.01 }}
               className={[
-                "rounded-none border p-3 transition-all duration-300",
+                "rounded-none border p-[0.5cm] transition-all duration-300",
                 locked
                   ? "border-[#E2E8F0] bg-[#F8FAFC] opacity-70"
                   : "border-[#E5E7EB] bg-white hover:border-[#BBF7D0] hover:shadow-md",
                 volunteerInteractive.card,
               ].join(" ")}
             >
-              <div className="flex flex-wrap items-start justify-between gap-2">
+              <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
                 <span className="text-sm font-bold text-[#16A34A]">{item.time}</span>
                 <span
                   className={[
@@ -62,15 +69,15 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
               </div>
 
               {item.label ? (
-                <p className="mt-2 text-xs font-semibold text-[#0F172A]">{item.label}</p>
+                <p className="mt-[0.3cm] text-xs font-semibold text-[#0F172A]">{item.label}</p>
               ) : null}
 
-              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="mt-[0.5cm] grid gap-[0.5cm] sm:grid-cols-2">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">
                     Pickup
                   </p>
-                  <p className="mt-1 flex items-start gap-1.5 text-xs text-[#64748B]">
+                  <p className="mt-[0.2cm] flex items-start gap-1.5 text-xs text-[#64748B]">
                     <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#16A34A]" aria-hidden="true" />
                     {item.pickupLocation}
                   </p>
@@ -79,7 +86,7 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
                   <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">
                     Deliver to
                   </p>
-                  <p className="mt-1 flex items-start gap-1.5 text-xs text-[#64748B]">
+                  <p className="mt-[0.2cm] flex items-start gap-1.5 text-xs text-[#64748B]">
                     <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#2563EB]" aria-hidden="true" />
                     {item.deliverAddress}
                   </p>
@@ -87,7 +94,7 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
               </div>
 
               {locked ? (
-                <p className="mt-2 flex items-center gap-1.5 text-[10px] font-medium text-[#94A3B8]">
+                <p className="mt-[0.3cm] flex items-center gap-1.5 text-[10px] font-medium text-[#94A3B8]">
                   <FaLock aria-hidden="true" />
                   Unlocks after the current mission is completed
                 </p>
@@ -97,12 +104,12 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
         })}
       </ul>
 
-      <div className="mt-5 flex justify-center">
+      <div className="mt-[0.5cm] flex justify-center">
         <button
           type="button"
           onClick={() => setExpanded((prev) => !prev)}
           className={[
-            "inline-flex items-center gap-2 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-2.5 text-xs font-semibold text-[#475569]",
+            "inline-flex items-center gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-2.5 text-xs font-semibold text-[#475569]",
             volunteerInteractive.buttonOutline,
           ].join(" ")}
         >
@@ -124,7 +131,7 @@ export default function VolunteerTodaysSchedule({ activeMission, completedToday 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="mt-3 text-center text-[10px] text-[#64748B]"
+            className="mt-[0.5cm] text-center text-[10px] text-[#64748B]"
           >
             Showing all scheduled missions for today.{" "}
             <Link

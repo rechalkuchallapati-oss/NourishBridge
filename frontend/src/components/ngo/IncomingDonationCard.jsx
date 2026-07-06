@@ -9,6 +9,7 @@ import {
   FaWeight,
 } from "react-icons/fa";
 import { getDonationFoodImage } from "../../data/donationFoodAssets";
+import { getPackagingLabel } from "../../data/donationThumbnails";
 import { URGENCY_COLORS } from "../../data/ngoIncomingDonations";
 import DonationItemsList from "../common/DonationItemsList";
 import EventTypeBadge from "../common/EventTypeBadge";
@@ -28,7 +29,8 @@ function DetailChip({ icon: Icon, label, value }) {
 }
 
 export default function IncomingDonationCard({ donation, onAccept, onDecline, onViewDetails }) {
-  const foodImage = getDonationFoodImage({ id: donation.id });
+  const foodImage = getDonationFoodImage(donation);
+  const packagingLabel = getPackagingLabel(donation);
 
   return (
     <article className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow hover:shadow-[0_12px_40px_rgba(15,23,42,0.08)]">
@@ -63,6 +65,9 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
               ) : null}
               <p className="text-base font-semibold text-[#2563EB]">{donation.foodName}</p>
               <DonationItemsList record={donation} className="mt-1" />
+              {packagingLabel ? (
+                <p className="mt-1 text-[11px] font-medium text-[#64748B]">{packagingLabel}</p>
+              ) : null}
               <p className="text-sm text-[#64748B]">{donation.foodCategory}</p>
             </div>
             {!foodImage ? (

@@ -1,3 +1,8 @@
+import {
+  VOLUNTEER_PICKUP_IDS,
+  VOLUNTEER_PICKUP_THUMBNAILS,
+  resolveDonationThumbnail,
+} from "./donationThumbnails";
 import volunteerPrimary from "../assets/dashboard/volunteer/volunteer-account-primary.png";
 import volunteerAlt1 from "../assets/dashboard/volunteer/volunteer-account-alt1.png";
 import volunteerAlt2 from "../assets/dashboard/volunteer/volunteer-account-alt2.png";
@@ -24,22 +29,19 @@ export const VOLUNTEER_IDENTITY = {
 };
 
 export const VOLUNTEER_FOOD_IMAGES = {
-  "VL-FOOD-001": foodBiryani,
-  "VL-FOOD-002": foodLunchTrays,
-  "VL-FOOD-003": foodSandwiches,
-  "VL-FOOD-004": foodPaneer,
-  "VL-FOOD-005": foodFruits,
-  "VL-FOOD-006": foodIdli,
-  "VL-FOOD-007": foodLunchTrays,
-  "VL-FOOD-008": foodPaneer,
-  "VL-FOOD-009": foodFruits,
+  ...VOLUNTEER_PICKUP_THUMBNAILS,
 };
 
 export const VOLUNTEER_PICKUP_LOGO = foodBiryani;
 export const VOLUNTEER_NGO_LOGO = foodPaneer;
 
-export function getVolunteerFoodImage(key) {
-  return VOLUNTEER_FOOD_IMAGES[key] ?? foodBiryani;
+export function getVolunteerFoodImage(keyOrRecord) {
+  if (typeof keyOrRecord === "object" && keyOrRecord?.id && VOLUNTEER_PICKUP_IDS[keyOrRecord.id]) {
+    return VOLUNTEER_PICKUP_IDS[keyOrRecord.id];
+  }
+  const key = typeof keyOrRecord === "string" ? keyOrRecord : keyOrRecord?.foodKey;
+  if (key && VOLUNTEER_FOOD_IMAGES[key]) return VOLUNTEER_FOOD_IMAGES[key];
+  return resolveDonationThumbnail(keyOrRecord) ?? foodBiryani;
 }
 
 export function getVolunteerAvatar(profileOrAvatarId) {

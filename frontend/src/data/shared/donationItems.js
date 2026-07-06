@@ -55,5 +55,8 @@ export function enrichDonationRecord(record) {
     quantity: record.quantity ?? formatDonationQuantitySummary(record),
     itemCount: items.length,
     eventLabel: record.eventLabel ?? (record.eventType ? EVENT_TYPES[record.eventType] : null),
+    packagingScale: record.packagingScale ?? null,
+    packagingLabel: record.packagingLabel ?? null,
+    thumbnailKey: record.thumbnailKey ?? null,
   };
 }

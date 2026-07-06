@@ -1,73 +1,106 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { AVAILABILITY_OPTIONS } from "../../constants/roles";
+import VolunteerAchievementBadges from "../../components/volunteer/profile/VolunteerAchievementBadges";
+import VolunteerImpactOverview from "../../components/volunteer/profile/VolunteerImpactOverview";
+import VolunteerPerformanceMetrics from "../../components/volunteer/profile/VolunteerPerformanceMetrics";
+import VolunteerProfileHeader from "../../components/volunteer/profile/VolunteerProfileHeader";
+import VolunteerProfileMissionHistory from "../../components/volunteer/profile/VolunteerProfileMissionHistory";
+import VolunteerReviewsFeedback from "../../components/volunteer/profile/VolunteerReviewsFeedback";
+import VolunteerServiceAreaMap from "../../components/volunteer/profile/VolunteerServiceAreaMap";
+import VolunteerVehicleAvailability from "../../components/volunteer/profile/VolunteerVehicleAvailability";
+import { VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
 import { getVolunteerProfile, saveVolunteerProfile } from "../../utils/authStorage";
+
+const inputClass =
+  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 text-xs outline-none focus:border-[#16A34A] focus:bg-white";
 
 export default function VolunteerProfile() {
   const [profile, setProfile] = useState(getVolunteerProfile);
-  const inputClass = "rounded-none border border-[#E5E7EB] px-3 py-2 text-xs w-full";
 
   const update = (field, value) => setProfile((prev) => ({ ...prev, [field]: value }));
 
-  const handleSubmit = (event) => {
+  const handleContactSubmit = (event) => {
     event.preventDefault();
     saveVolunteerProfile(profile);
-    toast.success("Profile saved.");
+    toast.success("Contact details saved.");
+  };
+
+  const handleVehicleSubmit = (event) => {
+    event.preventDefault();
+    saveVolunteerProfile(profile);
+    toast.success("Vehicle & availability saved.");
   };
 
   return (
     <>
       <Toaster position="top-center" />
-      <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
-        <h1 className="text-lg font-bold text-[#0F172A]">Profile</h1>
-        <p className="mt-1 text-xs text-[#64748B]">Availability, service radius, vehicle and contact.</p>
+      <div className={VOLUNTEER_STACK_GAP}>
+        <VolunteerProfileHeader />
 
-        <form onSubmit={handleSubmit} className="mt-4 grid max-w-lg gap-3 text-xs">
-          <label className="flex flex-col gap-1">
-            <span className="font-semibold">Full name</span>
-            <input value={profile.fullName} onChange={(e) => update("fullName", e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-semibold">Phone</span>
-            <input value={profile.phone} onChange={(e) => update("phone", e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-semibold">City</span>
-            <input value={profile.city} onChange={(e) => update("city", e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-semibold">Service radius (km)</span>
-            <input type="number" value={profile.serviceRadiusKm} onChange={(e) => update("serviceRadiusKm", Number(e.target.value))} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1">
-            <span className="font-semibold">Vehicle</span>
-            <input value={profile.vehicle} onChange={(e) => update("vehicle", e.target.value)} className={inputClass} />
-          </label>
-          <fieldset>
-            <legend className="font-semibold">Availability</legend>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {AVAILABILITY_OPTIONS.map((slot) => (
-                <label key={slot} className="flex items-center gap-1.5">
-                  <input
-                    type="checkbox"
-                    checked={profile.availability?.includes(slot)}
-                    onChange={() => {
-                      const next = profile.availability?.includes(slot)
-                        ? profile.availability.filter((s) => s !== slot)
-                        : [...(profile.availability ?? []), slot];
-                      update("availability", next);
-                    }}
-                  />
-                  {slot}
-                </label>
-              ))}
+        <VolunteerImpactOverview />
+
+        <VolunteerPerformanceMetrics />
+
+        <VolunteerAchievementBadges />
+
+        <div className="grid gap-[0.5cm] lg:grid-cols-2">
+          <VolunteerServiceAreaMap
+            serviceRadiusKm={profile.serviceRadiusKm}
+            city={profile.city}
+          />
+          <VolunteerVehicleAvailability
+            profile={profile}
+            onUpdate={update}
+            onSubmit={handleVehicleSubmit}
+          />
+        </div>
+
+        <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+          <h2 className="text-sm font-bold text-[#0F172A]">Contact Details</h2>
+          <p className="mt-1 text-[10px] text-[#64748B]">
+            Used by dispatch and NGOs for mission coordination.
+          </p>
+          <form onSubmit={handleContactSubmit} className="mt-[0.5cm] grid max-w-xl gap-3 sm:grid-cols-2">
+            <label className="flex flex-col gap-1 sm:col-span-2">
+              <span className="text-[11px] font-semibold text-[#0F172A]">Full name</span>
+              <input
+                value={profile.fullName}
+                onChange={(event) => update("fullName", event.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-semibold text-[#0F172A]">Phone</span>
+              <input
+                value={profile.phone}
+                onChange={(event) => update("phone", event.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <label className="flex flex-col gap-1">
+              <span className="text-[11px] font-semibold text-[#0F172A]">Email</span>
+              <input
+                type="email"
+                value={profile.email ?? ""}
+                onChange={(event) => update("email", event.target.value)}
+                className={inputClass}
+              />
+            </label>
+            <div className="sm:col-span-2">
+              <button
+                type="submit"
+                className="rounded-none bg-[#16A34A] px-5 py-2.5 text-xs font-semibold text-white"
+              >
+                Save contact details
+              </button>
             </div>
-          </fieldset>
-          <button type="submit" className="w-fit rounded-none bg-[#16A34A] px-4 py-2 font-semibold text-white">
-            Save profile
-          </button>
-        </form>
-      </section>
+          </form>
+        </section>
+
+        <VolunteerProfileMissionHistory />
+
+        <VolunteerReviewsFeedback />
+      </div>
     </>
   );
 }

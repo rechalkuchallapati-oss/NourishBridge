@@ -19,7 +19,7 @@ function DetailItem({ label, value }) {
 }
 
 function IncomingDonationRow({ donation, onAccept, onDecline }) {
-  const foodImage = getNgoFoodImage(donation.foodKey);
+  const foodImage = getNgoFoodImage(donation);
 
   if (donation.status === "accepted") {
     return (

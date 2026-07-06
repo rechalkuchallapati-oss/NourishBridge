@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaLock } from "react-icons/fa";
-import {
-  EXTRA_PICKUP_REQUESTS,
-} from "../../data/volunteerMission";
+import { FaChevronDown } from "react-icons/fa";
+import { EXTRA_PICKUP_REQUESTS } from "../../data/volunteerMission";
 import { getVolunteerFoodImage } from "../../data/volunteerAssets";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import VolunteerPickupRequestCard from "./VolunteerPickupRequestCard";
-import { volunteerInteractive } from "./volunteerDashboardStyles";
+import {
+  volunteerInteractive,
+  VOLUNTEER_SECTION_PAD,
+  VOLUNTEER_STACK_GAP,
+} from "./volunteerDashboardStyles";
 
 const DASHBOARD_PICKUP_LIMIT = 3;
 
@@ -28,13 +30,15 @@ export default function VolunteerPickupsSection({
     availablePickups.length > DASHBOARD_PICKUP_LIMIT || EXTRA_PICKUP_REQUESTS.length > 0;
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm sm:p-5">
-      <div className="flex items-center justify-between gap-3">
+    <section
+      className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}
+    >
+      <div className="flex items-center justify-between gap-[0.5cm]">
         <div>
           <h2 className="text-sm font-bold text-[#0F172A] sm:text-base">
             Available Pickup Requests
           </h2>
-          <p className="mt-0.5 text-[11px] text-[#64748B]">
+          <p className="mt-[0.2cm] text-[11px] text-[#64748B]">
             Thumbnail, food details, pickup window, and delivery route at a glance.
           </p>
         </div>
@@ -63,16 +67,16 @@ export default function VolunteerPickupsSection({
       </div>
 
       {dashboardPickups.length === 0 ? (
-        <p className="mt-4 rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-6 text-center text-xs text-[#64748B]">
+        <p className="mt-[0.5cm] rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-xs text-[#64748B]">
           No pickup requests right now. Check back soon or view your schedule below.
         </p>
       ) : (
-        <ul className="mt-4 flex flex-col gap-3">
+        <ul className={`mt-[0.5cm] ${VOLUNTEER_STACK_GAP}`}>
           {dashboardPickups.map((pickup, index) => (
             <VolunteerPickupRequestCard
               key={pickup.id}
               pickup={pickup}
-              foodImage={getVolunteerFoodImage(pickup.foodKey)}
+              foodImage={getVolunteerFoodImage(pickup)}
               onAccept={onAccept}
               disabled={disabled}
               index={index}
@@ -87,13 +91,13 @@ export default function VolunteerPickupsSection({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-3 flex flex-col gap-3 overflow-hidden border-t border-[#F1F5F9] pt-3"
+            className={`mt-[0.5cm] overflow-hidden border-t border-[#F1F5F9] pt-[0.5cm] ${VOLUNTEER_STACK_GAP}`}
           >
             {extraPickups.map((pickup, index) => (
               <VolunteerPickupRequestCard
                 key={pickup.id}
                 pickup={pickup}
-                foodImage={getVolunteerFoodImage(pickup.foodKey)}
+                foodImage={getVolunteerFoodImage(pickup)}
                 onAccept={onAccept}
                 disabled={disabled}
                 index={index + DASHBOARD_PICKUP_LIMIT}
@@ -104,7 +108,7 @@ export default function VolunteerPickupsSection({
       </AnimatePresence>
 
       {showAll && extraPickups.length === 0 && availablePickups.length <= DASHBOARD_PICKUP_LIMIT ? (
-        <p className="mt-3 text-center text-[11px] text-[#64748B]">
+        <p className="mt-[0.5cm] text-center text-[11px] text-[#64748B]">
           No additional pickup requests at the moment.
         </p>
       ) : null}

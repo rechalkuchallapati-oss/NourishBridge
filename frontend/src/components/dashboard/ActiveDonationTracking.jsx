@@ -5,6 +5,7 @@ import {
   getTimelineStepIndex,
 } from "../../constants/donationStatus";
 import { getDonationImage, getDonationImageAlt } from "../../data/donationFoodImages";
+import { getPackagingLabel } from "../../data/donationThumbnails";
 import DonationItemsList from "../common/DonationItemsList";
 import EventTypeBadge from "../common/EventTypeBadge";
 import {
@@ -133,6 +134,9 @@ function ActiveDonationCard({ donation }) {
             </div>
             {donation.eventName ? (
               <p className="mt-1 text-sm font-medium text-[#64748B]">{donation.eventName}</p>
+            ) : null}
+            {getPackagingLabel(donation) ? (
+              <p className="mt-1 text-xs font-medium text-[#94A3B8]">{getPackagingLabel(donation)}</p>
             ) : null}
             <p className="mt-[0.5cm] text-base leading-6 text-[#64748B] sm:text-lg">
               Posted {donation.postedAt}

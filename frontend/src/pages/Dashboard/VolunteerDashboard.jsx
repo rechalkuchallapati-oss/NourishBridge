@@ -6,7 +6,7 @@ import VolunteerPickupsSection from "../../components/volunteer/VolunteerPickups
 import VolunteerTodaysSchedule from "../../components/volunteer/VolunteerTodaysSchedule";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { getVolunteerDisplayName, getSessionUser } from "../../utils/authStorage";
-import { volunteerInteractive } from "../../components/volunteer/volunteerDashboardStyles";
+import { volunteerInteractive, VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -40,15 +40,15 @@ export default function VolunteerDashboard() {
   };
 
   return (
-    <>
+    <div className={VOLUNTEER_STACK_GAP}>
       <Toaster position="top-center" />
 
       <motion.section
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm sm:p-5"
+        className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}
       >
-        <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#16A34A]">
               Volunteer Account
@@ -100,13 +100,13 @@ export default function VolunteerDashboard() {
         disabled={!!activeMission || !isAvailable}
       />
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className={`grid ${VOLUNTEER_STACK_GAP} lg:grid-cols-2`}>
         <VolunteerTodaysSchedule
           activeMission={activeMission}
           completedToday={completedToday}
         />
         <VolunteerDashboardImpactPanel />
       </div>
-    </>
+    </div>
   );
 }

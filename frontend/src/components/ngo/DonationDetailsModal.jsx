@@ -4,7 +4,7 @@ import EventTypeBadge from "../common/EventTypeBadge";
 import NGOModal from "./NGOModal";
 
 export default function DonationDetailsModal({ donation, onClose, onAccept, onDecline }) {
-  const foodImage = getDonationFoodImage({ id: donation.id });
+  const foodImage = getDonationFoodImage(donation);
 
   return (
     <NGOModal title={`Donation ${donation.id}`} onClose={onClose} wide>

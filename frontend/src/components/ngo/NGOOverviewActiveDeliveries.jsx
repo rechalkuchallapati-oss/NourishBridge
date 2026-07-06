@@ -27,7 +27,7 @@ export default function NGOOverviewActiveDeliveries() {
 
       <ul className="mt-3 flex flex-col gap-2">
         {OVERVIEW_ACTIVE_DELIVERIES.map((delivery) => {
-          const foodImage = getNgoFoodImage(delivery.foodKey);
+          const foodImage = getNgoFoodImage(delivery);
 
           return (
             <li

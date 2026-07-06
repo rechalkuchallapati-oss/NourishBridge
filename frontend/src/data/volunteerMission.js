@@ -147,9 +147,12 @@ export {
   EXTRA_PICKUP_REQUESTS,
   TODAYS_SCHEDULE,
   FULL_SCHEDULE,
-  RECENT_MISSIONS,
-  UPCOMING_MISSIONS,
 } from "./volunteerMissionPickups";
+
+export {
+  COMPLETED_MISSIONS_HISTORY as RECENT_MISSIONS,
+  UPCOMING_MISSIONS_EXTENDED as UPCOMING_MISSIONS,
+} from "./volunteerMissionHistory";
 
 export const VOLUNTEER_WORK_QUALITY = [
   {

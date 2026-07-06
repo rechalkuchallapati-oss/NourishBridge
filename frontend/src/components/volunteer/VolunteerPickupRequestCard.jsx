@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaLocationArrow, FaMapMarkerAlt, FaRoute } from "react-icons/fa";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
-import { volunteerInteractive } from "./volunteerDashboardStyles";
+import { getPackagingLabel } from "../../data/donationThumbnails";
+import { volunteerInteractive, VOLUNTEER_SECTION_PAD } from "./volunteerDashboardStyles";
 import DonationItemsList from "../common/DonationItemsList";
 import EventTypeBadge from "../common/EventTypeBadge";
 
@@ -19,11 +20,12 @@ export default function VolunteerPickupRequestCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06 }}
       className={[
-        "rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm",
+        "rounded-none border border-[#E5E7EB] bg-white shadow-sm",
+        VOLUNTEER_SECTION_PAD,
         volunteerInteractive.card,
       ].join(" ")}
     >
-      <div className="flex gap-4">
+      <div className="flex gap-[0.5cm]">
         <div className="h-20 w-20 shrink-0 overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
           <img src={foodImage} alt={pickup.foodName} className="h-full w-full object-cover" />
         </div>
@@ -37,6 +39,9 @@ export default function VolunteerPickupRequestCard({
             <p className="mt-0.5 text-[11px] font-medium text-[#64748B]">{pickup.eventName}</p>
           ) : null}
           <DonationItemsList record={pickup} className="mt-2" maxItems={4} />
+          {getPackagingLabel(pickup) ? (
+            <p className="mt-1 text-[10px] font-medium text-[#94A3B8]">{getPackagingLabel(pickup)}</p>
+          ) : null}
           <p className="mt-1 text-xs font-semibold text-[#64748B]">
             ~{pickup.estimatedMeals} meals · {pickup.quantity}
           </p>
@@ -48,7 +53,7 @@ export default function VolunteerPickupRequestCard({
         </div>
       </div>
 
-      <div className="mt-4 grid gap-3 border-t border-[#F1F5F9] pt-4 sm:grid-cols-2">
+      <div className="mt-[0.5cm] grid gap-[0.5cm] border-t border-[#F1F5F9] pt-[0.5cm] sm:grid-cols-2">
         <div>
           <p className="flex items-start gap-1.5 text-xs text-[#64748B]">
             <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#16A34A]" aria-hidden="true" />
@@ -72,7 +77,7 @@ export default function VolunteerPickupRequestCard({
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-[0.5cm] flex flex-wrap gap-[0.5cm]">
         <Link
           to={DASHBOARD_ROUTES.volunteerRoute}
           className={[

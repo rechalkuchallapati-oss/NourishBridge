@@ -16,7 +16,7 @@ import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 const EASE = [0.22, 1, 0.36, 1];
 
 function ActiveDeliveryCard({ delivery }) {
-  const foodImage = getDonationFoodImage({ id: delivery.donationId });
+  const foodImage = getDonationFoodImage(delivery);
   const statusLabel =
     DELIVERY_PIPELINE_STEPS.find((step) => step.id === delivery.currentStatus)?.label ??
     delivery.currentStatus;

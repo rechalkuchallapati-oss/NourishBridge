@@ -1,3 +1,7 @@
+import {
+  NGO_INCOMING_THUMBNAILS,
+  resolveDonationThumbnail,
+} from "./donationThumbnails";
 import ngoCookedCurry from "../assets/dashboard/ngo-food/ngo-cooked-curry-rice.jpg";
 import ngoPackagedMeals from "../assets/dashboard/ngo-food/ngo-packaged-meals.jpg";
 import ngoFreshFruits from "../assets/dashboard/ngo-food/ngo-fresh-fruits.jpg";
@@ -9,20 +13,18 @@ import ngoLogo from "../assets/dashboard/ngo-food/ngo-logo-helping-hands.png";
 
 export const NGO_LOGO = ngoLogo;
 
-/** NGO dashboard food images — separate from donor donation assets. */
 export const NGO_FOOD_IMAGES = {
-  "NGO-INC-001": ngoWeddingBuffet,
-  "NGO-INC-002": ngoCorporateLunch,
-  "NGO-INC-003": ngoFestivalSamosas,
-  "NGO-DEL-001": ngoCookedCurry,
-  "NGO-DEL-002": ngoPackagedMeals,
-  "NGO-DEL-003": ngoDryGoods,
-  "NGO-INV-COOKED": ngoCookedCurry,
-  "NGO-INV-PACKAGED": ngoPackagedMeals,
-  "NGO-INV-FRUITS": ngoFreshFruits,
-  "NGO-INV-DRY": ngoDryGoods,
+  ...NGO_INCOMING_THUMBNAILS,
+  "IN-2841": ngoWeddingBuffet,
+  "IN-2838": ngoWeddingBuffet,
+  "IN-2835": ngoPackagedMeals,
+  "IN-2832": ngoFestivalSamosas,
+  "IN-2829": ngoCookedCurry,
+  "IN-2826": ngoCorporateLunch,
 };
 
-export function getNgoFoodImage(key) {
-  return NGO_FOOD_IMAGES[key] ?? null;
+export function getNgoFoodImage(keyOrRecord) {
+  const key = typeof keyOrRecord === "string" ? keyOrRecord : keyOrRecord?.foodKey ?? keyOrRecord?.id;
+  if (key && NGO_FOOD_IMAGES[key]) return NGO_FOOD_IMAGES[key];
+  return resolveDonationThumbnail(keyOrRecord);
 }

@@ -1,4 +1,8 @@
 /** Shared interactive styles for volunteer dashboard controls. */
+export const VOLUNTEER_STACK_GAP = "flex flex-col gap-[0.5cm]";
+export const VOLUNTEER_GRID_GAP = "gap-[0.5cm]";
+export const VOLUNTEER_SECTION_PAD = "p-[0.5cm]";
+
 export const volunteerInteractive = {
   card:
     "transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(15,23,42,0.1)] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#16A34A] focus-visible:ring-offset-2",

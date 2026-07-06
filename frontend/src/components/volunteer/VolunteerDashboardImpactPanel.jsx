@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { DASHBOARD_IMPACT_HIGHLIGHTS } from "../../data/volunteerImpactMetrics";
-import { volunteerInteractive } from "./volunteerDashboardStyles";
 import VolunteerImpactMetricsGrid from "./VolunteerImpactMetricsGrid";
+import VolunteerPerformanceChart from "./VolunteerPerformanceChart";
+import { volunteerInteractive, VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "./volunteerDashboardStyles";
 
 export default function VolunteerDashboardImpactPanel() {
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm sm:p-5">
-      <div className="flex items-center justify-between gap-2">
+    <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
+      <div className="flex items-center justify-between gap-[0.5cm]">
         <div>
           <h2 className="text-sm font-bold text-[#0F172A] sm:text-base">My Impact</h2>
-          <p className="mt-0.5 text-[11px] text-[#64748B]">
-            Your top performance scores at a glance.
+          <p className="mt-[0.2cm] text-[11px] text-[#64748B]">
+            Top scores and weekly delivery trend.
           </p>
         </div>
         <Link
@@ -22,8 +23,9 @@ export default function VolunteerDashboardImpactPanel() {
         </Link>
       </div>
 
-      <div className="mt-4">
+      <div className={`mt-[0.5cm] ${VOLUNTEER_STACK_GAP}`}>
         <VolunteerImpactMetricsGrid metrics={DASHBOARD_IMPACT_HIGHLIGHTS} compact />
+        <VolunteerPerformanceChart compact />
       </div>
     </section>
   );

@@ -5,6 +5,8 @@ import Container from "../common/Container";
 import BrandLogo from "../common/BrandLogo";
 import VolunteerSidebar from "./VolunteerSidebar";
 import VolunteerAccountMenu from "../volunteer/VolunteerAccountMenu";
+import { VOLUNTEER_UNREAD_NOTIFICATION_COUNT } from "../../data/volunteerNotifications";
+import { VOLUNTEER_STACK_GAP } from "../volunteer/volunteerDashboardStyles";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { logoutDonor } from "../../utils/authStorage";
 
@@ -65,7 +67,7 @@ function formatTodayDate() {
   }).format(new Date());
 }
 
-export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
+export default function VolunteerLayout({ children, unreadNotifications = VOLUNTEER_UNREAD_NOTIFICATION_COUNT }) {
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
       <Toaster position="top-center" />
@@ -112,7 +114,7 @@ export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
           <aside className="hidden lg:block">
             <VolunteerSidebar />
           </aside>
-          <main className="flex flex-col gap-3">{children}</main>
+          <main className={`flex flex-col ${VOLUNTEER_STACK_GAP}`}>{children}</main>
         </div>
       </Container>
     </div>
