@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { FaBell, FaChevronDown, FaSignOutAlt } from "react-icons/fa";
 import Container from "../common/Container";
+import BrandLogo from "../common/BrandLogo";
 import VolunteerSidebar from "./VolunteerSidebar";
-import { VolunteerMissionProvider } from "../../context/VolunteerMissionContext";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { VOLUNTEER_AVATAR } from "../../data/volunteerAssets";
 import { getVolunteerDisplayName, getVolunteerProfile, logoutDonor } from "../../utils/authStorage";
@@ -72,14 +72,12 @@ export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
       <header className="border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
         <Container className="flex h-16 items-center justify-between gap-3 sm:h-[72px]">
-          <Link to={DASHBOARD_ROUTES.volunteer} className="flex shrink-0 items-center gap-2.5">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[#F0FDF4] text-lg font-bold text-[#16A34A]">
-              N
-            </span>
-            <span className="text-lg font-bold text-[#15803D]">
-              Nourish<span className="text-[#16A34A]">Bridge</span>
-            </span>
-          </Link>
+          <BrandLogo
+            to={DASHBOARD_ROUTES.volunteer}
+            size="compact"
+            showTagline
+            className="shrink-0"
+          />
 
           <div className="flex items-center gap-2 sm:gap-3">
             <time className="hidden text-xs font-medium text-[#64748B] md:block">
@@ -126,9 +124,7 @@ export default function VolunteerLayout({ children, unreadNotifications = 4 }) {
           <aside className="hidden lg:block">
             <VolunteerSidebar />
           </aside>
-          <main className="flex flex-col gap-3">
-            <VolunteerMissionProvider>{children}</VolunteerMissionProvider>
-          </main>
+          <main className="flex flex-col gap-3">{children}</main>
         </div>
       </Container>
     </div>

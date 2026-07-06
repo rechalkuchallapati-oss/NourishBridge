@@ -1,5 +1,4 @@
 import toast, { Toaster } from "react-hot-toast";
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import CurrentMissionPanel from "../../components/volunteer/CurrentMissionPanel";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { MISSION_STATES } from "../../data/volunteerMission";
@@ -21,7 +20,7 @@ export default function VolunteerActiveMission() {
   const { activeMission, setMissionStatus, completeMission } = useVolunteerMissionContext();
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Active Mission</h1>
@@ -75,6 +74,6 @@ export default function VolunteerActiveMission() {
           </div>
         </div>
       </section>
-    </VolunteerLayout>
+    </>
   );
 }

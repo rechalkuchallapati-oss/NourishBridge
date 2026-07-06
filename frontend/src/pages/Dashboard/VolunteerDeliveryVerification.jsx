@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { MISSION_STATES } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
@@ -21,7 +20,7 @@ export default function VolunteerDeliveryVerification() {
   };
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Delivery Verification</h1>
@@ -62,6 +61,6 @@ export default function VolunteerDeliveryVerification() {
           <p className="mt-4 text-xs text-[#64748B]">No active delivery in progress.</p>
         )}
       </section>
-    </VolunteerLayout>
+    </>
   );
 }

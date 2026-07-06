@@ -23,7 +23,9 @@ import {
   oauthGoogleButtonClass,
 } from "./authStyles";
 import { ROLE_ONBOARDING_ROUTES, USER_ROLES } from "../../constants/roles";
+import { setPendingSignupRole } from "../../constants/auth";
 import { addRecentEmail, getRecentEmails } from "../../utils/recentEmails";
+import { saveRegisteredUser } from "../../utils/authStorage";
 
 function PasswordField({
   id,
@@ -136,8 +138,17 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
     addRecentEmail(email);
     setRecentEmails(getRecentEmails());
 
+    const trimmedEmail = email.trim();
+    saveRegisteredUser({
+      email: trimmedEmail,
+      phone: phone.trim(),
+      role,
+      fullName: name.trim(),
+    });
+    setPendingSignupRole(role);
+
     navigate(ROLE_ONBOARDING_ROUTES[role], {
-      state: { email, phone, role, fullName: name },
+      state: { email: trimmedEmail, phone: phone.trim(), role, fullName: name.trim() },
     });
   };
 

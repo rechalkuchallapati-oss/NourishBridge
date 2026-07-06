@@ -1,5 +1,4 @@
 import toast, { Toaster } from "react-hot-toast";
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import { AvailablePickupCard } from "../../components/volunteer/CurrentMissionPanel";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { getVolunteerFoodImage } from "../../data/volunteerAssets";
@@ -9,7 +8,7 @@ export default function VolunteerAvailablePickups() {
     useVolunteerMissionContext();
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Available Pickups</h1>
@@ -31,6 +30,6 @@ export default function VolunteerAvailablePickups() {
           ))}
         </ul>
       </section>
-    </VolunteerLayout>
+    </>
   );
 }

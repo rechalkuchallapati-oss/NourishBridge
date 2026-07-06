@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import Container from "../common/Container";
+import BrandLogo from "../common/BrandLogo";
 import NGOSidebar from "./NGOSidebar";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { getNgoDisplayName, logoutDonor } from "../../utils/authStorage";
@@ -80,20 +81,12 @@ export default function NGOLayout({ organizationName, children }) {
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
       <header className="border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
         <Container className="flex h-16 items-center justify-between gap-4 sm:h-[72px]">
-          <Link
+          <BrandLogo
             to={DASHBOARD_ROUTES.ngo}
-            className="group flex items-center gap-2.5 transition-colors duration-300"
-          >
-            <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[#F0FDF4] text-[#16A34A] transition-transform duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
-              aria-hidden="true"
-            >
-              <span className="text-lg font-bold">N</span>
-            </span>
-            <span className="text-lg font-bold text-[#15803D] sm:text-xl">
-              Nourish<span className="text-[#16A34A]">Bridge</span>
-            </span>
-          </Link>
+            size="compact"
+            showTagline
+            className="shrink-0"
+          />
 
           <p className="hidden max-w-[200px] truncate text-sm font-medium text-[#64748B] sm:block lg:max-w-xs">
             {displayName}

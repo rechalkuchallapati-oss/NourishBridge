@@ -1,6 +1,5 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import { AVAILABILITY_OPTIONS } from "../../constants/roles";
 import { getVolunteerProfile, saveVolunteerProfile } from "../../utils/authStorage";
 
@@ -17,7 +16,7 @@ export default function VolunteerProfile() {
   };
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Profile</h1>
@@ -69,6 +68,6 @@ export default function VolunteerProfile() {
           </button>
         </form>
       </section>
-    </VolunteerLayout>
+    </>
   );
 }

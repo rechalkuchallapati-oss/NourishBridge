@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa";
 import Container from "../common/Container";
+import BrandLogo from "../common/BrandLogo";
 import DonorDashboardHeader from "./DonorDashboardHeader";
 import DonorSidebar from "./DonorSidebar";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
@@ -82,20 +83,12 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-gradient-to-b from-[#F8FFF8] via-[#F8FAFC] to-white">
       <header className="border-b border-[#E5E7EB] bg-white/95 backdrop-blur-sm">
         <Container className="flex h-16 items-center justify-between gap-3 sm:h-[72px] sm:gap-4">
-          <Link
+          <BrandLogo
             to={DASHBOARD_ROUTES.donor}
-            className="group flex shrink-0 items-center gap-2.5 transition-colors duration-300"
-          >
-            <span
-              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#16A34A] bg-[#F0FDF4] text-[#16A34A] transition-transform duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
-              aria-hidden="true"
-            >
-              <span className="text-lg font-bold">N</span>
-            </span>
-            <span className="text-lg font-bold text-[#15803D] sm:text-xl">
-              Nourish<span className="text-[#16A34A]">Bridge</span>
-            </span>
-          </Link>
+            size="compact"
+            showTagline
+            className="shrink-0"
+          />
 
           <DonorDashboardHeader unreadNotifications={unreadNotifications} />
 

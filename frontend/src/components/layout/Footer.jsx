@@ -13,7 +13,7 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import logo from "../../assets/logos/logo.png";
+import BrandLogo, { BRAND_TAGLINE } from "../common/BrandLogo";
 
 const LINE_GAP = "space-y-[0.5cm]";
 
@@ -137,20 +137,12 @@ function FooterBrandColumn() {
   return (
     <div className="min-w-0 flex-1 lg:max-w-[200px] xl:max-w-[220px]">
       <div className="flex items-center gap-2.5">
-        <img
-          src={logo}
-          alt="NourishBridge"
-          className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10"
-        />
-        <h2 className="text-base font-extrabold leading-tight tracking-tight text-[#0F172A] sm:text-lg">
-          <span className="text-[#16A34A]">Nourish</span>
-          <span>Bridge</span>
-        </h2>
+        <BrandLogo size="compact" showTagline={false} />
       </div>
 
       <div className={`mt-[0.5cm] ${LINE_GAP}`}>
         <p className="text-[10px] font-medium tracking-wide text-[#64748B] sm:text-[11px]">
-          Share Food • Share Hope • Save Lives
+          {BRAND_TAGLINE}
         </p>
 
         <p className="text-[10px] leading-4 text-[#64748B] sm:text-[11px] sm:leading-5">

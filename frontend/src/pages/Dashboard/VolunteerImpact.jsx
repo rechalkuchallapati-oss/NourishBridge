@@ -1,12 +1,12 @@
 import { FaClock, FaLeaf, FaTruck, FaUsers, FaUtensils } from "react-icons/fa";
-import VolunteerLayout, { VolunteerStatCard } from "../../components/dashboard/VolunteerLayout";
+import { VolunteerStatCard } from "../../components/dashboard/VolunteerLayout";
 import ImpactMilestones from "../../components/volunteer/ImpactMilestones";
 import VolunteerMonthlyMissionsChart from "../../components/volunteer/VolunteerMonthlyMissionsChart";
 import { VOLUNTEER_IMPACT } from "../../data/volunteerMission";
 
 export default function VolunteerImpact() {
   return (
-    <VolunteerLayout>
+    <>
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#16A34A]">
           Your Impact
@@ -55,6 +55,6 @@ export default function VolunteerImpact() {
         <VolunteerMonthlyMissionsChart />
         <ImpactMilestones />
       </div>
-    </VolunteerLayout>
+    </>
   );
 }

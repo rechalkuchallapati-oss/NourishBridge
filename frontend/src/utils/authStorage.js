@@ -103,7 +103,12 @@ export function getVolunteerProfile() {
 
 export function saveVolunteerProfile(profile) {
   localStorage.setItem(VOLUNTEER_PROFILE_KEY, JSON.stringify(profile));
-  setSessionUser({ ...getSessionUser(), fullName: profile.fullName });
+  const session = getSessionUser() ?? {};
+  setSessionUser({
+    ...session,
+    fullName: profile.fullName ?? session.fullName,
+    role: session.role ?? "volunteer",
+  });
 }
 
 export function getNgoProfile() {
@@ -223,13 +228,21 @@ export function getDashboardRouteForRole(role) {
 }
 
 export function completeAuthSession(contact) {
-  const role = contact.role || "donor";
+  const registered = contact.email ? getRegisteredUser(contact.email) : null;
+  const role =
+    contact.role ||
+    registered?.role ||
+    (typeof window !== "undefined"
+      ? sessionStorage.getItem("nb_pending_signup_role")
+      : null) ||
+    "donor";
+
   const sessionUser = {
-    email: contact.email,
-    phone: contact.phone,
-    fullName: contact.fullName,
+    email: contact.email ?? registered?.email ?? "",
+    phone: contact.phone ?? registered?.phone ?? "",
+    fullName: contact.fullName ?? registered?.fullName ?? "",
     role,
-    organization: contact.organization ?? contact.organizationName ?? "",
+    organization: contact.organization ?? contact.organizationName ?? registered?.organization ?? "",
   };
 
   setSessionUser(sessionUser);
@@ -261,9 +274,9 @@ export function completeAuthSession(contact) {
       email: contact.email ?? "",
       phone: contact.phone ?? "",
       city: contact.city ?? "Hyderabad",
-      serviceRadiusKm: 10,
+      serviceRadiusKm: Number(contact.serviceRadiusKm) || 10,
       vehicle: "Bike",
-      availability: ["Weekday Afternoons"],
+      availability: contact.availability?.length ? contact.availability : ["Weekday Afternoons"],
       isAvailable: true,
     });
   }

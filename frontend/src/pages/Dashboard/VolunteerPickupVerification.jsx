@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCamera, FaCheck, FaTimes } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import {
   MISSION_STATES,
@@ -103,7 +102,7 @@ export default function VolunteerPickupVerification() {
   };
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Pickup Verification</h1>
@@ -248,6 +247,6 @@ export default function VolunteerPickupVerification() {
           <p className="mt-4 text-xs text-[#64748B]">No active mission at donor location.</p>
         )}
       </section>
-    </VolunteerLayout>
+    </>
   );
 }

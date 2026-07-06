@@ -7,7 +7,7 @@ import {
   FaTruck,
   FaUtensils,
 } from "react-icons/fa";
-import VolunteerLayout, { VolunteerStatCard } from "../../components/dashboard/VolunteerLayout";
+import { VolunteerStatCard } from "../../components/dashboard/VolunteerLayout";
 import CurrentMissionPanel, { AvailablePickupCard } from "../../components/volunteer/CurrentMissionPanel";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { getVolunteerFoodImage } from "../../data/volunteerAssets";
@@ -52,7 +52,7 @@ export default function VolunteerDashboard() {
   };
 
   return (
-    <VolunteerLayout>
+    <>
       <Toaster position="top-center" />
 
       <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
@@ -224,6 +224,6 @@ export default function VolunteerDashboard() {
           ) : null}
         </section>
       </div>
-    </VolunteerLayout>
+    </>
   );
 }

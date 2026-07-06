@@ -1,4 +1,3 @@
-import VolunteerLayout from "../../components/dashboard/VolunteerLayout";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { RECENT_MISSIONS, UPCOMING_MISSIONS } from "../../data/volunteerMission";
 
@@ -6,8 +5,7 @@ export default function VolunteerMyMissions() {
   const { recentMissions } = useVolunteerMissionContext();
 
   return (
-    <VolunteerLayout>
-      <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
+    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">My Missions</h1>
         <p className="mt-1 text-xs text-[#64748B]">Upcoming and completed assignments.</p>
 
@@ -33,6 +31,5 @@ export default function VolunteerMyMissions() {
           ))}
         </ul>
       </section>
-    </VolunteerLayout>
   );
 }

@@ -106,9 +106,9 @@ export default function SignInForm({ onSwitchToCreate }) {
     };
 
     setSessionUser(sessionUser);
-    saveRegisteredUser(sessionUser);
+    saveRegisteredUser({ ...sessionUser, role: userRole });
 
-    navigate(getDashboardRouteForRole(userRole));
+    navigate(getDashboardRouteForRole(userRole), { replace: true });
   };
 
   const handleForgotPassword = () => {

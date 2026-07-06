@@ -9,6 +9,7 @@ import {
   OTP_LENGTH,
   OTP_VALIDITY_SECONDS,
   RESEND_COOLDOWN_SECONDS,
+  clearVerifyContact,
   readVerifyContact,
 } from "../../constants/auth";
 import { maskContact } from "../../utils/maskContact";
@@ -54,8 +55,10 @@ export default function VerifyOTP() {
     await new Promise((resolve) => setTimeout(resolve, 700));
 
     if (otp === DEMO_VALID_OTP) {
-      const dashboardRoute = completeAuthSession(contact);
-      navigate(dashboardRoute);
+      const verifiedContact = readVerifyContact(location.state);
+      const dashboardRoute = completeAuthSession(verifiedContact);
+      clearVerifyContact();
+      navigate(dashboardRoute, { replace: true });
       return;
     }
 

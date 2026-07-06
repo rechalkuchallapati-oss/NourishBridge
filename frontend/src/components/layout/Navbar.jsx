@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
+import BrandLogo from "../common/BrandLogo";
 import Button from "../common/Button";
 import Container from "../common/Container";
-import logo from "../../assets/logos/logo.png";
 
 const navLinks = [
   { to: "/", label: "Home", end: true },
@@ -57,25 +57,7 @@ export default function Navbar() {
     >
       <Container>
         <nav className="hidden h-[90px] items-center lg:grid lg:grid-cols-[minmax(280px,360px)_minmax(0,1fr)_auto] lg:gap-x-16 xl:gap-x-20">
-          <Link
-            to="/"
-            className="group flex max-w-[360px] items-center gap-4 transition-transform duration-300 hover:scale-[1.02]"
-          >
-            <img
-              src={logo}
-              alt="NourishBridge"
-              className="h-[54px] w-[54px] shrink-0 object-contain"
-            />
-            <div className="flex w-fit flex-col">
-              <span className="whitespace-nowrap text-[22px] font-extrabold leading-none tracking-tight">
-                <span className="text-[#16A34A]">Nourish</span>
-                <span className="text-[#0F172A]">Bridge</span>
-              </span>
-              <p className="mt-2 whitespace-nowrap text-center text-[11px] font-medium leading-none tracking-wide text-[#64748B]">
-                Share Food • Share Hope • Save Lives
-              </p>
-            </div>
-          </Link>
+          <BrandLogo to="/" size="default" showTagline className="max-w-[360px]" />
 
           <ul className="flex items-center justify-center gap-9 xl:gap-11">
             {navLinks.map((link) => (
@@ -106,21 +88,7 @@ export default function Navbar() {
         </nav>
 
         <nav className="flex h-[90px] items-center justify-between lg:hidden">
-          <Link
-            to="/"
-            onClick={closeMenu}
-            className="group flex min-w-0 items-center gap-3 transition-transform duration-300 hover:scale-[1.02]"
-          >
-            <img
-              src={logo}
-              alt="NourishBridge"
-              className="h-11 w-11 shrink-0 object-contain sm:h-12 sm:w-12"
-            />
-            <span className="truncate text-lg font-extrabold tracking-tight">
-              <span className="text-[#16A34A]">Nourish</span>
-              <span className="text-[#0F172A]">Bridge</span>
-            </span>
-          </Link>
+          <BrandLogo to="/" onClick={closeMenu} size="mobile" showTagline={false} />
 
           <button
             type="button"
@@ -156,8 +124,8 @@ export default function Navbar() {
       >
         <div className="flex h-[90px] items-center justify-between border-b border-[#E5E7EB] px-5 md:px-8">
           <span className="text-lg font-extrabold">
-            <span className="text-[#16A34A]">Nourish</span>
-            <span className="text-[#0F172A]">Bridge</span>
+            <span className="text-[#15803D]">Nourish</span>
+            <span className="text-[#16A34A]">Bridge</span>
           </span>
           <button
             type="button"
