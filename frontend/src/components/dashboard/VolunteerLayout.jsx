@@ -109,8 +109,8 @@ export default function VolunteerLayout({ children, unreadNotifications = VOLUNT
         </Container>
       </header>
 
-      <Container className="py-6 lg:py-8">
-        <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-8">
+      <Container className="max-w-[1520px] py-8 lg:py-10">
+        <div className="grid gap-8 lg:grid-cols-[272px_minmax(0,1fr)] lg:gap-10">
           <aside className="hidden lg:block">
             <VolunteerSidebar />
           </aside>

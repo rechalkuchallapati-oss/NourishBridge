@@ -6,6 +6,7 @@ import {
   MISSION_STATES,
 } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import DonationProofThumbnail from "../common/DonationProofThumbnail";
 
 export default function CurrentMissionPanel({
   mission,
@@ -107,15 +108,13 @@ export default function CurrentMissionPanel({
   );
 }
 
-export function AvailablePickupCard({ pickup, foodImage, onAccept, disabled }) {
+export function AvailablePickupCard({ pickup, onAccept, disabled }) {
   return (
     <li className="rounded-none border border-[#E5E7EB] bg-white p-3 shadow-sm">
       <div className="flex gap-3">
-        {foodImage ? (
-          <div className="h-16 w-16 shrink-0 overflow-hidden bg-[#F8FAFC]">
-            <img src={foodImage} alt={pickup.foodName} className="h-full w-full object-cover" />
-          </div>
-        ) : null}
+        <div className="h-[132px] w-[108px] shrink-0 overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC]">
+          <DonationProofThumbnail record={pickup} />
+        </div>
         <div className="min-w-0 flex-1">
           <h3 className="text-sm font-bold text-[#0F172A]">{pickup.foodName}</h3>
           <p className="text-xs text-[#64748B]">

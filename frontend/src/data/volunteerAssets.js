@@ -3,6 +3,7 @@ import {
   VOLUNTEER_PICKUP_THUMBNAILS,
   resolveDonationThumbnail,
 } from "./donationThumbnails";
+import { getDonationProofPrimaryImage } from "../utils/donationProofImage";
 import volunteerPrimary from "../assets/dashboard/volunteer/volunteer-account-primary.png";
 import volunteerAlt1 from "../assets/dashboard/volunteer/volunteer-account-alt1.png";
 import volunteerAlt2 from "../assets/dashboard/volunteer/volunteer-account-alt2.png";
@@ -36,8 +37,12 @@ export const VOLUNTEER_PICKUP_LOGO = foodBiryani;
 export const VOLUNTEER_NGO_LOGO = foodPaneer;
 
 export function getVolunteerFoodImage(keyOrRecord) {
-  if (typeof keyOrRecord === "object" && keyOrRecord?.id && VOLUNTEER_PICKUP_IDS[keyOrRecord.id]) {
-    return VOLUNTEER_PICKUP_IDS[keyOrRecord.id];
+  if (typeof keyOrRecord === "object" && keyOrRecord) {
+    const proofImage = getDonationProofPrimaryImage(keyOrRecord);
+    if (proofImage) return proofImage;
+    if (keyOrRecord.id && VOLUNTEER_PICKUP_IDS[keyOrRecord.id]) {
+      return VOLUNTEER_PICKUP_IDS[keyOrRecord.id];
+    }
   }
   const key = typeof keyOrRecord === "string" ? keyOrRecord : keyOrRecord?.foodKey;
   if (key && VOLUNTEER_FOOD_IMAGES[key]) return VOLUNTEER_FOOD_IMAGES[key];

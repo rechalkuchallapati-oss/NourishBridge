@@ -1,4 +1,8 @@
 import { enrichDonationRecord } from "./shared/donationItems";
+import {
+  assignNgosToPickups,
+  formatNgoDeliveryLine,
+} from "./verifiedNgos";
 
 /** Volunteer pickups — Hyderabad missions (unique foods vs donor & NGO Bengaluru). */
 const RAW_PICKUPS = [
@@ -30,10 +34,7 @@ const RAW_PICKUPS = [
     donorName: "Grand Biryani House",
     pickupAddress: "Abids Main Road, Hyderabad",
     pickupDistanceKm: 2.4,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Plot 12, Kondapur Main Road, Hyderabad",
     pickupDeadline: "4:30 PM",
-    journeyDistanceKm: 7.8,
   },
   {
     id: "PKP-002",
@@ -61,10 +62,7 @@ const RAW_PICKUPS = [
     donorName: "Iyer–Thomas Family",
     pickupAddress: "Novotel HICC, Madhapur, Hyderabad",
     pickupDistanceKm: 3.1,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Plot 12, Kondapur Main Road, Hyderabad",
     pickupDeadline: "5:00 PM",
-    journeyDistanceKm: 9.2,
   },
   {
     id: "PKP-003",
@@ -73,7 +71,6 @@ const RAW_PICKUPS = [
     packagingScale: "individual",
     packagingLabel: "Foil packets & tiffin boxes · ~8 kg",
     foodKey: "VL-FOOD-003",
-    thumbnailKey: "individual_curry_roti",
     foodName: "Fish Pulusu & Rice",
     quantity: "~8 kg · 2 items",
     items: [
@@ -84,10 +81,7 @@ const RAW_PICKUPS = [
     donorName: "Suresh Kommuri",
     pickupAddress: "Kukatpally Housing Board, Hyderabad",
     pickupDistanceKm: 4.5,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Plot 12, Kondapur Main Road, Hyderabad",
     pickupDeadline: "3:45 PM",
-    journeyDistanceKm: 11.0,
   },
 ];
 
@@ -114,10 +108,7 @@ const RAW_EXTRA_PICKUPS = [
     donorName: "Ganesh Mandal Welfare Group",
     pickupAddress: "Secunderabad Clock Tower Area, Hyderabad",
     pickupDistanceKm: 5.2,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Plot 12, Kondapur Main Road, Hyderabad",
     pickupDeadline: "6:15 PM",
-    journeyDistanceKm: 8.4,
   },
   {
     id: "PKP-005",
@@ -126,7 +117,7 @@ const RAW_EXTRA_PICKUPS = [
     packagingScale: "individual",
     packagingLabel: "Party platters & pizza boxes · ~45 kg",
     foodKey: "VL-FOOD-005",
-    thumbnailKey: "party_trays",
+    thumbnailKey: "veg_chicken_pizza",
     foodName: "Farewell Party · 5 items",
     quantity: "5 item types",
     items: [
@@ -140,15 +131,15 @@ const RAW_EXTRA_PICKUPS = [
     donorName: "CloudServe Technologies",
     pickupAddress: "Financial District, Nanakramguda, Hyderabad",
     pickupDistanceKm: 3.8,
-    ngoName: "Helping Hands Foundation",
-    ngoAddress: "Plot 12, Kondapur Main Road, Hyderabad",
     pickupDeadline: "7:00 PM",
-    journeyDistanceKm: 6.1,
   },
 ];
 
-export const AVAILABLE_PICKUP_REQUESTS = RAW_PICKUPS.map(enrichDonationRecord);
-export const EXTRA_PICKUP_REQUESTS = RAW_EXTRA_PICKUPS.map(enrichDonationRecord);
+const ASSIGNED_MAIN = assignNgosToPickups(RAW_PICKUPS).map(enrichDonationRecord);
+const ASSIGNED_EXTRA = assignNgosToPickups(RAW_EXTRA_PICKUPS).map(enrichDonationRecord);
+
+export const AVAILABLE_PICKUP_REQUESTS = ASSIGNED_MAIN;
+export const EXTRA_PICKUP_REQUESTS = ASSIGNED_EXTRA;
 
 export const TODAYS_SCHEDULE = [
   {
@@ -157,7 +148,7 @@ export const TODAYS_SCHEDULE = [
     eventType: "restaurant",
     label: "Grand Biryani House · 12 bulk items",
     pickupLocation: "Grand Biryani House · Abids Main Road",
-    deliverAddress: "Helping Hands Foundation · Kondapur Main Road",
+    deliverAddress: formatNgoDeliveryLine(ASSIGNED_MAIN[0]),
     status: "in_progress",
     tag: "In Progress",
   },
@@ -167,7 +158,7 @@ export const TODAYS_SCHEDULE = [
     eventType: "wedding",
     label: "Iyer–Thomas Wedding · 10 items",
     pickupLocation: "Novotel HICC · Madhapur",
-    deliverAddress: "Helping Hands Foundation · Kondapur Main Road",
+    deliverAddress: formatNgoDeliveryLine(ASSIGNED_MAIN[1]),
     status: "upcoming",
     tag: "Upcoming",
   },
@@ -177,7 +168,7 @@ export const TODAYS_SCHEDULE = [
     eventType: "festival",
     label: "Ganesh Chaturthi Prasad · 6 items",
     pickupLocation: "Ganesh Mandal · Secunderabad",
-    deliverAddress: "Helping Hands Foundation · Kondapur Main Road",
+    deliverAddress: formatNgoDeliveryLine(ASSIGNED_EXTRA[0]),
     status: "looking_forward",
     tag: "Looking Forward",
   },
@@ -191,7 +182,7 @@ export const FULL_SCHEDULE = [
     eventType: "individual",
     label: "Fish Pulusu home donation · 2 items",
     pickupLocation: "Suresh Kommuri · Kukatpally",
-    deliverAddress: "Helping Hands Foundation · Kondapur Main Road",
+    deliverAddress: formatNgoDeliveryLine(ASSIGNED_MAIN[2]),
     status: "looking_forward",
     tag: "Looking Forward",
   },
@@ -201,7 +192,7 @@ export const FULL_SCHEDULE = [
     eventType: "party",
     label: "Office farewell · 5 items",
     pickupLocation: "CloudServe Technologies · Nanakramguda",
-    deliverAddress: "Helping Hands Foundation · Kondapur Main Road",
+    deliverAddress: formatNgoDeliveryLine(ASSIGNED_EXTRA[1]),
     status: "looking_forward",
     tag: "Looking Forward",
   },

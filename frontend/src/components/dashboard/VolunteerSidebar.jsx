@@ -32,8 +32,8 @@ const NAV_SECTIONS = [
   {
     title: "Verification",
     items: [
-      { label: "Pickup Verification", to: DASHBOARD_ROUTES.volunteerPickupVerify, icon: FaMapMarkedAlt },
-      { label: "Delivery Verification", to: DASHBOARD_ROUTES.volunteerDeliveryVerify, icon: FaMapMarkedAlt },
+      { label: "Pickup", to: DASHBOARD_ROUTES.volunteerPickup, icon: FaMapMarkedAlt },
+      { label: "Delivery", to: DASHBOARD_ROUTES.volunteerDelivery, icon: FaTruck },
     ],
   },
   {

@@ -16,7 +16,7 @@ export default function VolunteerPerformanceChart({ compact = false }) {
           <h2 className="text-sm font-bold text-[#0F172A]">
             {compact ? "Delivery Performance" : "Deliveries & Performance"}
           </h2>
-          <p className="mt-[0.3cm] text-[10px] text-[#64748B]">
+          <p className="mt-[0.5cm] text-[10px] text-[#64748B]">
             Weekly deliveries (bars) and on-time performance score (line).
           </p>
         </div>

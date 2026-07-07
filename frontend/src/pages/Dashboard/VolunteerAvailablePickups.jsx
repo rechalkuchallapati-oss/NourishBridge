@@ -1,7 +1,6 @@
 import toast, { Toaster } from "react-hot-toast";
 import VolunteerPickupRequestCard from "../../components/volunteer/VolunteerPickupRequestCard";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
-import { getVolunteerFoodImage } from "../../data/volunteerAssets";
 import { VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
 
 export default function VolunteerAvailablePickups() {
@@ -23,7 +22,6 @@ export default function VolunteerAvailablePickups() {
             <VolunteerPickupRequestCard
               key={pickup.id}
               pickup={pickup}
-              foodImage={getVolunteerFoodImage(pickup)}
               disabled={!!activeMission || !isAvailable}
               index={index}
               onAccept={(item) => {

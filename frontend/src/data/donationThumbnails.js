@@ -79,20 +79,20 @@ export const DONATION_THUMBNAILS = {
   individual_rice_sambar: idliSambar,
   individual_snacks: sandwichesPastries,
   individual_fruit: fruitBoxesJuice,
-  restaurant_biryani_bulk: ngoWeddingBuffet,
+  restaurant_biryani_bulk: paradiseSpecialBiryani,
   restaurant_mixed_bulk: mixedRiceCurry,
   restaurant_curry_bulk: ngoCookedCurry,
-  wedding_buffet: ngoWeddingBuffet,
-  party_trays: ngoPackagedMeals,
-  festival_spread: ngoFestivalSamosas,
+  wedding_buffet: payasam,
+  party_trays: brownieDonut,
+  festival_spread: ukadicheModak,
   ramzan_iftar: dalMakhaniNaan,
   christmas_feast: sandwichesPastries,
   corporate_lunch: ngoCorporateLunch,
-  hotel_banquet: ngoCookedCurry,
+  hotel_banquet: chettinadMuttonPepperFry,
   corporate_trays: ngoCorporateLunch,
-  diwali_sweets: ngoFestivalSamosas,
+  diwali_sweets: bobbatluAriselu,
   pongal_feast: vegetablesRice,
-  ganesh_prasad: ngoFreshFruits,
+  ganesh_prasad: ukadicheModak,
   veg_biryani: vegBiryani,
   paradise_biryani: paradiseSpecialBiryani,
   qubani_meetha: qubaniKaMeetha,
@@ -160,23 +160,22 @@ export const DONATION_THUMBNAILS = {
 };
 
 export const VOLUNTEER_PICKUP_THUMBNAILS = {
-  "VL-FOOD-001": volunteerBiryaniBulk,
-  "VL-FOOD-002": volunteerLunchTrays,
-  "VL-FOOD-003": volunteerPaneer,
-  "VL-FOOD-004": ngoFestivalSamosas,
-  "VL-FOOD-005": volunteerSandwiches,
-  "VL-FOOD-006": volunteerFruits,
-  "VL-FOOD-007": volunteerLunchTrays,
-  "VL-FOOD-008": volunteerIdli,
+  "VL-FOOD-001": paradiseSpecialBiryani,
+  "VL-FOOD-002": payasam,
+  "VL-FOOD-003": andhraFishPulusu,
+  "VL-FOOD-004": ukadicheModak,
+  "VL-FOOD-005": vegChickenPizza,
+  "VL-FOOD-006": mixedSeasonalFruits,
+  "VL-FOOD-007": chettinadMuttonPepperFry,
+  "VL-FOOD-008": idliSambar,
   "VL-FOOD-009": butterChickenNaan,
 };
 
 export const VOLUNTEER_PICKUP_IDS = {
-  "PKP-001": volunteerBiryaniBulk,
-  "PKP-002": volunteerLunchTrays,
-  "PKP-003": volunteerPaneer,
-  "PKP-004": ngoFestivalSamosas,
-  "PKP-005": volunteerSandwiches,
+  "PKP-001": paradiseSpecialBiryani,
+  "PKP-002": payasam,
+  "PKP-004": ukadicheModak,
+  "PKP-005": vegChickenPizza,
 };
 
 export const NGO_INCOMING_THUMBNAILS = {
@@ -228,14 +227,25 @@ export function resolveDonationThumbnail(record) {
   if (record?.thumbnailKey && DONATION_THUMBNAILS[record.thumbnailKey]) {
     return DONATION_THUMBNAILS[record.thumbnailKey];
   }
+
   const primaryItem = record?.items?.[0];
   if (primaryItem) {
     const itemThumb = resolveItemThumbnail(primaryItem);
     if (itemThumb) return itemThumb;
   }
-  const primaryName = record?.items?.[0]?.name ?? record?.foodName ?? record?.food;
-  const itemThumb = resolveFoodItemThumbnail(primaryName);
-  if (itemThumb) return itemThumb;
+
+  const titleCandidates = [
+    record?.foodName,
+    record?.food,
+    record?.eventName,
+    primaryItem?.name,
+  ].filter(Boolean);
+
+  for (const title of titleCandidates) {
+    const itemThumb = resolveFoodItemThumbnail(title);
+    if (itemThumb) return itemThumb;
+  }
+
   if (record?.packagingScale === "individual") {
     return DONATION_THUMBNAILS.individual_snacks;
   }

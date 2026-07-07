@@ -10,6 +10,12 @@ export const FOOD_NAME_TO_THUMBNAIL_KEY = {
   "pulihora & curd rice": "pulihora_curd_rice",
   "veg pulao": "veg_pulao",
   "veg biryani": "veg_biryani",
+  "veg dum biryani": "veg_biryani",
+  "hyderabadi chicken biryani": "paradise_biryani",
+  "mutton keema biryani": "paradise_biryani",
+  "fish fry biryani (pomfret)": "paradise_biryani",
+  "prawn biryani": "paradise_biryani",
+  "egg biryani": "paradise_biryani",
   "paradise special biryani": "paradise_biryani",
   "qubani ka meetha": "qubani_meetha",
   "margherita & bbq chicken pizza": "margherita_bbq_pizza",
@@ -31,26 +37,62 @@ export const FOOD_NAME_TO_THUMBNAIL_KEY = {
   "veg & chicken pizza (large)": "veg_chicken_pizza",
   "brownie & donut assortment": "brownie_donut",
   "andhra fish pulusu": "andhra_fish_pulusu",
+  "andhra fish pulusu (homemade)": "andhra_fish_pulusu",
   "ukadiche modak": "ukadiche_modak",
+  "fried modak": "ukadiche_modak",
   "puliyodarai (tamarind rice)": "puliyodarai",
   "coconut laddu": "coconut_laddu",
+  "laddu & mysore pak": "bobbatlu_ariselu",
   "chettinad mutton pepper fry": "chettinad_mutton_pepper_fry",
   "appam & ishtu": "appam_ishtu",
   "payasam (ada pradhaman)": "payasam",
+  "double ka meetha": "qubani_meetha",
   "mixed seasonal fruits": "mixed_seasonal_fruits",
   "fresh orange juice": "fresh_orange_juice",
   "butter chicken & garlic naan": "butter_chicken_garlic_naan",
   "paneer lababdar & roti": "paneer_lababdar_roti",
   "paneer curry": "paneer_curry",
   "paneer curry & roti": "paneer_curry",
+  "paneer tikka & hara bhara kebab": "paneer_curry",
   "osmania biscuits & tea samosa": "osmania_biscuits",
   "khova naan & irani chai": "khova_naan_irani_chai",
   "sambar rice & mixed poriyal": "sambar_rice_poriyal",
   "chicken 65 & fried rice": "chicken_65_fried_rice",
   "bobbatlu & ariselu": "bobbatlu_ariselu",
+  "andhra chicken curry": "butter_chicken_naan",
+  "jeera rice & ghee rice": "steamed_rice",
 };
+
+/** Partial name match — first hit wins (more specific rules first). */
+const FOOD_KEYWORD_RULES = [
+  { pattern: /biryani|pulao|fried rice/i, key: "paradise_biryani" },
+  { pattern: /modak|prasad|ganesh/i, key: "ukadiche_modak" },
+  { pattern: /laddu|mysore pak|bobbatlu|ariselu|sweet|meetha|payasam|kulfi|dessert|halwa|sheer khurma/i, key: "payasam" },
+  { pattern: /pizza|burger|slider|wings|fries/i, key: "veg_chicken_pizza" },
+  { pattern: /brownie|donut|pastry/i, key: "brownie_donut" },
+  { pattern: /fish|pulusu|pomfret|prawn/i, key: "andhra_fish_pulusu" },
+  { pattern: /idli|sambar|dosa|appam|ishtu/i, key: "appam_ishtu" },
+  { pattern: /mutton|pepper fry|haleem|keema/i, key: "chettinad_mutton_pepper_fry" },
+  { pattern: /paneer|tikka|kebab|naan|roti|curry(?! rice)/i, key: "paneer_curry" },
+  { pattern: /sandwich|bread/i, key: "bread_and_sandwiches" },
+  { pattern: /fruit|juice|chaat/i, key: "mixed_seasonal_fruits" },
+  { pattern: /rice(?! and curry)/i, key: "steamed_rice" },
+  { pattern: /sundal|puliyodarai|pulihora|avial|thoran/i, key: "puliyodarai" },
+];
 
 export function resolveThumbnailKeyFromName(name) {
   if (!name) return null;
-  return FOOD_NAME_TO_THUMBNAIL_KEY[name.trim().toLowerCase()] ?? null;
+  const normalized = name.trim().toLowerCase();
+
+  if (FOOD_NAME_TO_THUMBNAIL_KEY[normalized]) {
+    return FOOD_NAME_TO_THUMBNAIL_KEY[normalized];
+  }
+
+  for (const rule of FOOD_KEYWORD_RULES) {
+    if (rule.pattern.test(normalized)) {
+      return rule.key;
+    }
+  }
+
+  return null;
 }

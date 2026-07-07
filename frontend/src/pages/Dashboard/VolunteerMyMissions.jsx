@@ -1,12 +1,17 @@
 import { useMemo } from "react";
+import { FaClipboardList } from "react-icons/fa";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import VolunteerMissionsTable from "../../components/volunteer/VolunteerMissionsTable";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
 import {
   COMPLETED_MISSIONS_HISTORY,
   getMissionTableRows,
   UPCOMING_MISSIONS_EXTENDED,
 } from "../../data/volunteerMissionHistory";
-import { VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
+import {
+  VOLUNTEER_CONTENT_STACK,
+  VOLUNTEER_PAGE_SECTION_GAP,
+} from "../../components/volunteer/volunteerDashboardStyles";
 
 function mapRecentMission(m) {
   return {
@@ -76,32 +81,37 @@ export default function VolunteerMyMissions() {
   }, [recentMissions]);
 
   const upcomingCount = UPCOMING_MISSIONS_EXTENDED.length;
-  const completedCount = COMPLETED_MISSIONS_HISTORY.length + recentMissions.filter(
-    (m) => !COMPLETED_MISSIONS_HISTORY.some((h) => h.id === (m.id ?? m.missionId)),
-  ).length;
+  const completedCount =
+    COMPLETED_MISSIONS_HISTORY.length +
+    recentMissions.filter(
+      (m) => !COMPLETED_MISSIONS_HISTORY.some((h) => h.id === (m.id ?? m.missionId)),
+    ).length;
 
   return (
-    <div className={VOLUNTEER_STACK_GAP}>
-      <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
-        <h1 className="text-lg font-bold text-[#0F172A]">My Missions</h1>
-        <p className="mt-[0.3cm] text-xs text-[#64748B]">
-          Expand any food item to view proof, timings, and verification details.
-        </p>
+    <div className={VOLUNTEER_PAGE_SECTION_GAP}>
+      <VolunteerSectionShell>
+        <VolunteerSectionTitle
+          heading="h1"
+          title="My Missions"
+          subtitle="Expand any food item to view proof, timings, and verification details."
+          theme="emerald"
+          icon={FaClipboardList}
+        />
 
-        <div className="mt-[0.5cm] flex flex-wrap gap-[0.5cm] text-[10px] font-semibold">
-          <span className="rounded-none bg-[#EFF6FF] px-2 py-1 text-[#1D4ED8]">
+        <div className="flex flex-wrap gap-[0.5cm]">
+          <span className="rounded-none bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#1D4ED8] transition-colors hover:bg-[#DBEAFE]">
             {upcomingCount} upcoming
           </span>
-          <span className="rounded-none bg-[#F0FDF4] px-2 py-1 text-[#15803D]">
+          <span className="rounded-none bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]">
             {completedCount} completed this month
           </span>
-          <span className="rounded-none bg-[#F1F5F9] px-2 py-1 text-[#475569]">
+          <span className="rounded-none bg-[#F1F5F9] px-3 py-1.5 text-xs font-semibold text-[#475569] transition-colors hover:bg-[#E2E8F0]">
             {tableRows.length} missions logged
           </span>
         </div>
 
         <VolunteerMissionsTable rows={tableRows} />
-      </section>
+      </VolunteerSectionShell>
     </div>
   );
 }

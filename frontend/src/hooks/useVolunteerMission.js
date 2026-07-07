@@ -9,7 +9,7 @@ import {
 const ACTIVE_MISSION_KEY = "nb_volunteer_active_mission";
 const AVAILABILITY_KEY = "nb_volunteer_available";
 const COMPLETED_TODAY_KEY = "nb_volunteer_completed_today";
-const PICKUPS_KEY = "nb_volunteer_available_pickups";
+const PICKUPS_KEY = "nb_volunteer_available_pickups_v2";
 const RECENT_KEY = "nb_volunteer_recent_missions";
 
 function loadJson(key, fallback) {

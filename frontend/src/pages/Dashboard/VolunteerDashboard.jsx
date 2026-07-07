@@ -3,10 +3,17 @@ import toast, { Toaster } from "react-hot-toast";
 import MissionWorkflowPanel from "../../components/volunteer/MissionWorkflowPanel";
 import VolunteerDashboardImpactPanel from "../../components/volunteer/VolunteerDashboardImpactPanel";
 import VolunteerPickupsSection from "../../components/volunteer/VolunteerPickupsSection";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
 import VolunteerTodaysSchedule from "../../components/volunteer/VolunteerTodaysSchedule";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { getVolunteerDisplayName, getSessionUser } from "../../utils/authStorage";
-import { volunteerInteractive, VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BTN,
+  VOLUNTEER_EYEBROW,
+  VOLUNTEER_INSET_LINE_GAP,
+  VOLUNTEER_PAGE_SECTION_GAP,
+} from "../../components/volunteer/volunteerDashboardStyles";
 
 function getGreeting() {
   const hour = new Date().getHours();
@@ -40,45 +47,42 @@ export default function VolunteerDashboard() {
   };
 
   return (
-    <div className={VOLUNTEER_STACK_GAP}>
+    <div className={`${VOLUNTEER_PAGE_SECTION_GAP} pb-[1cm]`}>
       <Toaster position="top-center" />
 
-      <motion.section
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}
-      >
-        <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#16A34A]">
-              Volunteer Account
-            </p>
-            <h1 className="mt-1 text-xl font-bold text-[#0F172A] sm:text-2xl">
-              {getGreeting()}, {volunteerName} 👋
-            </h1>
-            <p className="mt-1 text-xs text-[#64748B] sm:text-sm">
-              Review pickups, follow your schedule, and track delivery impact.
-            </p>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+        <VolunteerSectionShell>
+          <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
+            <div className="min-w-0 flex-1 pr-[1.5cm]">
+              <p className={VOLUNTEER_EYEBROW}>Volunteer Account</p>
+              <VolunteerSectionTitle
+                heading="h1"
+                title={`${getGreeting()}, ${volunteerName} 👋`}
+                subtitle="Review pickups, follow your schedule, and track delivery impact."
+                theme="emerald"
+                className="!px-[0.5cm] !py-[0.45cm]"
+              />
+            </div>
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.97 }}
+              onClick={toggleAvailability}
+              className={[
+                VOLUNTEER_BTN,
+                isAvailable
+                  ? "bg-[#F0FDF4] text-[#15803D] ring-1 ring-[#BBF7D0]"
+                  : "bg-[#F1F5F9] text-[#64748B] ring-1 ring-[#E2E8F0]",
+                volunteerInteractive.buttonOutline,
+              ].join(" ")}
+            >
+              <span
+                className={`h-2.5 w-2.5 rounded-full ${isAvailable ? "bg-[#16A34A] animate-pulse" : "bg-[#94A3B8]"}`}
+              />
+              {isAvailable ? "Available for Missions" : "Unavailable"}
+            </motion.button>
           </div>
-          <motion.button
-            type="button"
-            whileTap={{ scale: 0.97 }}
-            onClick={toggleAvailability}
-            className={[
-              "inline-flex items-center gap-2 rounded-none px-3 py-2 text-xs font-semibold",
-              isAvailable
-                ? "bg-[#F0FDF4] text-[#15803D] ring-1 ring-[#BBF7D0]"
-                : "bg-[#F1F5F9] text-[#64748B] ring-1 ring-[#E2E8F0]",
-              volunteerInteractive.buttonOutline,
-            ].join(" ")}
-          >
-            <span
-              className={`h-2 w-2 rounded-full ${isAvailable ? "bg-[#16A34A] animate-pulse" : "bg-[#94A3B8]"}`}
-            />
-            {isAvailable ? "Available for Missions" : "Unavailable"}
-          </motion.button>
-        </div>
-      </motion.section>
+        </VolunteerSectionShell>
+      </motion.div>
 
       {activeMission ? (
         <motion.div
@@ -100,7 +104,7 @@ export default function VolunteerDashboard() {
         disabled={!!activeMission || !isAvailable}
       />
 
-      <div className={`grid ${VOLUNTEER_STACK_GAP} lg:grid-cols-2`}>
+      <div className={`grid gap-[1cm] lg:grid-cols-2`}>
         <VolunteerTodaysSchedule
           activeMission={activeMission}
           completedToday={completedToday}

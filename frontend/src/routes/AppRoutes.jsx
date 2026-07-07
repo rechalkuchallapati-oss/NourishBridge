@@ -31,8 +31,8 @@ import VolunteerAvailablePickups from "../pages/Dashboard/VolunteerAvailablePick
 import VolunteerActiveMission from "../pages/Dashboard/VolunteerActiveMission";
 import VolunteerMyMissions from "../pages/Dashboard/VolunteerMyMissions";
 import VolunteerRouteNavigation from "../pages/Dashboard/VolunteerRouteNavigation";
-import VolunteerPickupVerification from "../pages/Dashboard/VolunteerPickupVerification";
-import VolunteerDeliveryVerification from "../pages/Dashboard/VolunteerDeliveryVerification";
+import VolunteerPickup from "../pages/Dashboard/VolunteerPickup";
+import VolunteerDelivery from "../pages/Dashboard/VolunteerDelivery";
 import VolunteerNotifications from "../pages/Dashboard/VolunteerNotifications";
 import VolunteerImpact from "../pages/Dashboard/VolunteerImpact";
 import VolunteerProfile from "../pages/Dashboard/VolunteerProfile";
@@ -137,8 +137,10 @@ const AppRoutes = () => {
         <Route path="active" element={<VolunteerActiveMission />} />
         <Route path="missions" element={<VolunteerMyMissions />} />
         <Route path="route" element={<VolunteerRouteNavigation />} />
-        <Route path="pickup-verify" element={<VolunteerPickupVerification />} />
-        <Route path="delivery-verify" element={<VolunteerDeliveryVerification />} />
+        <Route path="pickup-verify" element={<VolunteerPickup />} />
+        <Route path="pickup" element={<VolunteerPickup />} />
+        <Route path="delivery-verify" element={<VolunteerDelivery />} />
+        <Route path="delivery" element={<VolunteerDelivery />} />
         <Route path="notifications" element={<VolunteerNotifications />} />
         <Route path="impact" element={<VolunteerImpact />} />
         <Route path="profile" element={<VolunteerProfile />} />

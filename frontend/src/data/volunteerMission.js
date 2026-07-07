@@ -58,7 +58,7 @@ export const MISSION_STATE_ACTIONS = {
     label: "Verify Pickup",
     next: MISSION_STATES.PICKUP_VERIFIED,
     type: "navigate",
-    to: "/dashboard/volunteer/pickup-verify",
+    to: "/dashboard/volunteer/pickup",
   },
   [MISSION_STATES.PICKUP_VERIFIED]: {
     label: "Confirm Collection",
@@ -79,7 +79,7 @@ export const MISSION_STATE_ACTIONS = {
     label: "Confirm Handover",
     next: MISSION_STATES.HANDOVER_CONFIRMED,
     type: "navigate",
-    to: "/dashboard/volunteer/delivery-verify",
+    to: "/dashboard/volunteer/delivery",
   },
   [MISSION_STATES.HANDOVER_CONFIRMED]: {
     label: "Complete Mission",

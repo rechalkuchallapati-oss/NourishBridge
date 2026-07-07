@@ -3,30 +3,39 @@ import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { DASHBOARD_IMPACT_HIGHLIGHTS } from "../../data/volunteerImpactMetrics";
 import VolunteerImpactMetricsGrid from "./VolunteerImpactMetricsGrid";
 import VolunteerPerformanceChart from "./VolunteerPerformanceChart";
-import { volunteerInteractive, VOLUNTEER_SECTION_PAD, VOLUNTEER_STACK_GAP } from "./volunteerDashboardStyles";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "./VolunteerSectionShell";
+import {
+  volunteerInteractive,
+  VOLUNTEER_CONTENT_STACK,
+  VOLUNTEER_INSET_LINE_GAP,
+} from "./volunteerDashboardStyles";
 
 export default function VolunteerDashboardImpactPanel() {
   return (
-    <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
-      <div className="flex items-center justify-between gap-[0.5cm]">
-        <div>
-          <h2 className="text-sm font-bold text-[#0F172A] sm:text-base">My Impact</h2>
-          <p className="mt-[0.2cm] text-[11px] text-[#64748B]">
-            Top scores and weekly delivery trend.
-          </p>
+    <VolunteerSectionShell>
+      <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
+        <div className="min-w-0 flex-1 pr-[1.5cm]">
+          <VolunteerSectionTitle
+            title="My Impact"
+            subtitle="Top scores and weekly delivery trend."
+            theme="emerald"
+          />
         </div>
         <Link
           to={DASHBOARD_ROUTES.volunteerImpact}
-          className={["text-xs font-semibold text-[#16A34A]", volunteerInteractive.link].join(" ")}
+          className={[
+            "shrink-0 text-xs font-semibold text-[#16A34A]",
+            volunteerInteractive.link,
+          ].join(" ")}
         >
           View all
         </Link>
       </div>
 
-      <div className={`mt-[0.5cm] ${VOLUNTEER_STACK_GAP}`}>
+      <div className={VOLUNTEER_CONTENT_STACK}>
         <VolunteerImpactMetricsGrid metrics={DASHBOARD_IMPACT_HIGHLIGHTS} compact />
         <VolunteerPerformanceChart compact />
       </div>
-    </section>
+    </VolunteerSectionShell>
   );
 }

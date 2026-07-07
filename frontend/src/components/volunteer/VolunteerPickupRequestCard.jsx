@@ -1,15 +1,23 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaLocationArrow, FaMapMarkerAlt, FaRoute } from "react-icons/fa";
+import DonationProofThumbnail from "../common/DonationProofThumbnail";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { getPackagingLabel } from "../../data/donationThumbnails";
-import { volunteerInteractive, VOLUNTEER_SECTION_PAD } from "./volunteerDashboardStyles";
-import DonationItemsList from "../common/DonationItemsList";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BODY,
+  VOLUNTEER_BTN,
+  VOLUNTEER_H2,
+  VOLUNTEER_LABEL,
+  VOLUNTEER_GRID_GAP,
+  VOLUNTEER_LINE_GAP,
+  VOLUNTEER_SECTION_PAD,
+} from "./volunteerDashboardStyles";
 import EventTypeBadge from "../common/EventTypeBadge";
 
 export default function VolunteerPickupRequestCard({
   pickup,
-  foodImage,
   onAccept,
   disabled,
   index = 0,
@@ -26,62 +34,70 @@ export default function VolunteerPickupRequestCard({
       ].join(" ")}
     >
       <div className="flex gap-[0.5cm]">
-        <div className="h-20 w-20 shrink-0 overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
-          <img src={foodImage} alt={pickup.foodName} className="h-full w-full object-cover" />
+        <div className="h-[196px] w-[156px] shrink-0 overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+          <DonationProofThumbnail record={pickup} />
         </div>
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-sm font-bold text-[#0F172A] sm:text-base">{pickup.foodName}</h3>
+            <h3 className={VOLUNTEER_H2}>{pickup.foodName}</h3>
             <EventTypeBadge eventType={pickup.eventType} />
           </div>
           {pickup.eventName ? (
-            <p className="mt-0.5 text-[11px] font-medium text-[#64748B]">{pickup.eventName}</p>
+            <p className={`${VOLUNTEER_LINE_GAP} ${VOLUNTEER_BODY}`}>
+              {pickup.eventName}
+            </p>
           ) : null}
-          <DonationItemsList record={pickup} className="mt-2" maxItems={4} />
           {getPackagingLabel(pickup) ? (
-            <p className="mt-1 text-[10px] font-medium text-[#94A3B8]">{getPackagingLabel(pickup)}</p>
+            <p className={`${VOLUNTEER_LINE_GAP} text-sm font-medium text-[#94A3B8]`}>
+              {getPackagingLabel(pickup)}
+            </p>
           ) : null}
-          <p className="mt-1 text-xs font-semibold text-[#64748B]">
+          <p className={`${VOLUNTEER_LINE_GAP} text-base font-semibold text-[#64748B]`}>
             ~{pickup.estimatedMeals} meals · {pickup.quantity}
           </p>
 
-          <p className="mt-3 text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">
-            Pick before
+          <p className={`${VOLUNTEER_LINE_GAP} ${VOLUNTEER_LABEL}`}>Pick before</p>
+          <p className={`${VOLUNTEER_LINE_GAP} text-base font-bold text-[#0F172A]`}>
+            {pickup.pickupDeadline}
           </p>
-          <p className="text-sm font-bold text-[#0F172A]">{pickup.pickupDeadline}</p>
         </div>
       </div>
 
-      <div className="mt-[0.5cm] grid gap-[0.5cm] border-t border-[#F1F5F9] pt-[0.5cm] sm:grid-cols-2">
+      <div className={`${VOLUNTEER_LINE_GAP} grid ${VOLUNTEER_GRID_GAP} sm:grid-cols-2`}>
         <div>
-          <p className="flex items-start gap-1.5 text-xs text-[#64748B]">
+          <p className="flex items-start gap-1.5 text-sm text-[#64748B]">
             <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#16A34A]" aria-hidden="true" />
             <span>
               <span className="block font-semibold text-[#0F172A]">{pickup.donorName}</span>
               {pickup.pickupAddress}
             </span>
           </p>
-          <p className="mt-2 text-[11px] font-semibold text-[#15803D]">
+          <p className={`${VOLUNTEER_LINE_GAP} text-sm font-semibold text-[#15803D]`}>
             {pickup.pickupDistanceKm} km away from you
           </p>
         </div>
 
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">Deliver to</p>
-          <p className="mt-1 text-xs font-semibold text-[#0F172A]">{pickup.ngoName}</p>
-          <p className="mt-0.5 text-[11px] text-[#64748B]">{pickup.ngoAddress}</p>
-          <p className="mt-2 text-[11px] font-semibold text-[#2563EB]">
-            {pickup.journeyDistanceKm} km from pickup to delivery
+          <p className={VOLUNTEER_LABEL}>Nearest verified NGO</p>
+          <p className={`${VOLUNTEER_LINE_GAP} text-base font-semibold text-[#0F172A]`}>
+            {pickup.ngoName}
+          </p>
+          <p className={`${VOLUNTEER_LINE_GAP} text-base leading-relaxed text-[#64748B]`}>
+            {pickup.ngoAddress}
+          </p>
+          <p className={`${VOLUNTEER_LINE_GAP} text-sm font-semibold text-[#15803D]`}>
+            {pickup.ngoDistanceKm ?? pickup.journeyDistanceKm} km from pickup · nearest match
           </p>
         </div>
       </div>
 
-      <div className="mt-[0.5cm] flex flex-wrap gap-[0.5cm]">
+      <div className={`${VOLUNTEER_LINE_GAP} flex flex-wrap ${VOLUNTEER_GRID_GAP}`}>
         <Link
           to={DASHBOARD_ROUTES.volunteerRoute}
           className={[
-            "inline-flex flex-1 items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-xs font-semibold text-[#475569] sm:flex-none sm:min-w-[140px]",
+            VOLUNTEER_BTN,
+            "flex-1 border border-[#E5E7EB] bg-white text-[#475569] sm:flex-none sm:min-w-[180px]",
             volunteerInteractive.buttonOutline,
           ].join(" ")}
         >
@@ -93,7 +109,8 @@ export default function VolunteerPickupRequestCard({
           disabled={disabled}
           onClick={() => onAccept(pickup)}
           className={[
-            "inline-flex flex-1 items-center justify-center gap-2 rounded-none bg-[#16A34A] px-3 py-2.5 text-xs font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none sm:min-w-[160px]",
+            VOLUNTEER_BTN,
+            "flex-1 bg-[#16A34A] text-white disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none sm:min-w-[200px]",
             volunteerInteractive.button,
           ].join(" ")}
         >
