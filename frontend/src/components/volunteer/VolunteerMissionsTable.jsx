@@ -6,7 +6,6 @@ import {
   DONATION_THUMBNAILS,
   resolveItemThumbnail,
 } from "../../data/donationThumbnails";
-import { resolveThumbnailKeyFromName } from "../../data/foodItemThumbnails";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import EventTypeBadge from "../common/EventTypeBadge";
 import {
@@ -15,7 +14,7 @@ import {
 } from "../../data/volunteerMissionHistory";
 import {
   volunteerInteractive,
-  VOLUNTEER_BTN_COMPACT,
+  VOLUNTEER_BTN,
   VOLUNTEER_CONTENT_STACK,
   VOLUNTEER_INSET_LINE_GAP,
 } from "./volunteerDashboardStyles";
@@ -35,30 +34,11 @@ const TH_CLASS =
 
 const TD_CLASS = "px-4 py-4 align-top text-sm leading-relaxed";
 
-const FOOD_IMAGE_FALLBACKS = {
-  bread_and_sandwiches: DONATION_THUMBNAILS.assorted_bread_loaves,
-  bread_sandwiches: DONATION_THUMBNAILS.assorted_bread_loaves,
-  rice_and_curry: DONATION_THUMBNAILS.restaurant_mixed_bulk,
-  rice_curry: DONATION_THUMBNAILS.restaurant_mixed_bulk,
-};
+const FOOD_IMAGE_FALLBACK = DONATION_THUMBNAILS.individual_snacks;
 
-function resolveThumbnailKey(item, mission) {
-  return (
-    item?.thumbnailKey ??
-    mission?.thumbnailKey ??
-    resolveThumbnailKeyFromName(item?.name) ??
-    resolveThumbnailKeyFromName(mission?.foodName)
-  );
-}
-
-function getExpandableFoodImage(item, mission) {
+function getExpandableFoodImage(item) {
   if (item?.imageSrc) return item.imageSrc;
-  const key = resolveThumbnailKey(item, mission);
-  if (key && DONATION_THUMBNAILS[key]) return DONATION_THUMBNAILS[key];
-  const resolved = resolveItemThumbnail(item);
-  if (resolved) return resolved;
-  if (key && FOOD_IMAGE_FALLBACKS[key]) return FOOD_IMAGE_FALLBACKS[key];
-  return null;
+  return resolveItemThumbnail(item);
 }
 
 function ExpandableColumnHeader({ children }) {
@@ -71,11 +51,7 @@ function ExpandableColumnHeader({ children }) {
 
 function FoodItemExpandable({ item, mission }) {
   const [open, setOpen] = useState(false);
-  const thumbnailKey = resolveThumbnailKey(item, mission);
-  const primaryImage = getExpandableFoodImage(item, mission);
-  const fallbackImage =
-    (thumbnailKey && FOOD_IMAGE_FALLBACKS[thumbnailKey]) ||
-    DONATION_THUMBNAILS.individual_snacks;
+  const primaryImage = getExpandableFoodImage(item);
   const [imageSrc, setImageSrc] = useState(primaryImage);
   const isDelivered = mission.deliveryStatus === "delivered";
 
@@ -133,8 +109,8 @@ function FoodItemExpandable({ item, mission }) {
                       alt={item.name}
                       className="h-28 w-full max-w-[140px] rounded-none border border-[#E5E7EB] object-cover"
                       onError={() => {
-                        if (fallbackImage && imageSrc !== fallbackImage) {
-                          setImageSrc(fallbackImage);
+                        if (FOOD_IMAGE_FALLBACK && imageSrc !== FOOD_IMAGE_FALLBACK) {
+                          setImageSrc(FOOD_IMAGE_FALLBACK);
                         }
                       }}
                     />
@@ -214,7 +190,7 @@ function MissionAction({ mission }) {
       <Link
         to={DASHBOARD_ROUTES.volunteerPickups}
         className={[
-          VOLUNTEER_BTN_COMPACT,
+          VOLUNTEER_BTN,
           "inline-flex whitespace-nowrap bg-[#16A34A] text-white",
           volunteerInteractive.button,
         ].join(" ")}
@@ -229,7 +205,7 @@ function MissionAction({ mission }) {
       <Link
         to={DASHBOARD_ROUTES.volunteerActive}
         className={[
-          VOLUNTEER_BTN_COMPACT,
+          VOLUNTEER_BTN,
           "inline-flex whitespace-nowrap bg-[#2563EB] text-white",
           volunteerInteractive.button,
         ].join(" ")}
@@ -243,7 +219,7 @@ function MissionAction({ mission }) {
     <Link
       to={DASHBOARD_ROUTES.volunteerMissions}
       className={[
-        VOLUNTEER_BTN_COMPACT,
+        VOLUNTEER_BTN,
         "inline-flex whitespace-nowrap border border-[#E5E7EB] bg-white text-[#475569]",
         volunteerInteractive.buttonOutline,
       ].join(" ")}

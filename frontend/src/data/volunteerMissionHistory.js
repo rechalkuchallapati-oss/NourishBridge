@@ -10,11 +10,7 @@ function computeTotalLoad(mission) {
 
 function enrichMissionItems(mission) {
   const items = (mission.items ?? []).map((item) => {
-    const thumbnailKey =
-      item.thumbnailKey ??
-      mission.thumbnailKey ??
-      resolveThumbnailKeyFromName(item.name) ??
-      resolveThumbnailKeyFromName(mission.foodName);
+    const thumbnailKey = item.thumbnailKey ?? resolveThumbnailKeyFromName(item.name);
     const enrichedItem = { ...item, thumbnailKey };
     return {
       ...enrichedItem,

@@ -53,7 +53,7 @@ function NavLink({ item, isActive }) {
     <Link
       to={item.to}
       className={[
-        "flex items-center gap-3 rounded-none px-4 py-2.5 transition-colors duration-200",
+        "flex items-center gap-3 rounded-none px-5 py-3 transition-colors duration-200",
         item.emphasized ? "text-base font-semibold" : "text-sm font-medium",
         isActive
           ? "bg-[#F0FDF4] text-[#15803D]"

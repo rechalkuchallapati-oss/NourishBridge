@@ -7,6 +7,11 @@ import {
 } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import DonationProofThumbnail from "../common/DonationProofThumbnail";
+import { volunteerInteractive, VOLUNTEER_BTN } from "./volunteerDashboardStyles";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BTN,
+} from "./volunteerDashboardStyles";
 
 export default function CurrentMissionPanel({
   mission,
@@ -90,7 +95,11 @@ export default function CurrentMissionPanel({
         <div className={`mt-4 flex flex-col gap-2 ${compact ? "" : "sm:flex-row"}`}>
           <Link
             to={DASHBOARD_ROUTES.volunteerRoute}
-            className="inline-flex items-center justify-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-xs font-semibold text-[#64748B] hover:border-[#16A34A]/30"
+            className={[
+              VOLUNTEER_BTN,
+              "flex-1 border border-[#E5E7EB] bg-white text-[#64748B]",
+              volunteerInteractive.buttonOutline,
+            ].join(" ")}
           >
             <FaLocationArrow aria-hidden="true" />
             Open Navigation
@@ -98,7 +107,7 @@ export default function CurrentMissionPanel({
           <button
             type="button"
             onClick={handlePrimaryAction}
-            className="rounded-none bg-[#16A34A] px-3 py-2 text-xs font-semibold text-white hover:bg-[#15803D]"
+            className={[VOLUNTEER_BTN, "flex-1 bg-[#16A34A] text-white", volunteerInteractive.button].join(" ")}
           >
             {action.label}
           </button>
@@ -143,10 +152,14 @@ export function AvailablePickupCard({ pickup, onAccept, disabled }) {
             Journey: <strong className="text-[#0F172A]">{pickup.journeyDistanceKm} km</strong>
           </p>
 
-          <div className="mt-2 flex flex-wrap gap-2">
+          <div className="mt-2 flex flex-wrap gap-[0.5cm]">
             <Link
               to={DASHBOARD_ROUTES.volunteerRoute}
-              className="rounded-none border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold text-[#64748B] hover:border-[#16A34A]/30"
+              className={[
+                VOLUNTEER_BTN,
+                "border border-[#E5E7EB] bg-white text-[#64748B]",
+                volunteerInteractive.buttonOutline,
+              ].join(" ")}
             >
               View Route
             </Link>
@@ -154,7 +167,11 @@ export function AvailablePickupCard({ pickup, onAccept, disabled }) {
               type="button"
               disabled={disabled}
               onClick={() => onAccept(pickup)}
-              className="rounded-none bg-[#16A34A] px-3 py-1.5 text-[10px] font-semibold text-white hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-50"
+              className={[
+                VOLUNTEER_BTN,
+                "bg-[#16A34A] text-white disabled:cursor-not-allowed disabled:opacity-50",
+                volunteerInteractive.button,
+              ].join(" ")}
             >
               Accept Mission
             </button>

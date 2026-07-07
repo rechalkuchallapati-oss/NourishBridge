@@ -17,10 +17,11 @@ export const VOLUNTEER_H2 = "text-lg font-bold leading-snug text-[#0F172A] sm:te
 export const VOLUNTEER_BODY = "text-base leading-relaxed text-[#64748B]";
 export const VOLUNTEER_LABEL =
   "text-xs font-bold uppercase tracking-wide text-[#94A3B8]";
+/** Medium action button — balanced padding so label text never touches edges. */
 export const VOLUNTEER_BTN =
-  "inline-flex items-center justify-center gap-3 rounded-none px-8 py-5 text-lg font-semibold leading-snug whitespace-normal text-center min-h-[64px] sm:min-h-[68px]";
-export const VOLUNTEER_BTN_COMPACT =
-  "inline-flex items-center justify-center gap-2 rounded-none px-5 py-3 text-sm font-semibold leading-snug whitespace-normal text-center min-h-[48px]";
+  "inline-flex items-center justify-center gap-2.5 rounded-none px-6 py-3.5 text-sm font-semibold leading-normal tracking-normal whitespace-normal text-center min-h-[46px]";
+/** @deprecated use VOLUNTEER_BTN — kept for imports; same medium size everywhere. */
+export const VOLUNTEER_BTN_COMPACT = VOLUNTEER_BTN;
 
 export const volunteerInteractive = {
   card:

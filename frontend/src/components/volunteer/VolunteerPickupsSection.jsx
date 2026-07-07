@@ -8,6 +8,7 @@ import VolunteerPickupRequestCard from "./VolunteerPickupRequestCard";
 import VolunteerSectionShell, { VolunteerSectionTitle } from "./VolunteerSectionShell";
 import {
   volunteerInteractive,
+  VOLUNTEER_BTN,
   VOLUNTEER_CONTENT_STACK,
   VOLUNTEER_INSET_LINE_GAP,
 } from "./volunteerDashboardStyles";
@@ -44,8 +45,9 @@ export default function VolunteerPickupsSection({
             type="button"
             onClick={() => setShowAll((prev) => !prev)}
             className={[
-              "inline-flex items-center gap-1 text-xs font-semibold text-[#16A34A]",
-              volunteerInteractive.link,
+              VOLUNTEER_BTN,
+              "shrink-0 border border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]",
+              volunteerInteractive.buttonOutline,
             ].join(" ")}
           >
             {showAll ? "Show less" : "View all"}
@@ -56,7 +58,11 @@ export default function VolunteerPickupsSection({
         ) : (
           <Link
             to={DASHBOARD_ROUTES.volunteerPickups}
-            className={["text-xs font-semibold text-[#16A34A]", volunteerInteractive.link].join(" ")}
+            className={[
+              VOLUNTEER_BTN,
+              "shrink-0 border border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]",
+              volunteerInteractive.buttonOutline,
+            ].join(" ")}
           >
             View all
           </Link>

@@ -9,6 +9,7 @@ import {
   getVolunteerProfile,
   saveVolunteerProfile,
 } from "../../utils/authStorage";
+import { volunteerInteractive, VOLUNTEER_BTN } from "../volunteer/volunteerDashboardStyles";
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
 
@@ -139,7 +140,11 @@ export default function VolunteerAccountMenu() {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex w-full items-center justify-center gap-2 rounded-none border-2 border-[#16A34A] bg-[#F0FDF4] px-3 py-2.5 text-xs font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]"
+              className={[
+                VOLUNTEER_BTN,
+                "w-full border-2 border-[#16A34A] bg-[#F0FDF4] text-[#15803D]",
+                volunteerInteractive.buttonOutline,
+              ].join(" ")}
             >
               <FaCamera aria-hidden="true" />
               Upload from gallery
@@ -152,7 +157,11 @@ export default function VolunteerAccountMenu() {
           <Link
             to={DASHBOARD_ROUTES.volunteerProfile}
             onClick={closeMenu}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-none border border-[#E5E7EB] px-3 py-2 text-xs font-semibold text-[#64748B] hover:border-[#BBF7D0] hover:text-[#15803D]"
+            className={[
+              VOLUNTEER_BTN,
+              "mt-3 w-full border border-[#E5E7EB] bg-white text-[#64748B]",
+              volunteerInteractive.buttonOutline,
+            ].join(" ")}
           >
             <FaUser aria-hidden="true" />
             View Profile

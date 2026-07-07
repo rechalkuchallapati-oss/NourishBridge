@@ -246,7 +246,17 @@ export default function MissionWorkflowPanel({
 
     if (action.type === "navigate" && action.to) {
 
-      navigate(action.to);
+      if (action.next) {
+
+        const navTo = onAdvance?.(action.next);
+
+        navigate(navTo ?? action.to);
+
+      } else {
+
+        navigate(action.to);
+
+      }
 
       return;
 
@@ -264,7 +274,9 @@ export default function MissionWorkflowPanel({
 
 
 
-    onAdvance?.(action.next);
+    const navTo = onAdvance?.(action.next);
+
+    if (navTo) navigate(navTo);
 
   };
 
@@ -272,7 +284,9 @@ export default function MissionWorkflowPanel({
 
   const handleArrivedAtDonor = () => {
 
-    onAdvance?.(MISSION_STATES.ARRIVED_AT_DONOR);
+    const navTo = onAdvance?.(MISSION_STATES.ARRIVED_AT_DONOR);
+
+    if (navTo) navigate(navTo);
 
   };
 
@@ -422,7 +436,7 @@ export default function MissionWorkflowPanel({
 
           >
 
-            <FaLocationArrow className="text-xl" aria-hidden="true" />
+            <FaLocationArrow className="shrink-0 text-sm" aria-hidden="true" />
 
             Open Navigation
 
@@ -448,7 +462,7 @@ export default function MissionWorkflowPanel({
 
             >
 
-              <FaMapMarkerAlt className="text-xl" aria-hidden="true" />
+              <FaMapMarkerAlt className="shrink-0 text-sm" aria-hidden="true" />
 
               I Have Arrived at Donor
 

@@ -101,6 +101,28 @@ export function VolunteerSectionTitle({
   );
 }
 
+export function VolunteerSubsection({
+  title,
+  subtitle,
+  icon,
+  theme = "green",
+  children,
+  className = "",
+}) {
+  return (
+    <section className={["flex flex-col gap-[0.5cm]", className].join(" ")}>
+      <VolunteerSectionTitle
+        title={title}
+        subtitle={subtitle}
+        icon={icon}
+        theme={theme}
+        compact
+      />
+      {children}
+    </section>
+  );
+}
+
 export default function VolunteerSectionShell({
   children,
   className = "",

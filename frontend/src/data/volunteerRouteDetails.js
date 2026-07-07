@@ -137,7 +137,7 @@ function getRouteDelayStatus(status) {
   if (status === MISSION_STATES.ARRIVED_AT_NGO) {
     return {
       label: "At destination",
-      detail: "Proceed to handover on Delivery page",
+      detail: "Confirm delivery to NGO to complete this mission",
       severity: "good",
     };
   }
@@ -166,7 +166,7 @@ function getPrimaryRouteAction(status) {
       return {
         label: "I've Arrived at Donor",
         next: MISSION_STATES.ARRIVED_AT_DONOR,
-        navigateTo: null,
+        navigateTo: "/dashboard/volunteer/pickup",
       };
     case MISSION_STATES.ARRIVED_AT_DONOR:
     case MISSION_STATES.PICKUP_VERIFIED:
@@ -189,9 +189,10 @@ function getPrimaryRouteAction(status) {
       };
     case MISSION_STATES.ARRIVED_AT_NGO:
       return {
-        label: "Open Handover",
-        next: null,
-        navigateTo: "/dashboard/volunteer/delivery",
+        label: "Confirm Delivery to NGO",
+        next: MISSION_STATES.HANDOVER_CONFIRMED,
+        navigateTo: null,
+        completesMission: true,
       };
     default:
       return {

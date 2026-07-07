@@ -1,5 +1,7 @@
 import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaClipboardList } from "react-icons/fa";
+import MissionSuccessModal from "../../components/volunteer/MissionSuccessModal";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import VolunteerMissionsTable from "../../components/volunteer/VolunteerMissionsTable";
 import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
@@ -12,6 +14,7 @@ import {
   VOLUNTEER_CONTENT_STACK,
   VOLUNTEER_PAGE_SECTION_GAP,
 } from "../../components/volunteer/volunteerDashboardStyles";
+import { DASHBOARD_ROUTES } from "../../constants/routes";
 
 function mapRecentMission(m) {
   return {
@@ -63,7 +66,9 @@ function dedupeMissions(missions) {
 }
 
 export default function VolunteerMyMissions() {
-  const { recentMissions } = useVolunteerMissionContext();
+  const navigate = useNavigate();
+  const { recentMissions, completionCelebration, clearCompletionCelebration } =
+    useVolunteerMissionContext();
 
   const tableRows = useMemo(() => {
     const historyIds = new Set(COMPLETED_MISSIONS_HISTORY.map((m) => m.id));
@@ -112,6 +117,14 @@ export default function VolunteerMyMissions() {
 
         <VolunteerMissionsTable rows={tableRows} />
       </VolunteerSectionShell>
+
+      <MissionSuccessModal
+        mission={completionCelebration}
+        onClose={() => {
+          clearCompletionCelebration();
+          navigate(DASHBOARD_ROUTES.volunteerMissions);
+        }}
+      />
     </div>
   );
 }

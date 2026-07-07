@@ -1,4 +1,8 @@
+import { motion } from "framer-motion";
+import { FaUtensils } from "react-icons/fa";
 import { FOOD_RESCUE_BREAKDOWN } from "../../../data/volunteerImpactPageData";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../VolunteerSectionShell";
+import { VOLUNTEER_CONTENT_STACK } from "../volunteerDashboardStyles";
 
 export default function VolunteerFoodRescueBreakdownChart() {
   const totalKg = FOOD_RESCUE_BREAKDOWN.reduce((sum, item) => sum + item.kg, 0);
@@ -11,15 +15,18 @@ export default function VolunteerFoodRescueBreakdownChart() {
   });
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
-      <h2 className="text-sm font-bold text-[#0F172A]">Food Rescue Breakdown</h2>
-      <p className="mt-1 text-[10px] text-[#64748B]">
-        Categories of food rescued by weight ({totalKg} kg total).
-      </p>
+    <VolunteerSectionShell>
+      <VolunteerSectionTitle
+        title="Food Rescue Breakdown"
+        subtitle={`Categories of food rescued by weight (${totalKg} kg total).`}
+        theme="amber"
+        icon={FaUtensils}
+        compact
+      />
 
-      <div className="mt-[0.5cm] flex flex-col gap-[0.5cm] lg:flex-row lg:items-center">
+      <div className={`flex flex-col ${VOLUNTEER_CONTENT_STACK} lg:flex-row lg:items-center`}>
         <div className="flex shrink-0 justify-center">
-          <svg viewBox="0 0 120 120" className="h-36 w-36" role="img" aria-label="Food rescue breakdown chart">
+          <svg viewBox="0 0 120 120" className="h-40 w-40" role="img" aria-label="Food rescue breakdown chart">
             {segments.map((segment) => {
               const startAngle = (segment.start / 100) * 360 - 90;
               const endAngle = (segment.end / 100) * 360 - 90;
@@ -44,11 +51,15 @@ export default function VolunteerFoodRescueBreakdownChart() {
           </svg>
         </div>
 
-        <ul className="grid flex-1 gap-2 sm:grid-cols-2">
-          {FOOD_RESCUE_BREAKDOWN.map((item) => (
-            <li
+        <ul className={`grid flex-1 ${VOLUNTEER_CONTENT_STACK} sm:grid-cols-2`}>
+          {FOOD_RESCUE_BREAKDOWN.map((item, index) => (
+            <motion.li
               key={item.id}
-              className="flex items-center gap-2 rounded-none border border-[#F1F5F9] bg-[#FAFAFA] px-3 py-2"
+              initial={{ opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.04 }}
+              whileHover={{ scale: 1.02, x: 4 }}
+              className="flex items-center gap-[0.5cm] rounded-none border border-[#F1F5F9] bg-[#FAFAFA] px-[0.5cm] py-[0.4cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]"
             >
               <span
                 className="h-3 w-3 shrink-0 rounded-sm"
@@ -56,15 +67,15 @@ export default function VolunteerFoodRescueBreakdownChart() {
                 aria-hidden="true"
               />
               <div className="min-w-0 flex-1">
-                <p className="text-[11px] font-semibold text-[#0F172A]">{item.label}</p>
-                <p className="text-[10px] text-[#64748B]">
+                <p className="text-sm font-semibold text-[#0F172A]">{item.label}</p>
+                <p className="mt-[0.5cm] text-xs text-[#64748B]">
                   {item.kg} kg · {item.share}%
                 </p>
               </div>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>
-    </section>
+    </VolunteerSectionShell>
   );
 }

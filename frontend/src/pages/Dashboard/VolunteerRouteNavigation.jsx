@@ -25,9 +25,8 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 
 import VolunteerLiveRouteMap from "../../components/volunteer/VolunteerLiveRouteMap";
-
+import MissionSuccessModal from "../../components/volunteer/MissionSuccessModal";
 import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
-
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 
 import {
@@ -49,8 +48,6 @@ import {
   volunteerInteractive,
 
   VOLUNTEER_BTN,
-
-  VOLUNTEER_BTN_COMPACT,
 
   VOLUNTEER_CONTENT_STACK,
 
@@ -102,7 +99,7 @@ function RouteProgressTimeline({ currentIndex }) {
 
                     : isCurrent
 
-                      ? "border-[#2563EB] bg-white text-[#2563EB] shadow-[0_0_0_3px_rgba(37,99,235,0.15)]"
+                      ? "border-[#16A34A] bg-white text-[#15803D] shadow-[0_0_0_3px_rgba(22,163,74,0.15)]"
 
                       : "border-[#CBD5E1] bg-[#F1F5F9] text-[#94A3B8]",
 
@@ -176,7 +173,13 @@ export default function VolunteerRouteNavigation() {
 
   const navigate = useNavigate();
 
-  const { activeMission, setMissionStatus } = useVolunteerMissionContext();
+  const {
+    activeMission,
+    transitionMissionStatus,
+    completeMission,
+    completionCelebration,
+    clearCompletionCelebration,
+  } = useVolunteerMissionContext();
 
   const route = getRouteContext(activeMission);
 
@@ -214,7 +217,31 @@ export default function VolunteerRouteNavigation() {
 
 
 
+    if (primaryAction.completesMission) {
+
+      if (primaryAction.next) {
+
+        transitionMissionStatus(primaryAction.next);
+
+      }
+
+      completeMission();
+
+      toast.success("Delivery confirmed — mission accomplished!");
+
+      return;
+
+    }
+
+
+
     if (primaryAction.navigateTo) {
+
+      if (primaryAction.next) {
+
+        transitionMissionStatus(primaryAction.next);
+
+      }
 
       navigate(primaryAction.navigateTo);
 
@@ -226,11 +253,23 @@ export default function VolunteerRouteNavigation() {
 
     if (primaryAction.next) {
 
-      setMissionStatus(primaryAction.next);
+      const navTo = transitionMissionStatus(primaryAction.next);
 
       toast.success("Route status updated.");
 
+      if (navTo) navigate(navTo);
+
     }
+
+  };
+
+
+
+  const handleCloseCelebration = () => {
+
+    clearCompletionCelebration();
+
+    navigate(DASHBOARD_ROUTES.volunteerMissions);
 
   };
 
@@ -244,7 +283,7 @@ export default function VolunteerRouteNavigation() {
 
         <Toaster position="top-center" />
 
-        <VolunteerSectionShell accent="blue">
+        <VolunteerSectionShell accent="green">
 
           <VolunteerSectionTitle
 
@@ -254,7 +293,7 @@ export default function VolunteerRouteNavigation() {
 
             subtitle="Accept an active mission to view live route, ETA, and navigation."
 
-            theme="blue"
+            theme="green"
 
             icon={FaRoute}
 
@@ -268,7 +307,7 @@ export default function VolunteerRouteNavigation() {
 
               VOLUNTEER_BTN,
 
-              "inline-flex bg-[#2563EB] text-white",
+              "inline-flex bg-[#16A34A] text-white",
 
               volunteerInteractive.button,
 
@@ -304,7 +343,7 @@ export default function VolunteerRouteNavigation() {
 
       <div className={VOLUNTEER_PAGE_SECTION_GAP}>
 
-        <VolunteerSectionShell accent="blue">
+        <VolunteerSectionShell accent="green">
 
           <VolunteerSectionTitle
 
@@ -314,7 +353,7 @@ export default function VolunteerRouteNavigation() {
 
             subtitle={`${route.stageLabel} — live movement screen with pickup verification and NGO handover on their own pages.`}
 
-            theme="blue"
+            theme="green"
 
             icon={FaRoute}
 
@@ -324,7 +363,7 @@ export default function VolunteerRouteNavigation() {
 
 
 
-        <section className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(37,99,235,0.08)]">
+        <section className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(22,163,74,0.08)]">
 
           <div className="grid lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px]">
 
@@ -350,7 +389,7 @@ export default function VolunteerRouteNavigation() {
 
                 title="Next Destination"
 
-                theme="blue"
+                theme="green"
 
                 icon={FaMapMarkerAlt}
 
@@ -372,7 +411,7 @@ export default function VolunteerRouteNavigation() {
 
               <p className="flex items-start gap-1.5 text-sm leading-relaxed text-[#64748B]">
 
-                <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#2563EB]" aria-hidden="true" />
+                <FaMapMarkerAlt className="mt-0.5 shrink-0 text-[#16A34A]" aria-hidden="true" />
 
                 {dest.address}
 
@@ -398,7 +437,7 @@ export default function VolunteerRouteNavigation() {
 
                   <dt className="text-xs font-bold uppercase tracking-wide text-[#94A3B8]">ETA</dt>
 
-                  <dd className={`${VOLUNTEER_INSET_LINE_GAP} text-2xl font-extrabold text-[#2563EB]`}>
+                  <dd className={`${VOLUNTEER_INSET_LINE_GAP} text-2xl font-extrabold text-[#16A34A]`}>
 
                     {dest.eta}
 
@@ -438,7 +477,7 @@ export default function VolunteerRouteNavigation() {
 
                   VOLUNTEER_BTN,
 
-                  "mt-auto w-full bg-[#2563EB] text-white",
+                  "mt-auto w-full bg-[#16A34A] text-white",
 
                   volunteerInteractive.button,
 
@@ -446,7 +485,7 @@ export default function VolunteerRouteNavigation() {
 
               >
 
-                <FaLocationArrow className="text-xl" aria-hidden="true" />
+                <FaLocationArrow className="shrink-0 text-sm" aria-hidden="true" />
 
                 Open Navigation
 
@@ -460,7 +499,7 @@ export default function VolunteerRouteNavigation() {
 
 
 
-        <VolunteerSectionShell accent="blue">
+        <VolunteerSectionShell accent="green">
 
           <VolunteerSectionTitle
 
@@ -468,7 +507,7 @@ export default function VolunteerRouteNavigation() {
 
             subtitle={`Current stage: ${route.statusLabel}`}
 
-            theme="blue"
+            theme="green"
 
             icon={FaRoute}
 
@@ -484,7 +523,7 @@ export default function VolunteerRouteNavigation() {
 
         <div className={`grid ${VOLUNTEER_CONTENT_STACK} lg:grid-cols-2`}>
 
-          <VolunteerSectionShell accent="blue">
+          <VolunteerSectionShell accent="green">
 
             <VolunteerSectionTitle title="Transport Requirements" theme="emerald" icon={FaTruck} compact />
 
@@ -514,7 +553,7 @@ export default function VolunteerRouteNavigation() {
 
 
 
-          <VolunteerSectionShell accent="blue">
+          <VolunteerSectionShell accent="green">
 
             <VolunteerSectionTitle title="Route / Delay Status" theme="amber" icon={FaClock} compact />
 
@@ -590,7 +629,7 @@ export default function VolunteerRouteNavigation() {
 
                   className={[
 
-                    VOLUNTEER_BTN_COMPACT,
+                    VOLUNTEER_BTN,
 
                     reportedIssues[issue.id]
 
@@ -642,7 +681,7 @@ export default function VolunteerRouteNavigation() {
 
           >
 
-            <FaExclamationTriangle className="text-xl" aria-hidden="true" />
+            <FaExclamationTriangle className="shrink-0 text-sm" aria-hidden="true" />
 
             Report Issue
 
@@ -666,7 +705,7 @@ export default function VolunteerRouteNavigation() {
 
           >
 
-            <FaMapMarkerAlt className="text-xl" aria-hidden="true" />
+            <FaMapMarkerAlt className="shrink-0 text-sm" aria-hidden="true" />
 
             {route.primaryAction.label}
 
@@ -675,6 +714,8 @@ export default function VolunteerRouteNavigation() {
         </div>
 
       </div>
+
+      <MissionSuccessModal mission={completionCelebration} onClose={handleCloseCelebration} />
 
     </>
 

@@ -3,10 +3,10 @@ import { VOLUNTEER_IMPACT } from "./volunteerMission";
 /** Top-level hero stats for the My Impact page. */
 export const IMPACT_HERO_STATS = [
   {
-    id: "food_rescued",
-    label: "Food Rescued",
-    displayValue: `${VOLUNTEER_IMPACT.foodRescuedKg} kg`,
-    description: "Surplus food diverted from waste",
+    id: "missions_accomplished",
+    label: "Missions Accomplished",
+    displayValue: String(VOLUNTEER_IMPACT.missionsCompleted),
+    description: "Completed food rescue missions",
     accent: "green",
   },
   {

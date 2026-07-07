@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { FaChartLine } from "react-icons/fa";
 import { PROFILE_PERFORMANCE_METRICS } from "../../../data/volunteerProfileData";
-import { volunteerInteractive } from "../volunteerDashboardStyles";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../VolunteerSectionShell";
+import { volunteerInteractive, VOLUNTEER_CONTENT_STACK, VOLUNTEER_INSET_LINE_GAP } from "../volunteerDashboardStyles";
 
 const ACCENT_STYLES = {
   green: "border-[#BBF7D0] bg-[#F0FDF4]",
@@ -18,40 +20,46 @@ const VALUE_COLORS = {
 
 export default function VolunteerPerformanceMetrics() {
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
-      <h2 className="text-sm font-bold text-[#0F172A]">Performance Metrics</h2>
-      <p className="mt-1 text-[10px] text-[#64748B]">
-        Reliability indicators used for mission matching and NGO trust.
-      </p>
+    <VolunteerSectionShell>
+      <VolunteerSectionTitle
+        title="Performance Metrics"
+        subtitle="Reliability indicators used for mission matching and NGO trust."
+        theme="emerald"
+        icon={FaChartLine}
+        compact
+      />
 
-      <div className="mt-[0.5cm] grid gap-2 sm:grid-cols-2">
+      <div className={`grid ${VOLUNTEER_CONTENT_STACK} sm:grid-cols-2`}>
         {PROFILE_PERFORMANCE_METRICS.map((metric, index) => (
           <motion.div
             key={metric.id}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
+            whileHover={{ scale: 1.02, y: -2 }}
             className={[
-              "rounded-none border p-4",
+              "rounded-none border p-[0.5cm]",
               ACCENT_STYLES[metric.accent] ?? ACCENT_STYLES.green,
               volunteerInteractive.card,
             ].join(" ")}
           >
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-xs font-bold text-[#0F172A]">{metric.label}</p>
+            <div className="flex items-center justify-between gap-[0.5cm]">
+              <p className="text-sm font-bold text-[#0F172A]">{metric.label}</p>
               <span
                 className={[
-                  "text-xl font-extrabold",
+                  "text-2xl font-extrabold tabular-nums",
                   VALUE_COLORS[metric.accent] ?? VALUE_COLORS.green,
                 ].join(" ")}
               >
                 {metric.displayValue}
               </span>
             </div>
-            <p className="mt-2 text-[10px] leading-relaxed text-[#64748B]">{metric.description}</p>
+            <p className={`${VOLUNTEER_INSET_LINE_GAP} text-sm leading-relaxed text-[#64748B]`}>
+              {metric.description}
+            </p>
           </motion.div>
         ))}
       </div>
-    </section>
+    </VolunteerSectionShell>
   );
 }

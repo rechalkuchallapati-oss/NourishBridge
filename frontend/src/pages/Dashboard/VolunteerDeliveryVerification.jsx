@@ -3,6 +3,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import { MISSION_STATES } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BTN,
+} from "../../components/volunteer/volunteerDashboardStyles";
 
 export default function VolunteerDeliveryVerification() {
   const navigate = useNavigate();
@@ -52,7 +56,7 @@ export default function VolunteerDeliveryVerification() {
             </label>
             <button
               type="submit"
-              className="w-fit rounded-none bg-[#16A34A] px-4 py-2 font-semibold text-white hover:bg-[#15803D]"
+              className={[VOLUNTEER_BTN, "bg-[#16A34A] text-white", volunteerInteractive.button].join(" ")}
             >
               Confirm handover
             </button>

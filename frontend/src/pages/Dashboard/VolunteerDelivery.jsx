@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   FaCamera,
   FaCheck,
+  FaClipboardList,
   FaExclamationCircle,
   FaMapMarkerAlt,
   FaPhone,
@@ -24,27 +25,30 @@ import {
 } from "../../data/volunteerDeliveryDetails";
 import DonationProofThumbnail from "../../components/common/DonationProofThumbnail";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import VolunteerSectionShell, { VolunteerSectionTitle, VolunteerSubsection } from "../../components/volunteer/VolunteerSectionShell";
 import {
   volunteerInteractive,
-  VOLUNTEER_SECTION_PAD,
-  VOLUNTEER_STACK_GAP,
+  VOLUNTEER_BTN,
+  VOLUNTEER_CONTENT_STACK,
+  VOLUNTEER_INSET_LINE_GAP,
+  VOLUNTEER_PAGE_SECTION_GAP,
 } from "../../components/volunteer/volunteerDashboardStyles";
 
-function SectionCard({ title, subtitle, children }) {
+function SectionCard({ title, subtitle, children, icon, theme = "green" }) {
   return (
-    <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
-      <h2 className="text-sm font-bold text-[#0F172A]">{title}</h2>
-      {subtitle ? <p className="mt-1 text-[10px] text-[#64748B]">{subtitle}</p> : null}
-      <div className="mt-[0.5cm]">{children}</div>
-    </section>
+    <VolunteerSubsection title={title} subtitle={subtitle} icon={icon} theme={theme}>
+      {children}
+    </VolunteerSubsection>
   );
 }
 
 function DetailRow({ label, value }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">{label}</p>
-      <p className="mt-0.5 text-xs font-semibold text-[#0F172A]">{value ?? "—"}</p>
+      <p className="text-xs font-bold uppercase tracking-wide text-[#94A3B8]">{label}</p>
+      <p className={`${VOLUNTEER_INSET_LINE_GAP} text-sm font-semibold leading-relaxed text-[#0F172A]`}>
+        {value ?? "—"}
+      </p>
     </div>
   );
 }
@@ -109,10 +113,12 @@ function DeliveryProgressBar({ currentIndex }) {
 export default function VolunteerDelivery() {
   const navigate = useNavigate();
   const proofRef = useRef(null);
-  const { activeMission, setMissionStatus, completeMission } = useVolunteerMissionContext();
+  const { activeMission, transitionMissionStatus } = useVolunteerMissionContext();
   const delivery = enrichDeliveryMission(activeMission);
   const progressIndex = getDeliveryProgressIndex(activeMission?.status);
   const inDeliveryPhase = isDeliveryPhase(activeMission?.status);
+  const readyForNavigation = activeMission?.status === MISSION_STATES.FOOD_COLLECTED;
+  const readyForHandover = activeMission?.status === MISSION_STATES.ARRIVED_AT_NGO;
 
   const [handoverQuantity, setHandoverQuantity] = useState(
     () => delivery?.collectedQuantity ?? "",
@@ -145,6 +151,14 @@ export default function VolunteerDelivery() {
     toast.success(`Handover request sent to ${delivery?.ngoName ?? "NGO"}.`);
   };
 
+  const handleContinueToNavigation = (event) => {
+    event.preventDefault();
+    if (!delivery) return;
+    const navTo = transitionMissionStatus(MISSION_STATES.EN_ROUTE_TO_NGO);
+    toast.success("Opening Route & Navigation to NGO.");
+    navigate(navTo ?? DASHBOARD_ROUTES.volunteerRoute);
+  };
+
   const handleConfirmDelivery = (event) => {
     event.preventDefault();
     if (!delivery) {
@@ -160,36 +174,38 @@ export default function VolunteerDelivery() {
       return;
     }
 
-    setMissionStatus(MISSION_STATES.HANDOVER_CONFIRMED);
-    completeMission();
-    toast.success("Handover confirmed — delivery completed.");
-    navigate(DASHBOARD_ROUTES.volunteerActive);
+    const navTo = transitionMissionStatus(MISSION_STATES.ARRIVED_AT_NGO);
+    toast.success("Handover details saved — confirm delivery on Route page.");
+    navigate(navTo ?? DASHBOARD_ROUTES.volunteerRoute);
   };
 
   if (!delivery || !inDeliveryPhase) {
     return (
       <>
         <Toaster position="top-center" />
-        <section className={`rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] ${VOLUNTEER_SECTION_PAD}`}>
-          <h1 className="text-lg font-bold text-[#0F172A]">Delivery</h1>
-          <p className="mt-2 text-xs text-[#64748B]">
-            Complete pickup first. This page shows destination, delivery progress, and NGO handover once food is collected.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+        <VolunteerSectionShell>
+          <VolunteerSectionTitle
+            heading="h1"
+            title="Delivery"
+            subtitle="Complete pickup first. This page shows destination, delivery progress, and NGO handover once food is collected."
+            theme="green"
+            icon={FaTruck}
+          />
+          <div className={`flex flex-wrap ${VOLUNTEER_CONTENT_STACK} sm:flex-row`}>
             <Link
               to={DASHBOARD_ROUTES.volunteerPickup}
-              className="inline-flex rounded-none bg-[#16A34A] px-4 py-2.5 text-xs font-semibold text-white"
+              className={[VOLUNTEER_BTN, "inline-flex bg-[#16A34A] text-white", volunteerInteractive.button].join(" ")}
             >
               Go to Pickup
             </Link>
             <Link
               to={DASHBOARD_ROUTES.volunteerActive}
-              className="inline-flex rounded-none border border-[#E5E7EB] px-4 py-2.5 text-xs font-semibold text-[#475569]"
+              className={[VOLUNTEER_BTN, "inline-flex border border-[#E5E7EB] text-[#475569]", volunteerInteractive.buttonOutline].join(" ")}
             >
               Active Mission
             </Link>
           </div>
-        </section>
+        </VolunteerSectionShell>
       </>
     );
   }
@@ -197,20 +213,23 @@ export default function VolunteerDelivery() {
   return (
     <>
       <Toaster position="top-center" />
-      <form onSubmit={handleConfirmDelivery} className={VOLUNTEER_STACK_GAP}>
-        <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#2563EB]">Delivery</p>
-          <h1 className="mt-1 text-lg font-bold text-[#0F172A] sm:text-xl">Deliver to NGO</h1>
-          <p className="mt-1 text-xs text-[#64748B]">
-            Where is the food going, what is the delivery status, and has the NGO accepted the handover?
-          </p>
-          <p className="mt-2 inline-flex items-center gap-1.5 rounded-none border border-[#BFDBFE] bg-[#EFF6FF] px-2.5 py-1 text-[10px] font-bold uppercase text-[#2563EB]">
+      <form onSubmit={handleConfirmDelivery} className={VOLUNTEER_PAGE_SECTION_GAP}>
+        <VolunteerSectionShell>
+          <VolunteerSectionTitle
+            heading="h1"
+            title="Deliver to NGO"
+            subtitle="Where is the food going, what is the delivery status, and has the NGO accepted the handover?"
+            theme="emerald"
+            icon={FaTruck}
+          />
+          <p className="inline-flex items-center gap-1.5 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-bold uppercase text-[#15803D]">
             <FaTruck aria-hidden="true" />
             Status: {delivery.deliveryStatusLabel}
           </p>
-        </section>
+        </VolunteerSectionShell>
 
-        <SectionCard title="Active Delivery">
+        <VolunteerSectionShell>
+        <SectionCard title="Active Delivery" icon={FaClipboardList}>
           <div className="flex flex-col gap-[0.5cm] sm:flex-row">
             {delivery ? (
               <div className="h-28 w-28 shrink-0 overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC]">
@@ -245,7 +264,8 @@ export default function VolunteerDelivery() {
               <a
                 href={`tel:${delivery.ngoContactPhone.replace(/\s/g, "")}`}
                 className={[
-                  "inline-flex items-center gap-2 rounded-none border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2.5 text-xs font-semibold text-[#2563EB]",
+                  VOLUNTEER_BTN,
+                  "inline-flex border border-[#BFDBFE] bg-[#EFF6FF] text-[#2563EB]",
                   volunteerInteractive.buttonOutline,
                 ].join(" ")}
               >
@@ -268,7 +288,8 @@ export default function VolunteerDelivery() {
               <Link
                 to={DASHBOARD_ROUTES.volunteerRoute}
                 className={[
-                  "inline-flex items-center gap-2 rounded-none bg-[#2563EB] px-4 py-2.5 text-xs font-semibold text-white",
+                  VOLUNTEER_BTN,
+                  "inline-flex bg-[#2563EB] text-white",
                   volunteerInteractive.button,
                 ].join(" ")}
               >
@@ -300,8 +321,8 @@ export default function VolunteerDelivery() {
           </ul>
         </SectionCard>
 
-        <SectionCard title="Handover Verification" subtitle="Record what the NGO received.">
-          <div className="grid gap-3 sm:grid-cols-2">
+        <SectionCard title="Handover Verification" subtitle={readyForNavigation ? "Complete after arriving at the NGO on the Route page." : "Record what the NGO received."}>
+          <div className={`grid gap-3 sm:grid-cols-2 ${readyForNavigation ? "pointer-events-none opacity-50" : ""}`}>
             <label className="flex flex-col gap-1">
               <span className="text-[11px] font-semibold text-[#0F172A]">Actual quantity handed over</span>
               <input
@@ -344,7 +365,11 @@ export default function VolunteerDelivery() {
               <button
                 type="button"
                 onClick={() => proofRef.current?.click()}
-                className="mt-2 flex w-full items-center justify-center gap-2 rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-5 text-[11px] font-semibold text-[#475569] hover:border-[#2563EB] hover:bg-[#EFF6FF]"
+                className={[
+                  VOLUNTEER_BTN,
+                  "mt-2 w-full border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-[#475569] hover:border-[#2563EB] hover:bg-[#EFF6FF]",
+                  volunteerInteractive.buttonOutline,
+                ].join(" ")}
               >
                 <FaCamera aria-hidden="true" />
                 Upload delivery proof
@@ -377,10 +402,12 @@ export default function VolunteerDelivery() {
                 type="button"
                 onClick={() => toggleIssue(issue.id)}
                 className={[
-                  "rounded-none border px-3 py-2 text-[11px] font-semibold transition-colors",
+                  VOLUNTEER_BTN,
+                  "border transition-colors",
                   reportedIssues[issue.id]
                     ? "border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]"
-                    : "border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#CBD5E1]",
+                    : "border-[#E5E7EB] bg-white text-[#64748B]",
+                  volunteerInteractive.buttonOutline,
                 ].join(" ")}
               >
                 {issue.label}
@@ -404,29 +431,47 @@ export default function VolunteerDelivery() {
           ) : null}
         </SectionCard>
 
+        </VolunteerSectionShell>
+
         <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
-          <div className="flex flex-col gap-2 sm:flex-row">
+          {readyForNavigation ? (
             <button
               type="button"
-              onClick={handleRequestHandover}
-              disabled={handoverRequested}
+              onClick={handleContinueToNavigation}
               className={[
-                "flex-1 rounded-none border border-[#2563EB] bg-white px-4 py-3 text-xs font-bold text-[#2563EB] disabled:opacity-50",
-                volunteerInteractive.buttonOutline,
-              ].join(" ")}
-            >
-              {handoverRequested ? "Handover Requested" : "Request Handover"}
-            </button>
-            <button
-              type="submit"
-              className={[
-                "flex-1 rounded-none bg-[#16A34A] px-4 py-3.5 text-sm font-bold text-white",
+                VOLUNTEER_BTN,
+                "w-full bg-[#16A34A] text-white",
                 volunteerInteractive.button,
               ].join(" ")}
             >
-              Confirm Handover & Complete Delivery
+              Continue to Navigation
             </button>
-          </div>
+          ) : (
+            <div className={`flex flex-col ${VOLUNTEER_CONTENT_STACK} sm:flex-row`}>
+              <button
+                type="button"
+                onClick={handleRequestHandover}
+                disabled={handoverRequested}
+                className={[
+                  VOLUNTEER_BTN,
+                  "flex-1 border border-[#16A34A] bg-white text-[#15803D] disabled:opacity-50",
+                  volunteerInteractive.buttonOutline,
+                ].join(" ")}
+              >
+                {handoverRequested ? "Handover Requested" : "Request Handover"}
+              </button>
+              <button
+                type="submit"
+                className={[
+                  VOLUNTEER_BTN,
+                  "flex-1 bg-[#16A34A] text-white",
+                  volunteerInteractive.button,
+                ].join(" ")}
+              >
+                {readyForHandover ? "Save & Confirm on Route" : "Continue to Route"}
+              </button>
+            </div>
+          )}
         </div>
       </form>
     </>

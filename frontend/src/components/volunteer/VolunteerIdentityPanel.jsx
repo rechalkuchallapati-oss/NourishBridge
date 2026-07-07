@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaCheck, FaStar } from "react-icons/fa";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { VOLUNTEER_IDENTITY, getVolunteerAvatar } from "../../data/volunteerAssets";
+import { volunteerInteractive, VOLUNTEER_BTN } from "./volunteerDashboardStyles";
 import { getVolunteerDisplayName, getVolunteerProfile } from "../../utils/authStorage";
 
 function StarRating({ rating }) {
@@ -76,7 +77,11 @@ export default function VolunteerIdentityPanel() {
 
         <Link
           to={DASHBOARD_ROUTES.volunteerProfile}
-          className="mt-3 flex w-full items-center justify-center rounded-none border-2 border-[#16A34A] bg-white px-3 py-2.5 text-xs font-semibold text-[#15803D] transition-colors duration-300 hover:bg-[#F0FDF4]"
+          className={[
+            VOLUNTEER_BTN,
+            "mt-3 w-full border-2 border-[#16A34A] bg-white text-[#15803D]",
+            volunteerInteractive.buttonOutline,
+          ].join(" ")}
         >
           View Profile
         </Link>

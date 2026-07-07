@@ -8,6 +8,10 @@ import {
   PICKUP_VERIFICATION_CHECKLIST,
 } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BTN,
+} from "../../components/volunteer/volunteerDashboardStyles";
 
 function parseQuantityKg(quantityLabel) {
   const match = String(quantityLabel ?? "").match(/([\d.]+)/);
@@ -196,7 +200,11 @@ export default function VolunteerPickupVerification() {
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex w-full items-center justify-center gap-2 rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-6 text-xs font-semibold text-[#475569] transition-colors hover:border-[#16A34A] hover:bg-[#F0FDF4] hover:text-[#15803D]"
+                  className={[
+                    VOLUNTEER_BTN,
+                    "w-full border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-[#475569]",
+                    volunteerInteractive.buttonOutline,
+                  ].join(" ")}
                 >
                   <FaCamera aria-hidden="true" />
                   Upload Photo
@@ -223,7 +231,11 @@ export default function VolunteerPickupVerification() {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="shrink-0 text-[10px] font-semibold text-[#16A34A] hover:text-[#15803D]"
+                      className={[
+                        VOLUNTEER_BTN,
+                        "shrink-0 border border-[#BBF7D0] bg-white px-4 py-2 text-[#15803D]",
+                        volunteerInteractive.buttonOutline,
+                      ].join(" ")}
                     >
                       Replace
                     </button>
@@ -238,7 +250,11 @@ export default function VolunteerPickupVerification() {
             <button
               type="submit"
               disabled={!allChecked || !quantityValid}
-              className="w-full rounded-none bg-[#16A34A] px-4 py-3 font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:bg-[#94A3B8]"
+              className={[
+                VOLUNTEER_BTN,
+                "w-full bg-[#16A34A] text-white disabled:cursor-not-allowed disabled:bg-[#94A3B8]",
+                volunteerInteractive.button,
+              ].join(" ")}
             >
               Confirm Food Collection
             </button>

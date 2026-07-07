@@ -5,6 +5,7 @@ import {
   FaCheck,
   FaClock,
   FaExclamationTriangle,
+  FaClipboardList,
   FaMapMarkerAlt,
   FaPhone,
   FaRoute,
@@ -25,33 +26,31 @@ import {
 } from "../../data/volunteerPickupDetails";
 import DonationProofThumbnail from "../../components/common/DonationProofThumbnail";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import VolunteerSectionShell, { VolunteerSectionTitle, VolunteerSubsection } from "../../components/volunteer/VolunteerSectionShell";
 import {
   volunteerInteractive,
-  VOLUNTEER_SECTION_PAD,
-  VOLUNTEER_STACK_GAP,
+  VOLUNTEER_BTN,
+  VOLUNTEER_CONTENT_STACK,
+  VOLUNTEER_INSET_LINE_GAP,
+  VOLUNTEER_LINE_GAP,
+  VOLUNTEER_PAGE_SECTION_GAP,
 } from "../../components/volunteer/volunteerDashboardStyles";
 
-function SectionCard({ title, subtitle, children, className = "" }) {
+function SectionCard({ title, subtitle, children, className = "", icon, theme = "green" }) {
   return (
-    <section
-      className={[
-        "rounded-none border border-[#E5E7EB] bg-white shadow-sm",
-        VOLUNTEER_SECTION_PAD,
-        className,
-      ].join(" ")}
-    >
-      <h2 className="text-sm font-bold text-[#0F172A]">{title}</h2>
-      {subtitle ? <p className="mt-1 text-[10px] text-[#64748B]">{subtitle}</p> : null}
-      <div className="mt-[0.5cm]">{children}</div>
-    </section>
+    <VolunteerSubsection title={title} subtitle={subtitle} icon={icon} theme={theme} className={className}>
+      {children}
+    </VolunteerSubsection>
   );
 }
 
 function DetailRow({ label, value }) {
   return (
     <div>
-      <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">{label}</p>
-      <p className="mt-0.5 text-xs font-semibold text-[#0F172A]">{value ?? "—"}</p>
+      <p className="text-xs font-bold uppercase tracking-wide text-[#94A3B8]">{label}</p>
+      <p className={`${VOLUNTEER_INSET_LINE_GAP} text-sm font-semibold leading-relaxed text-[#0F172A]`}>
+        {value ?? "—"}
+      </p>
     </div>
   );
 }
@@ -102,7 +101,11 @@ function PhotoUpload({ label, hint, preview, fileName, onSelect, onClear, inputR
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="flex w-full items-center justify-center gap-2 rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-4 py-5 text-[11px] font-semibold text-[#475569] hover:border-[#16A34A] hover:bg-[#F0FDF4] hover:text-[#15803D]"
+          className={[
+            VOLUNTEER_BTN,
+            "w-full border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-[#475569] hover:border-[#16A34A] hover:bg-[#F0FDF4] hover:text-[#15803D]",
+            volunteerInteractive.buttonOutline,
+          ].join(" ")}
         >
           <FaCamera aria-hidden="true" />
           {hint}
@@ -133,7 +136,7 @@ export default function VolunteerPickup() {
   const navigate = useNavigate();
   const foodPhotoRef = useRef(null);
   const proofPhotoRef = useRef(null);
-  const { activeMission, setMissionStatus } = useVolunteerMissionContext();
+  const { activeMission, transitionMissionStatus } = useVolunteerMissionContext();
   const pickup = enrichPickupMission(activeMission);
 
   const [checklist, setChecklist] = useState(() =>
@@ -175,30 +178,30 @@ export default function VolunteerPickup() {
       toast.error("Complete all safety verification checks first.");
       return;
     }
-    setMissionStatus(MISSION_STATES.FOOD_COLLECTED);
-    toast.success("Pickup confirmed — food collected safely.");
-    navigate(DASHBOARD_ROUTES.volunteerActive);
+    const navTo = transitionMissionStatus(MISSION_STATES.FOOD_COLLECTED);
+    toast.success("Pickup confirmed — opening Delivery page.");
+    navigate(navTo ?? DASHBOARD_ROUTES.volunteerDelivery);
   };
 
   if (!pickup) {
     return (
       <>
         <Toaster position="top-center" />
-        <section className={`rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] ${VOLUNTEER_SECTION_PAD}`}>
-          <h1 className="text-lg font-bold text-[#0F172A]">Pickup</h1>
-          <p className="mt-2 text-xs text-[#64748B]">
-            No active pickup mission. Accept a request to view collection details, safety checks, and evidence upload.
-          </p>
+        <VolunteerSectionShell>
+          <VolunteerSectionTitle
+            heading="h1"
+            title="Pickup"
+            subtitle="No active pickup mission. Accept a request to view collection details, safety checks, and evidence upload."
+            theme="green"
+            icon={FaMapMarkerAlt}
+          />
           <Link
             to={DASHBOARD_ROUTES.volunteerPickups}
-            className={[
-              "mt-4 inline-flex rounded-none bg-[#16A34A] px-4 py-2.5 text-xs font-semibold text-white",
-              volunteerInteractive.button,
-            ].join(" ")}
+            className={[VOLUNTEER_BTN, "inline-flex bg-[#16A34A] text-white", volunteerInteractive.button].join(" ")}
           >
             View Available Pickups
           </Link>
-        </section>
+        </VolunteerSectionShell>
       </>
     );
   }
@@ -206,16 +209,19 @@ export default function VolunteerPickup() {
   return (
     <>
       <Toaster position="top-center" />
-      <form onSubmit={handleConfirmPickup} className={VOLUNTEER_STACK_GAP}>
-        <section className={`rounded-none border border-[#E5E7EB] bg-white shadow-sm ${VOLUNTEER_SECTION_PAD}`}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#16A34A]">Pickup</p>
-          <h1 className="mt-1 text-lg font-bold text-[#0F172A] sm:text-xl">Collect Donation</h1>
-          <p className="mt-1 text-xs text-[#64748B]">
-            What needs to be collected, from where, by when, and is it safe to transport?
-          </p>
-        </section>
+      <form onSubmit={handleConfirmPickup} className={VOLUNTEER_PAGE_SECTION_GAP}>
+        <VolunteerSectionShell>
+          <VolunteerSectionTitle
+            heading="h1"
+            title="Collect Donation"
+            subtitle="What needs to be collected, from where, by when, and is it safe to transport?"
+            theme="emerald"
+            icon={FaUtensils}
+          />
+        </VolunteerSectionShell>
 
-        <SectionCard title="Current Pickup">
+        <VolunteerSectionShell>
+        <SectionCard title="Current Pickup" icon={FaClipboardList}>
           <div className="flex flex-col gap-[0.5cm] sm:flex-row">
             {pickup ? (
               <div className="h-32 w-32 shrink-0 overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC]">
@@ -257,7 +263,8 @@ export default function VolunteerPickup() {
               <a
                 href={`tel:${pickup.contactPhone.replace(/\s/g, "")}`}
                 className={[
-                  "inline-flex items-center gap-2 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-2.5 text-xs font-semibold text-[#15803D]",
+                  VOLUNTEER_BTN,
+                  "inline-flex border border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]",
                   volunteerInteractive.buttonOutline,
                 ].join(" ")}
               >
@@ -280,7 +287,8 @@ export default function VolunteerPickup() {
               <Link
                 to={DASHBOARD_ROUTES.volunteerRoute}
                 className={[
-                  "inline-flex items-center gap-2 rounded-none bg-[#2563EB] px-4 py-2.5 text-xs font-semibold text-white",
+                  VOLUNTEER_BTN,
+                  "inline-flex bg-[#16A34A] text-white",
                   volunteerInteractive.button,
                 ].join(" ")}
               >
@@ -400,12 +408,15 @@ export default function VolunteerPickup() {
           </label>
         </SectionCard>
 
+        </VolunteerSectionShell>
+
         <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
           <button
             type="submit"
             disabled={!canConfirm}
             className={[
-              "w-full rounded-none bg-[#16A34A] px-4 py-3.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:bg-[#94A3B8]",
+              VOLUNTEER_BTN,
+              "w-full bg-[#16A34A] text-white disabled:cursor-not-allowed disabled:bg-[#94A3B8]",
               volunteerInteractive.button,
             ].join(" ")}
           >

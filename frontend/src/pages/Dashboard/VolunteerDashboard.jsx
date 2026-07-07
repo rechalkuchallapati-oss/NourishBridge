@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import MissionWorkflowPanel from "../../components/volunteer/MissionWorkflowPanel";
 import VolunteerDashboardImpactPanel from "../../components/volunteer/VolunteerDashboardImpactPanel";
@@ -6,6 +7,7 @@ import VolunteerPickupsSection from "../../components/volunteer/VolunteerPickups
 import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
 import VolunteerTodaysSchedule from "../../components/volunteer/VolunteerTodaysSchedule";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
+import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { getVolunteerDisplayName, getSessionUser } from "../../utils/authStorage";
 import {
   volunteerInteractive,
@@ -23,6 +25,7 @@ function getGreeting() {
 }
 
 export default function VolunteerDashboard() {
+  const navigate = useNavigate();
   const user = getSessionUser();
   const volunteerName = getVolunteerDisplayName(user);
   const {
@@ -31,7 +34,7 @@ export default function VolunteerDashboard() {
     completedToday,
     isAvailable,
     acceptMission,
-    setMissionStatus,
+    transitionMissionStatus,
     completeMission,
     toggleAvailability,
   } = useVolunteerMissionContext();
@@ -42,7 +45,8 @@ export default function VolunteerDashboard() {
       return;
     }
     if (acceptMission(pickup)) {
-      toast.success("Mission assigned — confirm acceptance to begin.");
+      toast.success("Mission assigned — opening Active Mission.");
+      navigate(DASHBOARD_ROUTES.volunteerActive);
     }
   };
 
@@ -92,8 +96,11 @@ export default function VolunteerDashboard() {
         >
           <MissionWorkflowPanel
             mission={activeMission}
-            onAdvance={setMissionStatus}
-            onComplete={completeMission}
+            onAdvance={transitionMissionStatus}
+            onComplete={() => {
+              completeMission();
+              navigate(DASHBOARD_ROUTES.volunteerMissions);
+            }}
           />
         </motion.div>
       ) : null}

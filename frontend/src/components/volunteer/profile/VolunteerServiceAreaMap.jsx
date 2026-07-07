@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { SERVICE_AREAS } from "../../../data/volunteerProfileData";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../VolunteerSectionShell";
+import { VOLUNTEER_BTN, VOLUNTEER_CONTENT_STACK, volunteerInteractive } from "../volunteerDashboardStyles";
 
 export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "Hyderabad" }) {
   const [selectedId, setSelectedId] = useState(
@@ -9,24 +11,34 @@ export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "
   const selected = SERVICE_AREAS.find((area) => area.id === selectedId);
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <h2 className="text-sm font-bold text-[#0F172A]">Service Areas</h2>
-          <p className="mt-1 text-[10px] text-[#64748B]">
-            Tap a zone to view coverage. Active areas within your {serviceRadiusKm} km radius.
-          </p>
-        </div>
-        <span className="inline-flex items-center gap-1 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-[10px] font-semibold text-[#16A34A]">
-          <FaMapMarkerAlt className="text-[9px]" aria-hidden="true" />
+    <VolunteerSectionShell className="h-full">
+      <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
+        <VolunteerSectionTitle
+          title="Service Areas"
+          subtitle={`Tap a zone to view coverage. Active areas within your ${serviceRadiusKm} km radius.`}
+          theme="green"
+          icon={FaMapMarkerAlt}
+          compact
+        />
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#16A34A]">
+          <FaMapMarkerAlt aria-hidden="true" />
           {city}
         </span>
       </div>
 
-      <div className="relative mt-[0.5cm] overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+      <div className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
         <svg viewBox="0 0 100 100" className="h-52 w-full sm:h-56" role="img" aria-label="Service area map">
-          <rect width="100" height="100" fill="#EFF6FF" />
-          <circle cx="50" cy="50" r={serviceRadiusKm * 2.2} fill="#BBF7D0" fillOpacity="0.25" stroke="#16A34A" strokeWidth="0.4" strokeDasharray="1.5 1" />
+          <rect width="100" height="100" fill="#F0FDF4" />
+          <circle
+            cx="50"
+            cy="50"
+            r={serviceRadiusKm * 2.2}
+            fill="#BBF7D0"
+            fillOpacity="0.25"
+            stroke="#16A34A"
+            strokeWidth="0.4"
+            strokeDasharray="1.5 1"
+          />
           <path d="M10 50 Q 30 20, 50 35 T 90 45" fill="none" stroke="#CBD5E1" strokeWidth="0.6" />
           <path d="M15 70 Q 45 85, 75 65" fill="none" stroke="#CBD5E1" strokeWidth="0.5" />
 
@@ -40,7 +52,7 @@ export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "
                   cx={area.x}
                   cy={area.y}
                   r={isSelected ? 4.5 : 3.5}
-                  fill={isActive ? (isSelected ? "#16A34A" : "#2563EB") : "#94A3B8"}
+                  fill={isActive ? (isSelected ? "#16A34A" : "#22C55E") : "#94A3B8"}
                   fillOpacity={isActive ? 1 : 0.5}
                   stroke="#fff"
                   strokeWidth="0.8"
@@ -78,7 +90,7 @@ export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "
           </text>
         </svg>
 
-        <div className="flex items-center justify-between border-t border-[#E5E7EB] bg-white/95 px-3 py-2 text-[10px] backdrop-blur-sm">
+        <div className="flex items-center justify-between border-t border-[#E5E7EB] bg-white/95 px-[0.5cm] py-[0.4cm] text-sm backdrop-blur-sm">
           <span className="font-semibold text-[#0F172A]">{selected?.label ?? "—"}</span>
           <span className={selected?.active ? "text-[#16A34A]" : "text-[#64748B]"}>
             {selected?.active ? "Active coverage" : "Outside current radius"}
@@ -86,23 +98,24 @@ export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-[0.5cm]">
         {SERVICE_AREAS.filter((area) => area.active).map((area) => (
           <button
             key={area.id}
             type="button"
             onClick={() => setSelectedId(area.id)}
             className={[
-              "rounded-none border px-2 py-1 text-[10px] font-semibold transition-colors",
+              VOLUNTEER_BTN,
               area.id === selectedId
                 ? "border-[#16A34A] bg-[#F0FDF4] text-[#15803D]"
-                : "border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#BBF7D0]",
+                : "border-[#E5E7EB] bg-white text-[#64748B]",
+              volunteerInteractive.buttonOutline,
             ].join(" ")}
           >
             {area.label}
           </button>
         ))}
       </div>
-    </section>
+    </VolunteerSectionShell>
   );
 }

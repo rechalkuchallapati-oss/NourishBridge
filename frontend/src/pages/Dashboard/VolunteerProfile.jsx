@@ -1,18 +1,25 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { FaAddressCard } from "react-icons/fa";
 import VolunteerAchievementBadges from "../../components/volunteer/profile/VolunteerAchievementBadges";
 import VolunteerImpactOverview from "../../components/volunteer/profile/VolunteerImpactOverview";
 import VolunteerPerformanceMetrics from "../../components/volunteer/profile/VolunteerPerformanceMetrics";
 import VolunteerProfileHeader from "../../components/volunteer/profile/VolunteerProfileHeader";
-import VolunteerProfileMissionHistory from "../../components/volunteer/profile/VolunteerProfileMissionHistory";
 import VolunteerReviewsFeedback from "../../components/volunteer/profile/VolunteerReviewsFeedback";
 import VolunteerServiceAreaMap from "../../components/volunteer/profile/VolunteerServiceAreaMap";
 import VolunteerVehicleAvailability from "../../components/volunteer/profile/VolunteerVehicleAvailability";
-import { VOLUNTEER_STACK_GAP } from "../../components/volunteer/volunteerDashboardStyles";
+import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
+import {
+  volunteerInteractive,
+  VOLUNTEER_BTN,
+  VOLUNTEER_CONTENT_STACK,
+  VOLUNTEER_INSET_LINE_GAP,
+  VOLUNTEER_PAGE_SECTION_GAP,
+} from "../../components/volunteer/volunteerDashboardStyles";
 import { getVolunteerProfile, saveVolunteerProfile } from "../../utils/authStorage";
 
 const inputClass =
-  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 text-xs outline-none focus:border-[#16A34A] focus:bg-white";
+  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
 
 export default function VolunteerProfile() {
   const [profile, setProfile] = useState(getVolunteerProfile);
@@ -34,7 +41,7 @@ export default function VolunteerProfile() {
   return (
     <>
       <Toaster position="top-center" />
-      <div className={VOLUNTEER_STACK_GAP}>
+      <div className={VOLUNTEER_PAGE_SECTION_GAP}>
         <VolunteerProfileHeader />
 
         <VolunteerImpactOverview />
@@ -43,7 +50,7 @@ export default function VolunteerProfile() {
 
         <VolunteerAchievementBadges />
 
-        <div className="grid gap-[0.5cm] lg:grid-cols-2">
+        <div className={`grid ${VOLUNTEER_CONTENT_STACK} lg:grid-cols-2`}>
           <VolunteerServiceAreaMap
             serviceRadiusKm={profile.serviceRadiusKm}
             city={profile.city}
@@ -55,30 +62,33 @@ export default function VolunteerProfile() {
           />
         </div>
 
-        <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
-          <h2 className="text-sm font-bold text-[#0F172A]">Contact Details</h2>
-          <p className="mt-1 text-[10px] text-[#64748B]">
-            Used by dispatch and NGOs for mission coordination.
-          </p>
-          <form onSubmit={handleContactSubmit} className="mt-[0.5cm] grid max-w-xl gap-3 sm:grid-cols-2">
-            <label className="flex flex-col gap-1 sm:col-span-2">
-              <span className="text-[11px] font-semibold text-[#0F172A]">Full name</span>
+        <VolunteerSectionShell>
+          <VolunteerSectionTitle
+            title="Contact Details"
+            subtitle="Used by dispatch and NGOs for mission coordination."
+            theme="green"
+            icon={FaAddressCard}
+            compact
+          />
+          <form onSubmit={handleContactSubmit} className={`grid max-w-xl ${VOLUNTEER_CONTENT_STACK} sm:grid-cols-2`}>
+            <label className={`flex flex-col ${VOLUNTEER_CONTENT_STACK} sm:col-span-2`}>
+              <span className="text-sm font-semibold text-[#0F172A]">Full name</span>
               <input
                 value={profile.fullName}
                 onChange={(event) => update("fullName", event.target.value)}
                 className={inputClass}
               />
             </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-semibold text-[#0F172A]">Phone</span>
+            <label className={`flex flex-col ${VOLUNTEER_CONTENT_STACK}`}>
+              <span className="text-sm font-semibold text-[#0F172A]">Phone</span>
               <input
                 value={profile.phone}
                 onChange={(event) => update("phone", event.target.value)}
                 className={inputClass}
               />
             </label>
-            <label className="flex flex-col gap-1">
-              <span className="text-[11px] font-semibold text-[#0F172A]">Email</span>
+            <label className={`flex flex-col ${VOLUNTEER_CONTENT_STACK}`}>
+              <span className="text-sm font-semibold text-[#0F172A]">Email</span>
               <input
                 type="email"
                 value={profile.email ?? ""}
@@ -89,15 +99,13 @@ export default function VolunteerProfile() {
             <div className="sm:col-span-2">
               <button
                 type="submit"
-                className="rounded-none bg-[#16A34A] px-5 py-2.5 text-xs font-semibold text-white"
+                className={[VOLUNTEER_BTN, "bg-[#16A34A] text-white", volunteerInteractive.button].join(" ")}
               >
                 Save contact details
               </button>
             </div>
           </form>
-        </section>
-
-        <VolunteerProfileMissionHistory />
+        </VolunteerSectionShell>
 
         <VolunteerReviewsFeedback />
       </div>
