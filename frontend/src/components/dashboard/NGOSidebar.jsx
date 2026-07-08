@@ -1,14 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import {
-  FaBell,
-  FaBoxes,
   FaChartBar,
-  FaClipboardCheck,
+  FaCheckCircle,
+  FaClipboardList,
   FaCog,
+  FaComments,
+  FaFileAlt,
   FaHome,
   FaInbox,
-  FaTruck,
-  FaUser,
+  FaListAlt,
+  FaBoxes,
+  FaUserFriends,
   FaUsers,
 } from "react-icons/fa";
 import NGOIdentityPanel from "../ngo/NGOIdentityPanel";
@@ -16,14 +18,16 @@ import { DASHBOARD_ROUTES, matchNgoRoute } from "../../constants/routes";
 
 const NAV_ITEMS = [
   { label: "Overview", to: DASHBOARD_ROUTES.ngo, icon: FaHome, emphasized: true },
+  { label: "Food Requests", to: DASHBOARD_ROUTES.ngoFoodRequests, icon: FaClipboardList },
   { label: "Incoming Donations", to: DASHBOARD_ROUTES.ngoIncoming, icon: FaInbox },
-  { label: "Active Deliveries", to: DASHBOARD_ROUTES.ngoDeliveries, icon: FaTruck },
-  { label: "Receive Food", to: DASHBOARD_ROUTES.ngoReceive, icon: FaClipboardCheck },
+  { label: "Accepted Donations", to: DASHBOARD_ROUTES.ngoAccepted, icon: FaCheckCircle },
+  { label: "Distribution Queue", to: DASHBOARD_ROUTES.ngoDistributionQueue, icon: FaListAlt },
   { label: "Inventory", to: DASHBOARD_ROUTES.ngoInventory, icon: FaBoxes },
-  { label: "Distribution Records", to: DASHBOARD_ROUTES.ngoDistribution, icon: FaUsers },
-  { label: "Impact Analytics", to: DASHBOARD_ROUTES.ngoImpact, icon: FaChartBar },
-  { label: "Notifications", to: DASHBOARD_ROUTES.ngoNotifications, icon: FaBell },
-  { label: "Profile & Capacity", to: DASHBOARD_ROUTES.ngoProfile, icon: FaUser },
+  { label: "Beneficiaries", to: DASHBOARD_ROUTES.ngoBeneficiaries, icon: FaUsers },
+  { label: "Volunteers", to: DASHBOARD_ROUTES.ngoVolunteers, icon: FaUserFriends },
+  { label: "Impact", to: DASHBOARD_ROUTES.ngoImpact, icon: FaChartBar },
+  { label: "Reports", to: DASHBOARD_ROUTES.ngoReports, icon: FaFileAlt },
+  { label: "Messages", to: DASHBOARD_ROUTES.ngoMessages, icon: FaComments },
   { label: "Settings", to: DASHBOARD_ROUTES.ngoSettings, icon: FaCog },
 ];
 

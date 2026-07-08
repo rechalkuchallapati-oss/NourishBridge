@@ -229,3 +229,397 @@ export const URGENCY_COLORS = {
 export function getIncomingDonationById(id) {
   return INCOMING_DONATIONS.find((d) => d.id === id) ?? null;
 }
+
+export const DONATION_PIPELINE_STEPS = [
+  { id: "pending_ngo_acceptance", label: "Pending NGO Acceptance" },
+  { id: "accepted", label: "Accepted" },
+  { id: "volunteer_assigned", label: "Volunteer Assigned" },
+  { id: "picked_up", label: "Picked Up" },
+  { id: "in_transit", label: "In Transit" },
+  { id: "delivered", label: "Delivered" },
+  { id: "verified", label: "Verified" },
+  { id: "completed", label: "Completed" },
+];
+
+export function getDonationStepIndex(status) {
+  const index = DONATION_PIPELINE_STEPS.findIndex((step) => step.id === status);
+  return index >= 0 ? index : 0;
+}
+
+export const DONATION_STATUS_LABELS = {
+  pending_ngo_acceptance: "Pending NGO Acceptance",
+  accepted: "Accepted",
+  volunteer_assigned: "Volunteer Assigned",
+  picked_up: "Picked Up",
+  in_transit: "In Transit",
+  delivered: "Delivered",
+  verified: "Verified",
+  completed: "Completed",
+  rejected: "Rejected",
+};
+
+export const DONATION_TABLE_STATUS_LABELS = {
+  pending_ngo_acceptance: "Pending",
+  accepted: "Accepted",
+  volunteer_assigned: "Assigned",
+  picked_up: "Picked Up",
+  in_transit: "En Route",
+  delivered: "Delivered",
+  verified: "Verified",
+  completed: "Completed",
+  rejected: "Rejected",
+};
+
+export const DONATION_STATUS_COLORS = {
+  pending_ngo_acceptance: "bg-[#F1F5F9] text-[#475569]",
+  accepted: "bg-[#DBEAFE] text-[#1D4ED8]",
+  volunteer_assigned: "bg-[#E0E7FF] text-[#4338CA]",
+  picked_up: "bg-[#FEF3C7] text-[#B45309]",
+  in_transit: "bg-[#FFEDD5] text-[#C2410C]",
+  delivered: "bg-[#DCFCE7] text-[#15803D]",
+  verified: "bg-[#F0FDF4] text-[#166534]",
+  completed: "bg-[#DCFCE7] text-[#15803D]",
+  rejected: "bg-red-100 text-red-700",
+};
+
+export const INCOMING_QUICK_FILTERS = [
+  { id: "all", label: "All" },
+  { id: "today", label: "Today" },
+  { id: "pending", label: "Pending" },
+  { id: "assigned", label: "Assigned" },
+  { id: "delivered", label: "Delivered" },
+  { id: "cancelled", label: "Cancelled" },
+];
+
+export const INCOMING_CATEGORY_OPTIONS = [
+  { id: "all", label: "All Categories" },
+  { id: "cooked_meals", label: "Cooked Meals" },
+  { id: "multi_cuisine", label: "Multi-Cuisine" },
+  { id: "home_cooked", label: "Home-Cooked" },
+  { id: "festival", label: "Festival Specials" },
+  { id: "banquet", label: "Banquet & Hotel" },
+];
+
+export const INCOMING_STATUS_OPTIONS = [
+  { id: "all", label: "All Statuses" },
+  ...DONATION_PIPELINE_STEPS.map((step) => ({ id: step.id, label: step.label })),
+  { id: "rejected", label: "Rejected" },
+];
+
+export const STORAGE_CAPACITY = {
+  usedPercent: 68,
+  usedKg: 340,
+  totalKg: 500,
+  coldStoragePercent: 82,
+  slotsAvailable: 4,
+};
+
+export const TODAYS_SCHEDULE = [
+  { time: "2:00 PM", label: "DON-1045 pickup — Hotel Grand Palace", type: "pickup" },
+  { time: "3:30 PM", label: "Distribution — Jayanagar shelter", type: "distribution" },
+  { time: "5:00 PM", label: "DON-1038 delivery — Biryani Mahal", type: "delivery" },
+  { time: "6:15 PM", label: "Inventory audit — cold storage", type: "audit" },
+];
+
+export const UPCOMING_DELIVERIES_SUMMARY = {
+  arrivingSoon: 2,
+  arrivingInMinutes: 15,
+  emergencyCount: 1,
+  items: [
+    { id: "DON-1045", donor: "Hotel Grand Palace", eta: "25 mins", emergency: true },
+    { id: "DON-1038", donor: "Biryani Mahal", eta: "40 mins", emergency: false },
+  ],
+};
+
+/** Live incoming donations table — donor food already pledged. */
+export const LIVE_INCOMING_DONATIONS = [
+  {
+    id: "DON-1045",
+    donor: "Hotel Grand Palace",
+    donorType: "Hotel",
+    donorPhone: "+91 98765 43210",
+    foodItem: "Veg Biryani",
+    quantity: "25 kg",
+    pickupTime: "2:00 PM",
+    volunteer: "Ravi Kumar",
+    volunteerPhone: "+91 91234 56789",
+    volunteerVehicle: "Scooter · KA 01 AB 1234",
+    eta: "25 mins",
+    status: "in_transit",
+    category: "cooked_meals",
+    dateKey: "today",
+    nearby: true,
+    urgency: "high",
+    eventType: "hotel",
+    thumbnailKey: "hotel_banquet",
+    preparationTime: "Today, 12:30 PM",
+    expiryWindow: "Today, 6:00 PM",
+    pickupLocation: "Hotel Grand Palace, Banjara Hills, Hyderabad",
+    distanceKm: 3.2,
+    estimatedServings: 85,
+    allergens: ["Dairy", "Gluten"],
+    liveTracking: { label: "Near Panjagutta Circle", updatedAt: "1 min ago" },
+    timeline: [
+      { step: "pending_ngo_acceptance", time: "Today, 11:00 AM" },
+      { step: "accepted", time: "Today, 11:15 AM" },
+      { step: "volunteer_assigned", time: "Today, 11:30 AM" },
+      { step: "picked_up", time: "Today, 1:45 PM" },
+      { step: "in_transit", time: "Live" },
+    ],
+  },
+  {
+    id: "DON-1038",
+    donor: "Biryani Mahal",
+    donorType: "Restaurant",
+    donorPhone: "+91 99887 76655",
+    foodItem: "Chicken Dum Biryani",
+    quantity: "30 kg",
+    pickupTime: "6:30 PM",
+    volunteer: "Rahul Mehta",
+    volunteerPhone: "+91 98765 11122",
+    volunteerVehicle: "Car · KA 03 CD 5678",
+    eta: "40 mins",
+    status: "volunteer_assigned",
+    category: "cooked_meals",
+    dateKey: "today",
+    nearby: true,
+    urgency: "critical",
+    eventType: "restaurant",
+    thumbnailKey: "restaurant_biryani_bulk",
+    preparationTime: "Today, 9:30 PM",
+    expiryWindow: "Today, 11:30 PM",
+    pickupLocation: "Biryani Mahal, Commercial Street, Bengaluru",
+    distanceKm: 4.8,
+    estimatedServings: 120,
+    allergens: ["Dairy", "Gluten", "Eggs"],
+    liveTracking: null,
+    timeline: [
+      { step: "pending_ngo_acceptance", time: "Today, 8:45 PM" },
+      { step: "accepted", time: "Today, 8:50 PM" },
+      { step: "volunteer_assigned", time: "Today, 9:00 PM" },
+    ],
+  },
+  {
+    id: "DON-1035",
+    donor: "Mrs. Lakshmi Narayan",
+    donorType: "Individual Donor",
+    donorPhone: "+91 97654 32109",
+    foodItem: "Sambar Rice & Curd Rice",
+    quantity: "9 kg",
+    pickupTime: "11:00 AM",
+    volunteer: "Priya Sharma",
+    volunteerPhone: "+91 91234 98765",
+    volunteerVehicle: "Bike · KA 05 EF 9012",
+    eta: "—",
+    status: "picked_up",
+    category: "home_cooked",
+    dateKey: "today",
+    nearby: true,
+    urgency: "medium",
+    eventType: "individual",
+    thumbnailKey: "individual_rice_sambar",
+    preparationTime: "Tomorrow, 11:00 AM",
+    expiryWindow: "Tomorrow, 2:00 PM",
+    pickupLocation: "Jayanagar 9th Block, Bengaluru",
+    distanceKm: 3.4,
+    estimatedServings: 22,
+    allergens: ["Dairy"],
+    liveTracking: { label: "En route to NGO", updatedAt: "3 mins ago" },
+    timeline: [
+      { step: "pending_ngo_acceptance", time: "Today, 1:10 PM" },
+      { step: "accepted", time: "Today, 1:20 PM" },
+      { step: "volunteer_assigned", time: "Today, 1:25 PM" },
+      { step: "picked_up", time: "Today, 10:55 AM" },
+    ],
+  },
+  {
+    id: "DON-1032",
+    donor: "Tamil Sangam Cultural Trust",
+    donorType: "Community Organisation",
+    donorPhone: "+91 94444 55667",
+    foodItem: "Pongal Festival Spread",
+    quantity: "90 kg",
+    pickupTime: "1:00 PM",
+    volunteer: "—",
+    volunteerPhone: null,
+    volunteerVehicle: null,
+    eta: "—",
+    status: "pending_ngo_acceptance",
+    category: "festival",
+    dateKey: "today",
+    nearby: false,
+    urgency: "high",
+    eventType: "festival",
+    thumbnailKey: "pongal_feast",
+    preparationTime: "Today, 1:00 PM",
+    expiryWindow: "Today, 5:00 PM",
+    pickupLocation: "Kanteerava Stadium Grounds, Bengaluru",
+    distanceKm: 5.2,
+    estimatedServings: 210,
+    allergens: ["Dairy", "Gluten"],
+    liveTracking: null,
+    timeline: [{ step: "pending_ngo_acceptance", time: "Today, 10:30 AM" }],
+  },
+  {
+    id: "DON-1029",
+    donor: "ITC Gardenia Bengaluru",
+    donorType: "Hotel",
+    donorPhone: "+91 80222 33445",
+    foodItem: "Hotel Banquet Surplus",
+    quantity: "120 kg",
+    pickupTime: "9:00 PM",
+    volunteer: "—",
+    volunteerPhone: null,
+    volunteerVehicle: null,
+    eta: "—",
+    status: "pending_ngo_acceptance",
+    category: "banquet",
+    dateKey: "today",
+    nearby: false,
+    urgency: "high",
+    eventType: "hotel",
+    thumbnailKey: "hotel_banquet",
+    preparationTime: "Today, 9:00 PM",
+    expiryWindow: "Today, 11:00 PM",
+    pickupLocation: "ITC Gardenia, Residency Road, Bengaluru",
+    distanceKm: 7.1,
+    estimatedServings: 265,
+    allergens: ["Dairy", "Gluten", "Eggs", "Nuts"],
+    liveTracking: null,
+    timeline: [{ step: "pending_ngo_acceptance", time: "Today, 6:50 AM" }],
+  },
+  {
+    id: "DON-1020",
+    donor: "Verma Family Events",
+    donorType: "Wedding Caterer",
+    donorPhone: "+91 99000 11223",
+    foodItem: "Wedding Banquet · 11 items",
+    quantity: "150 kg",
+    pickupTime: "10:00 PM",
+    volunteer: "Ankit Desai",
+    volunteerPhone: "+91 98765 44332",
+    volunteerVehicle: "Van · KA 02 GH 3456",
+    eta: "—",
+    status: "accepted",
+    category: "multi_cuisine",
+    dateKey: "today",
+    nearby: false,
+    urgency: "high",
+    eventType: "wedding",
+    thumbnailKey: "wedding_buffet",
+    preparationTime: "Today, 10:00 PM",
+    expiryWindow: "Today, 11:45 PM",
+    pickupLocation: "Taj West End Lawn, Bengaluru",
+    distanceKm: 6.1,
+    estimatedServings: 340,
+    allergens: ["Dairy", "Gluten", "Nuts"],
+    liveTracking: null,
+    timeline: [
+      { step: "pending_ngo_acceptance", time: "Today, 7:20 PM" },
+      { step: "accepted", time: "Today, 7:35 PM" },
+    ],
+  },
+  {
+    id: "DON-1015",
+    donor: "St. Joseph's Parish Council",
+    donorType: "Community Organisation",
+    donorPhone: "+91 98888 77665",
+    foodItem: "Christmas Dinner",
+    quantity: "80 kg",
+    pickupTime: "7:30 PM",
+    volunteer: "Meera Joshi",
+    volunteerPhone: "+91 91234 55678",
+    volunteerVehicle: "Car · KA 04 IJ 7890",
+    eta: "Delivered",
+    status: "delivered",
+    category: "multi_cuisine",
+    dateKey: "today",
+    nearby: false,
+    urgency: "medium",
+    eventType: "christmas",
+    thumbnailKey: "christmas_feast",
+    preparationTime: "Today, 7:30 PM",
+    expiryWindow: "Today, 10:00 PM",
+    pickupLocation: "St. Joseph's Church Hall, Richmond Town",
+    distanceKm: 8.3,
+    estimatedServings: 175,
+    allergens: ["Gluten", "Dairy", "Eggs"],
+    liveTracking: null,
+    timeline: [
+      { step: "pending_ngo_acceptance", time: "Today, 5:40 AM" },
+      { step: "accepted", time: "Today, 6:00 AM" },
+      { step: "volunteer_assigned", time: "Today, 6:30 AM" },
+      { step: "picked_up", time: "Today, 7:45 PM" },
+      { step: "in_transit", time: "Today, 8:10 PM" },
+      { step: "delivered", time: "Today, 8:45 PM" },
+    ],
+  },
+  {
+    id: "DON-1008",
+    donor: "Green Valley Caterers",
+    donorType: "Caterer",
+    donorPhone: "+91 97777 88990",
+    foodItem: "Paneer Tikka & Naan",
+    quantity: "15 kg",
+    pickupTime: "12:00 PM",
+    volunteer: "—",
+    volunteerPhone: null,
+    volunteerVehicle: null,
+    eta: "—",
+    status: "rejected",
+    category: "cooked_meals",
+    dateKey: "today",
+    nearby: true,
+    urgency: "low",
+    eventType: "restaurant",
+    thumbnailKey: "restaurant_biryani_bulk",
+    preparationTime: "Today, 12:00 PM",
+    expiryWindow: "Today, 3:00 PM",
+    pickupLocation: "Green Valley, HSR Layout",
+    distanceKm: 12.5,
+    estimatedServings: 40,
+    allergens: ["Dairy", "Gluten"],
+    liveTracking: null,
+    timeline: [{ step: "pending_ngo_acceptance", time: "Today, 11:00 AM" }],
+    rejectReason: "Distance too far — insufficient volunteer coverage",
+  },
+];
+
+const AWAITING_STATUSES = ["pending_ngo_acceptance"];
+const ASSIGNED_STATUSES = ["volunteer_assigned"];
+const EN_ROUTE_STATUSES = ["picked_up", "in_transit"];
+const DELIVERED_STATUSES = ["delivered", "verified", "completed"];
+
+export function computeIncomingDonationStats(donations) {
+  return {
+    incoming: donations.filter((d) => d.status !== "rejected").length,
+    awaiting: donations.filter((d) => AWAITING_STATUSES.includes(d.status)).length,
+    volunteerAssigned: donations.filter((d) => ASSIGNED_STATUSES.includes(d.status)).length,
+    enRoute: donations.filter((d) => EN_ROUTE_STATUSES.includes(d.status)).length,
+    delivered: donations.filter((d) => DELIVERED_STATUSES.includes(d.status)).length,
+    rejected: donations.filter((d) => d.status === "rejected").length,
+  };
+}
+
+export function filterIncomingDonations(donations, filters) {
+  return donations.filter((donation) => {
+    if (filters.quick === "today" && donation.dateKey !== "today") return false;
+    if (filters.quick === "pending" && donation.status !== "pending_ngo_acceptance") return false;
+    if (filters.quick === "assigned" && donation.status !== "volunteer_assigned") return false;
+    if (
+      filters.quick === "delivered" &&
+      !DELIVERED_STATUSES.includes(donation.status)
+    ) {
+      return false;
+    }
+    if (filters.quick === "cancelled" && donation.status !== "rejected") return false;
+    if (filters.category !== "all" && donation.category !== filters.category) return false;
+    if (filters.status !== "all" && donation.status !== filters.status) return false;
+    if (filters.nearby === "nearby" && !donation.nearby) return false;
+    return true;
+  });
+}
+
+export function getLiveDonationById(id) {
+  return LIVE_INCOMING_DONATIONS.find((d) => d.id === id) ?? null;
+}

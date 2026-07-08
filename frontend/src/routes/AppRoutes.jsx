@@ -17,12 +17,18 @@ import ActiveDonations from "../pages/Dashboard/ActiveDonations";
 import DonationHistory from "../pages/Dashboard/DonationHistory";
 import ImpactReports from "../pages/Dashboard/ImpactReports";
 import NGODashboard from "../pages/Dashboard/NGODashboard";
+import NGOFoodRequests from "../pages/Dashboard/NGOFoodRequests";
 import NGOIncomingDonations from "../pages/Dashboard/NGOIncomingDonations";
+import NGOAcceptedDonations from "../pages/Dashboard/NGOAcceptedDonations";
+import NGODistributionQueue from "../pages/Dashboard/NGODistributionQueue";
+import NGOBeneficiaries from "../pages/Dashboard/NGOBeneficiaries";
+import NGOVolunteers from "../pages/Dashboard/NGOVolunteers";
 import NGOActiveDeliveries from "../pages/Dashboard/NGOActiveDeliveries";
 import NGOReceiveFood from "../pages/Dashboard/NGOReceiveFood";
 import NGOInventory from "../pages/Dashboard/NGOInventory";
 import NGODistributionRecords from "../pages/Dashboard/NGODistributionRecords";
 import NGOImpactAnalytics from "../pages/Dashboard/NGOImpactAnalytics";
+import NGOReports from "../pages/Dashboard/NGOReports";
 import NGONotifications from "../pages/Dashboard/NGONotifications";
 import NGOProfileCapacity from "../pages/Dashboard/NGOProfileCapacity";
 import NGOSettings from "../pages/Dashboard/NGOSettings";
@@ -122,12 +128,18 @@ const AppRoutes = () => {
       <Route path="/dashboard/donor/settings" element={<Settings />} />
       <Route path="/dashboard/donor/help" element={<HelpSupport />} />
       <Route path="/dashboard/ngo" element={<NGODashboard />} />
+      <Route path="/dashboard/ngo/food-requests" element={<NGOFoodRequests />} />
       <Route path="/dashboard/ngo/incoming" element={<NGOIncomingDonations />} />
+      <Route path="/dashboard/ngo/accepted-donations" element={<NGOAcceptedDonations />} />
+      <Route path="/dashboard/ngo/distribution-queue" element={<NGODistributionQueue />} />
       <Route path="/dashboard/ngo/deliveries" element={<NGOActiveDeliveries />} />
       <Route path="/dashboard/ngo/receive" element={<NGOReceiveFood />} />
       <Route path="/dashboard/ngo/inventory" element={<NGOInventory />} />
+      <Route path="/dashboard/ngo/beneficiaries" element={<NGOBeneficiaries />} />
+      <Route path="/dashboard/ngo/volunteers" element={<NGOVolunteers />} />
       <Route path="/dashboard/ngo/distribution" element={<NGODistributionRecords />} />
       <Route path="/dashboard/ngo/impact" element={<NGOImpactAnalytics />} />
+      <Route path="/dashboard/ngo/reports" element={<NGOReports />} />
       <Route path="/dashboard/ngo/notifications" element={<NGONotifications />} />
       <Route path="/dashboard/ngo/profile" element={<NGOProfileCapacity />} />
       <Route path="/dashboard/ngo/settings" element={<NGOSettings />} />

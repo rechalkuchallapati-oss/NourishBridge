@@ -23,8 +23,8 @@ export default function DeclineDonationModal({ donation, onClose, onConfirm }) {
     <NGOModal title={`Decline ${donation.id}`} onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex flex-col gap-[0.5cm]">
         <p className="text-sm leading-6 text-[#64748B]">
-          Declining <strong className="text-[#0F172A]">{donation.foodName}</strong> from{" "}
-          <strong className="text-[#0F172A]">{donation.donorName}</strong>. A reason is
+          Declining <strong className="text-[#0F172A]">{donation.foodItem ?? donation.foodName}</strong> from{" "}
+          <strong className="text-[#0F172A]">{donation.donor ?? donation.donorName}</strong>. A reason is
           required for audit and donor communication.
         </p>
 
