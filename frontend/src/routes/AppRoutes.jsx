@@ -47,6 +47,9 @@ import Profile from "../pages/Dashboard/Profile";
 import Settings from "../pages/Dashboard/Settings";
 import HelpSupport from "../pages/Dashboard/HelpSupport";
 import VolunteerShell from "../components/dashboard/VolunteerShell";
+import AdminShell from "../components/dashboard/AdminShell";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminSectionPage from "../components/admin/AdminSectionPage";
 
 const AppRoutes = () => {
   return (
@@ -156,6 +159,22 @@ const AppRoutes = () => {
         <Route path="notifications" element={<VolunteerNotifications />} />
         <Route path="impact" element={<VolunteerImpact />} />
         <Route path="profile" element={<VolunteerProfile />} />
+      </Route>
+      <Route path="/dashboard/admin" element={<AdminShell />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="users" element={<AdminSectionPage sectionId="users" />} />
+        <Route path="donations" element={<AdminSectionPage sectionId="donations" />} />
+        <Route path="ngos" element={<AdminSectionPage sectionId="ngos" />} />
+        <Route path="volunteers" element={<AdminSectionPage sectionId="volunteers" />} />
+        <Route path="donors" element={<AdminSectionPage sectionId="donors" />} />
+        <Route path="food-requests" element={<AdminSectionPage sectionId="food-requests" />} />
+        <Route path="deliveries" element={<AdminSectionPage sectionId="deliveries" />} />
+        <Route path="inventory" element={<AdminSectionPage sectionId="inventory" />} />
+        <Route path="reports" element={<AdminSectionPage sectionId="reports" />} />
+        <Route path="notifications" element={<AdminSectionPage sectionId="notifications" />} />
+        <Route path="system-settings" element={<AdminSectionPage sectionId="system-settings" />} />
+        <Route path="audit-logs" element={<AdminSectionPage sectionId="audit-logs" />} />
+        <Route path="profile" element={<AdminSectionPage sectionId="profile" />} />
       </Route>
     </Routes>
   );
