@@ -7,6 +7,7 @@ import {
   FaCog,
   FaHistory,
   FaHome,
+  FaLifeRing,
   FaSignOutAlt,
   FaTruck,
   FaUsers,
@@ -30,6 +31,7 @@ const NAV_ITEMS = [
   { label: "Inventory Monitor", to: DASHBOARD_ROUTES.adminInventory, icon: FaBoxes },
   { label: "Reports & Analytics", to: DASHBOARD_ROUTES.adminReports, icon: FaChartBar },
   { label: "Notifications", to: DASHBOARD_ROUTES.adminNotifications, icon: FaBell },
+  { label: "Support Tickets", to: DASHBOARD_ROUTES.adminSupportTickets, icon: FaLifeRing },
   { label: "System Settings", to: DASHBOARD_ROUTES.adminSystemSettings, icon: FaCog },
   { label: "Audit Logs", to: DASHBOARD_ROUTES.adminAuditLogs, icon: FaHistory },
 ];

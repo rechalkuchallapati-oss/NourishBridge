@@ -53,6 +53,7 @@ export const DASHBOARD_ROUTES = {
   adminNotifications: "/dashboard/admin/notifications",
   adminSystemSettings: "/dashboard/admin/system-settings",
   adminAuditLogs: "/dashboard/admin/audit-logs",
+  adminSupportTickets: "/dashboard/admin/support-tickets",
   adminProfile: "/dashboard/admin/profile",
 };
 

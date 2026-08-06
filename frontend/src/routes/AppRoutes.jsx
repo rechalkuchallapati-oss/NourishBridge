@@ -52,6 +52,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import AdminNgos from "../pages/Admin/AdminNgos";
 import AdminSectionPage from "../components/admin/AdminSectionPage";
+import AdminSupportTickets from "../pages/Admin/AdminSupportTickets";
 
 const AppRoutes = () => {
   return (
@@ -175,6 +176,7 @@ const AppRoutes = () => {
         <Route path="reports" element={<AdminSectionPage sectionId="reports" />} />
         <Route path="notifications" element={<AdminSectionPage sectionId="notifications" />} />
         <Route path="system-settings" element={<AdminSectionPage sectionId="system-settings" />} />
+        <Route path="support-tickets" element={<AdminSupportTickets />} />
         <Route path="audit-logs" element={<AdminSectionPage sectionId="audit-logs" />} />
         <Route path="profile" element={<AdminSectionPage sectionId="profile" />} />
       </Route>
