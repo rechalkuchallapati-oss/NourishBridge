@@ -49,6 +49,8 @@ import HelpSupport from "../pages/Dashboard/HelpSupport";
 import VolunteerShell from "../components/dashboard/VolunteerShell";
 import AdminShell from "../components/dashboard/AdminShell";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminUsers from "../pages/Admin/AdminUsers";
+import AdminNgos from "../pages/Admin/AdminNgos";
 import AdminSectionPage from "../components/admin/AdminSectionPage";
 
 const AppRoutes = () => {
@@ -162,9 +164,9 @@ const AppRoutes = () => {
       </Route>
       <Route path="/dashboard/admin" element={<AdminShell />}>
         <Route index element={<AdminDashboard />} />
-        <Route path="users" element={<AdminSectionPage sectionId="users" />} />
+        <Route path="users" element={<AdminUsers />} />
         <Route path="donations" element={<AdminSectionPage sectionId="donations" />} />
-        <Route path="ngos" element={<AdminSectionPage sectionId="ngos" />} />
+        <Route path="ngos" element={<AdminNgos />} />
         <Route path="volunteers" element={<AdminSectionPage sectionId="volunteers" />} />
         <Route path="donors" element={<AdminSectionPage sectionId="donors" />} />
         <Route path="food-requests" element={<AdminSectionPage sectionId="food-requests" />} />
