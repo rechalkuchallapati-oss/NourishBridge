@@ -51,6 +51,7 @@ import AdminShell from "../components/dashboard/AdminShell";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import AdminNgos from "../pages/Admin/AdminNgos";
+import AdminSectionPage from "../components/admin/AdminSectionPage";
 
 const AppRoutes = () => {
   return (
@@ -165,6 +166,17 @@ const AppRoutes = () => {
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="ngos" element={<AdminNgos />} />
+        <Route path="donations" element={<AdminSectionPage sectionId="donations" />} />
+        <Route path="volunteers" element={<AdminSectionPage sectionId="volunteers" />} />
+        <Route path="donors" element={<AdminSectionPage sectionId="donors" />} />
+        <Route path="food-requests" element={<AdminSectionPage sectionId="food-requests" />} />
+        <Route path="deliveries" element={<AdminSectionPage sectionId="deliveries" />} />
+        <Route path="inventory" element={<AdminSectionPage sectionId="inventory" />} />
+        <Route path="reports" element={<AdminSectionPage sectionId="reports" />} />
+        <Route path="notifications" element={<AdminSectionPage sectionId="notifications" />} />
+        <Route path="system-settings" element={<AdminSectionPage sectionId="system-settings" />} />
+        <Route path="audit-logs" element={<AdminSectionPage sectionId="audit-logs" />} />
+        <Route path="profile" element={<AdminSectionPage sectionId="profile" />} />
       </Route>
     </Routes>
   );

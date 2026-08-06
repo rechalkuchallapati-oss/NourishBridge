@@ -1,0 +1,203 @@
+export const ADMIN_SECTIONS = {
+  users: {
+    title: "Users",
+    description: "Manage all platform users — donors, NGOs, volunteers, and admins.",
+    stats: [
+      { key: "total", label: "Total Users", value: "2,840", accent: "blue" },
+      { key: "active", label: "Active Today", value: "412", accent: "green" },
+      { key: "new", label: "New This Week", value: "86", accent: "purple" },
+      { key: "suspended", label: "Suspended", value: "12", accent: "amber" },
+    ],
+    columns: ["User ID", "Name", "Role", "Email", "Status", "Joined"],
+    rows: [
+      ["USR-1001", "John David", "NGO Admin", "john@helpinghands.org", "Active", "Mar 2025"],
+      ["USR-1002", "Rahul Kumar", "Volunteer", "rahul.k@email.com", "Active", "Jan 2025"],
+      ["USR-1003", "Priya Sharma", "Donor", "priya@hotel.com", "Active", "Feb 2025"],
+      ["USR-1004", "Arjun Reddy", "Volunteer", "arjun.r@email.com", "Pending", "Jul 2025"],
+    ],
+  },
+  donations: {
+    title: "Donations",
+    description: "Monitor all donations across the platform — status, matching, and fulfillment.",
+    stats: [
+      { key: "total", label: "Total Donations", value: "8,420", accent: "green" },
+      { key: "active", label: "Active", value: "186", accent: "blue" },
+      { key: "completed", label: "Completed Today", value: "42", accent: "purple" },
+      { key: "cancelled", label: "Cancelled", value: "8", accent: "amber" },
+    ],
+    columns: ["Donation ID", "Donor", "Food Item", "NGO", "Status", "Created"],
+    rows: [
+      ["DON-2034", "Hotel Grand Palace", "Veg Biryani 35kg", "Helping Hands", "In Transit", "Today"],
+      ["DON-1045", "Paradise Biryani", "Mixed Rice", "Helping Hands", "Accepted", "Today"],
+      ["DON-1988", "Daily Bread Café", "Sandwiches", "Sunrise Home", "Completed", "Yesterday"],
+    ],
+  },
+  ngos: {
+    title: "NGOs",
+    description: "Review, verify, and manage registered NGOs on NourishBridge.",
+    stats: [
+      { key: "total", label: "Registered NGOs", value: "62", accent: "blue" },
+      { key: "verified", label: "Verified", value: "54", accent: "green" },
+      { key: "pending", label: "Pending Review", value: "6", accent: "amber" },
+      { key: "suspended", label: "Suspended", value: "2", accent: "slate" },
+    ],
+    columns: ["NGO ID", "Name", "City", "Meals Served", "Status", "Rating"],
+    rows: [
+      ["NGO-2045", "Helping Hands Foundation", "Hyderabad", "54,820", "Verified", "4.9"],
+      ["NGO-1088", "Sunrise Home", "Secunderabad", "28,400", "Verified", "4.7"],
+      ["NGO-3012", "Feeding India Hub", "Kukatpally", "Pending", "Under Review", "—"],
+    ],
+  },
+  volunteers: {
+    title: "Volunteers",
+    description: "Track volunteer registrations, missions, and performance platform-wide.",
+    stats: [
+      { key: "total", label: "Total Volunteers", value: "148", accent: "purple" },
+      { key: "active", label: "Active Today", value: "42", accent: "green" },
+      { key: "on_mission", label: "On Mission", value: "18", accent: "blue" },
+      { key: "pending", label: "Pending Verification", value: "9", accent: "amber" },
+    ],
+    columns: ["Volunteer ID", "Name", "City", "Missions", "Rating", "Status"],
+    rows: [
+      ["VOL-204", "Rahul Kumar", "Gachibowli", "245", "4.9", "Active"],
+      ["VOL-118", "Priya Sharma", "Madhapur", "218", "4.8", "Active"],
+      ["VOL-092", "Arjun Reddy", "Kondapur", "196", "4.8", "On Mission"],
+    ],
+  },
+  donors: {
+    title: "Donors",
+    description: "Overview of food donors — restaurants, hotels, corporates, and individuals.",
+    stats: [
+      { key: "total", label: "Registered Donors", value: "420", accent: "green" },
+      { key: "active", label: "Active This Month", value: "128", accent: "blue" },
+      { key: "recurring", label: "Recurring Donors", value: "64", accent: "purple" },
+      { key: "new", label: "New This Week", value: "18", accent: "amber" },
+    ],
+    columns: ["Donor ID", "Name", "Type", "Donations", "Meals Contributed", "Status"],
+    rows: [
+      ["DNR-501", "Hotel Grand Palace", "Hotel", "42", "2,840", "Active"],
+      ["DNR-388", "Paradise Biryani", "Restaurant", "36", "2,180", "Active"],
+      ["DNR-220", "Daily Bread Café", "Café", "28", "1,920", "Active"],
+    ],
+  },
+  "food-requests": {
+    title: "Food Requests",
+    description: "Monitor NGO food requests and matching activity across the platform.",
+    stats: [
+      { key: "open", label: "Open Requests", value: "34", accent: "amber" },
+      { key: "matched", label: "Matched Today", value: "12", accent: "green" },
+      { key: "urgent", label: "Urgent", value: "5", accent: "purple" },
+      { key: "fulfilled", label: "Fulfilled This Week", value: "89", accent: "blue" },
+    ],
+    columns: ["Request ID", "NGO", "Food Needed", "Priority", "Status", "Created"],
+    rows: [
+      ["REQ-2048", "Helping Hands", "Veg Biryani 200 meals", "High", "Open", "Today"],
+      ["REQ-2042", "Sunrise Home", "Fresh Fruits", "Medium", "Matched", "Today"],
+      ["REQ-2035", "Hope Shelter", "Cooked Meals", "Critical", "Open", "Yesterday"],
+    ],
+  },
+  deliveries: {
+    title: "Deliveries",
+    description: "Live and historical delivery tracking across all active missions.",
+    stats: [
+      { key: "active", label: "Active Deliveries", value: "28", accent: "blue" },
+      { key: "completed", label: "Completed Today", value: "54", accent: "green" },
+      { key: "delayed", label: "Delayed", value: "3", accent: "amber" },
+      { key: "failed", label: "Failed", value: "1", accent: "slate" },
+    ],
+    columns: ["Delivery ID", "Volunteer", "Donation", "Route", "ETA", "Status"],
+    rows: [
+      ["DEL-8821", "Rahul Kumar", "DON-2034", "Gachibowli → NGO Hub", "8 min", "In Transit"],
+      ["DEL-8819", "Priya Sharma", "DON-1045", "Madhapur → Sunrise Home", "22 min", "Pickup"],
+      ["DEL-8815", "Arjun Reddy", "DON-1988", "Kondapur → Hope Shelter", "—", "Completed"],
+    ],
+  },
+  inventory: {
+    title: "Inventory Monitor",
+    description: "Platform-wide inventory visibility — stock levels, expiry, and alerts.",
+    stats: [
+      { key: "items", label: "Tracked Items", value: "1,240", accent: "blue" },
+      { key: "expiring", label: "Expiring Soon", value: "18", accent: "amber" },
+      { key: "low_stock", label: "Low Stock Alerts", value: "7", accent: "purple" },
+      { key: "utilization", label: "Avg. Utilization", value: "72%", accent: "green" },
+    ],
+    columns: ["Batch ID", "NGO", "Item", "Quantity", "Expiry", "Status"],
+    rows: [
+      ["INV-2043", "Helping Hands", "Veg Biryani", "120 kg", "2 hours", "Expiring"],
+      ["INV-1088", "Sunrise Home", "Fresh Fruits", "45 kg", "Tomorrow", "Available"],
+      ["INV-1045", "Hope Shelter", "Packaged Meals", "80 units", "3 days", "Available"],
+    ],
+  },
+  reports: {
+    title: "Reports & Analytics",
+    description: "Platform-wide analytics, trends, and exportable reports for administrators.",
+    stats: [
+      { key: "meals", label: "Meals Distributed", value: "1.2M", accent: "green" },
+      { key: "rescued", label: "Food Rescued", value: "420 T", accent: "blue" },
+      { key: "ngos", label: "Active NGOs", value: "62", accent: "purple" },
+      { key: "growth", label: "Monthly Growth", value: "+18%", accent: "amber" },
+    ],
+    columns: ["Report", "Period", "Type", "Generated", "Action"],
+    rows: [
+      ["Platform Impact", "July 2026", "PDF", "Today", "Download"],
+      ["Donation Summary", "Q2 2026", "Excel", "Jul 1", "Download"],
+      ["Volunteer Performance", "June 2026", "CSV", "Jun 30", "Download"],
+    ],
+  },
+  notifications: {
+    title: "Notifications",
+    description: "System-wide notification center for admin alerts and platform events.",
+    stats: [
+      { key: "unread", label: "Unread", value: "24", accent: "amber" },
+      { key: "today", label: "Today", value: "56", accent: "blue" },
+      { key: "critical", label: "Critical", value: "4", accent: "purple" },
+      { key: "resolved", label: "Resolved", value: "312", accent: "green" },
+    ],
+    columns: ["Alert", "Category", "Priority", "Time", "Status"],
+    rows: [
+      ["NGO verification pending", "NGO", "High", "10 mins ago", "Unread"],
+      ["Delivery delay detected", "Delivery", "Critical", "22 mins ago", "Unread"],
+      ["Inventory expiry cluster", "Inventory", "High", "1 hour ago", "Read"],
+    ],
+  },
+  "system-settings": {
+    title: "System Settings",
+    description: "Configure platform-wide settings, feature flags, and operational parameters.",
+    stats: [],
+    columns: ["Setting", "Category", "Current Value", "Last Updated"],
+    rows: [
+      ["Auto-match donations", "Matching", "Enabled", "Jul 1, 2026"],
+      ["Max pickup radius", "Logistics", "15 km", "Jun 15, 2026"],
+      ["Email notifications", "Notifications", "Enabled", "May 20, 2026"],
+      ["Maintenance mode", "System", "Disabled", "Apr 1, 2026"],
+    ],
+  },
+  "audit-logs": {
+    title: "Audit Logs",
+    description: "Immutable log of administrative actions and sensitive platform events.",
+    stats: [
+      { key: "today", label: "Events Today", value: "842", accent: "blue" },
+      { key: "admin", label: "Admin Actions", value: "28", accent: "purple" },
+      { key: "security", label: "Security Events", value: "3", accent: "amber" },
+      { key: "errors", label: "Errors Logged", value: "7", accent: "slate" },
+    ],
+    columns: ["Timestamp", "Actor", "Action", "Entity", "IP"],
+    rows: [
+      ["11:25 AM", "Admin", "Verified NGO", "NGO-3012", "192.168.1.1"],
+      ["11:18 AM", "System", "Inventory Alert", "INV-2043", "—"],
+      ["10:51 AM", "Rahul Kumar", "Pickup Confirmed", "DON-2034", "10.0.0.42"],
+    ],
+  },
+  profile: {
+    title: "Profile",
+    description: "Administrator account profile and credentials.",
+    stats: [],
+    columns: ["Field", "Value"],
+    rows: [
+      ["Name", "Platform Admin"],
+      ["Email", "admin@nourishbridge.org"],
+      ["Role", "Super Admin"],
+      ["Last Login", "Today, 9:15 AM"],
+    ],
+  },
+};
