@@ -14,6 +14,7 @@ import {
   FaBuilding,
   FaUserFriends,
 } from "react-icons/fa";
+import AdminIdentityPanel from "../admin/AdminIdentityPanel";
 import { DASHBOARD_ROUTES, matchAdminRoute } from "../../constants/routes";
 import { logoutDonor } from "../../utils/authStorage";
 
@@ -75,6 +76,8 @@ export default function AdminSidebar() {
           />
         ))}
       </div>
+
+      <AdminIdentityPanel />
 
       <Link
         to="/login"

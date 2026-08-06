@@ -48,6 +48,7 @@ import Settings from "../pages/Dashboard/Settings";
 import HelpSupport from "../pages/Dashboard/HelpSupport";
 import VolunteerShell from "../components/dashboard/VolunteerShell";
 import AdminShell from "../components/dashboard/AdminShell";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -159,14 +160,7 @@ const AppRoutes = () => {
         <Route path="profile" element={<VolunteerProfile />} />
       </Route>
       <Route path="/dashboard/admin" element={<AdminShell />}>
-        <Route
-          index
-          element={
-            <div className="rounded-none border border-[#E5E7EB] bg-white p-8 text-center text-[#64748B]">
-              Admin Console
-            </div>
-          }
-        />
+        <Route index element={<AdminDashboard />} />
       </Route>
     </Routes>
   );
