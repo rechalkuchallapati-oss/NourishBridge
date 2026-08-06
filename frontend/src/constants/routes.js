@@ -41,12 +41,26 @@ export const DASHBOARD_ROUTES = {
   volunteerImpact: "/dashboard/volunteer/impact",
   volunteerProfile: "/dashboard/volunteer/profile",
   admin: "/dashboard/admin",
+  adminUsers: "/dashboard/admin/users",
+  adminDonations: "/dashboard/admin/donations",
+  adminNgos: "/dashboard/admin/ngos",
+  adminVolunteers: "/dashboard/admin/volunteers",
+  adminDonors: "/dashboard/admin/donors",
+  adminFoodRequests: "/dashboard/admin/food-requests",
+  adminDeliveries: "/dashboard/admin/deliveries",
+  adminInventory: "/dashboard/admin/inventory",
+  adminReports: "/dashboard/admin/reports",
+  adminNotifications: "/dashboard/admin/notifications",
+  adminSystemSettings: "/dashboard/admin/system-settings",
+  adminAuditLogs: "/dashboard/admin/audit-logs",
+  adminProfile: "/dashboard/admin/profile",
 };
 
 export const ROLE_DASHBOARD_ROUTES = {
   donor: DASHBOARD_ROUTES.donor,
   ngo: DASHBOARD_ROUTES.ngo,
   volunteer: DASHBOARD_ROUTES.volunteer,
+  admin: DASHBOARD_ROUTES.admin,
 };
 
 export function matchDonorRoute(pathname, route) {
@@ -66,6 +80,13 @@ export function matchNgoRoute(pathname, route) {
 export function matchVolunteerRoute(pathname, route) {
   if (route === DASHBOARD_ROUTES.volunteer) {
     return pathname === DASHBOARD_ROUTES.volunteer;
+  }
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
+
+export function matchAdminRoute(pathname, route) {
+  if (route === DASHBOARD_ROUTES.admin) {
+    return pathname === DASHBOARD_ROUTES.admin;
   }
   return pathname === route || pathname.startsWith(`${route}/`);
 }
