@@ -49,6 +49,7 @@ import HelpSupport from "../pages/Dashboard/HelpSupport";
 import VolunteerShell from "../components/dashboard/VolunteerShell";
 import AdminShell from "../components/dashboard/AdminShell";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
+import AdminUsers from "../pages/Admin/AdminUsers";
 
 const AppRoutes = () => {
   return (
@@ -161,6 +162,7 @@ const AppRoutes = () => {
       </Route>
       <Route path="/dashboard/admin" element={<AdminShell />}>
         <Route index element={<AdminDashboard />} />
+        <Route path="users" element={<AdminUsers />} />
       </Route>
     </Routes>
   );
