@@ -50,6 +50,7 @@ import VolunteerShell from "../components/dashboard/VolunteerShell";
 import AdminShell from "../components/dashboard/AdminShell";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
+import AdminNgos from "../pages/Admin/AdminNgos";
 
 const AppRoutes = () => {
   return (
@@ -163,6 +164,7 @@ const AppRoutes = () => {
       <Route path="/dashboard/admin" element={<AdminShell />}>
         <Route index element={<AdminDashboard />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="ngos" element={<AdminNgos />} />
       </Route>
     </Routes>
   );
