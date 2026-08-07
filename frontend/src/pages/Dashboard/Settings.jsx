@@ -68,7 +68,7 @@ function PasswordField({ id, label, show, onToggle, value, onChange }) {
         <button
           type="button"
           onClick={onToggle}
-          className="flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-none border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:text-[#16A34A] active:scale-95 active:bg-[#DCFCE7]"
+          className="flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:text-[#16A34A] active:scale-95 active:bg-[#DCFCE7]"
           aria-label={show ? "Hide password" : "Show password"}
         >
           {show ? <FaEyeSlash className="text-lg" /> : <FaEye className="text-lg" />}
@@ -90,7 +90,7 @@ function SettingToggle({ option, checked, onToggle }) {
   return (
     <motion.label
       whileHover={{ x: 4 }}
-      className="flex cursor-pointer items-center justify-between gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-5 py-4 transition-all duration-300 hover:border-[#16A34A]/30 hover:bg-[#F0FDF4] sm:py-5"
+      className="flex cursor-pointer items-center justify-between gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] px-5 py-4 transition-all duration-300 hover:border-[#16A34A]/30 hover:bg-[#F0FDF4] sm:py-5"
     >
       <span className="text-sm font-medium leading-6 text-[#0F172A] sm:text-base">
         {option.label}

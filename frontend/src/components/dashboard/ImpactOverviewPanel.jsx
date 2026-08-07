@@ -129,9 +129,9 @@ export default function ImpactOverviewPanel() {
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: EASE }}
-      className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6"
+      className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6"
     >
-      <span className="absolute right-[0.5cm] top-[0.5cm] rounded-none bg-[#16A34A] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+      <span className="absolute right-[0.5cm] top-[0.5cm] rounded-full bg-[#16A34A] px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
         This month
       </span>
 

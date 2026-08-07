@@ -17,7 +17,7 @@ const BOX_INSET = "pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm]";
 
 function DetailItem({ icon: Icon, label, value }) {
   return (
-    <div className={`rounded-none border border-[#E5E7EB] bg-[#F8FAFC] ${BOX_INSET}`}>
+    <div className={`rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] ${BOX_INSET}`}>
       <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
         <Icon className="shrink-0 text-[#16A34A]" aria-hidden="true" />
         {label}
@@ -54,7 +54,7 @@ function DonationTimeline({ currentStatus }) {
 
               <span
                 className={[
-                  "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-none border-2 text-xs font-bold",
+                  "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold",
                   isComplete
                     ? "border-[#16A34A] bg-[#16A34A] text-white"
                     : isCurrent
@@ -113,7 +113,7 @@ function ActiveDonationCard({ donation }) {
               alt={getDonationImageAlt(donation)}
               className="h-full w-full object-cover"
             />
-            <span className="absolute left-[0.5cm] top-[0.5cm] rounded-none bg-[#0F172A]/75 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
+            <span className="absolute left-[0.5cm] top-[0.5cm] rounded-full bg-[#0F172A]/75 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-white">
               Live photo
             </span>
           </div>
@@ -157,7 +157,7 @@ function ActiveDonationCard({ donation }) {
         className={`grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_300px] xl:grid-cols-[minmax(0,1fr)_340px] ${BOX_INSET}`}
       >
         <div className="grid gap-[0.5cm] sm:grid-cols-2">
-          <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm] sm:col-span-2">
+          <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm] sm:col-span-2">
             <div className="flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
               <FaUtensils className="shrink-0 text-[#16A34A]" aria-hidden="true" />
               Items Donated
@@ -187,7 +187,7 @@ function ActiveDonationCard({ donation }) {
           <DetailItem icon={FaTruck} label="Current Status" value={statusLabel} />
         </div>
 
-        <div className={`rounded-none border border-[#E5E7EB] bg-white ${BOX_INSET}`}>
+        <div className={`rounded-[16px] border border-[#E5E7EB] bg-white ${BOX_INSET}`}>
           <h4 className="mb-[0.5cm] pl-[0.25cm] text-base font-bold uppercase tracking-wide text-[#64748B] sm:text-lg">
             Status Timeline
           </h4>
@@ -202,7 +202,7 @@ export default function ActiveDonationTracking({ donations, showSectionHeader = 
   if (!donations.length) {
     return (
       <section
-        className={`rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-center ${BOX_INSET}`}
+        className={`rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-center ${BOX_INSET}`}
       >
         <p className="text-xl font-semibold text-[#0F172A] sm:text-2xl">No active donations</p>
         <p className="mt-[0.5cm] text-base leading-7 text-[#64748B] sm:text-lg">

@@ -35,7 +35,7 @@ export default function MyDonations() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div
           className="pointer-events-none absolute -right-10 -top-10 h-44 w-44 rounded-full bg-[#16A34A]/8 blur-3xl"
@@ -55,7 +55,7 @@ export default function MyDonations() {
           >
             <div className="flex items-start gap-[0.5cm] sm:items-center">
               <motion.span
-                className="group flex h-14 w-14 shrink-0 items-center justify-center rounded-none bg-gradient-to-br from-[#16A34A] to-[#15803D] text-white shadow-[0_8px_24px_rgba(22,163,74,0.35)] transition-shadow duration-300 hover:shadow-[0_12px_32px_rgba(22,163,74,0.45)]"
+                className="group flex h-14 w-14 shrink-0 items-center justify-center rounded-[16px] bg-gradient-to-br from-[#16A34A] to-[#15803D] text-white shadow-[0_8px_24px_rgba(22,163,74,0.35)] transition-shadow duration-300 hover:shadow-[0_12px_32px_rgba(22,163,74,0.45)]"
                 animate={{ y: [0, -3, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 whileHover={{ scale: 1.06, rotate: 2 }}

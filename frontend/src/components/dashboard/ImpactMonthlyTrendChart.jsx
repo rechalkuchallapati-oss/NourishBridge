@@ -4,7 +4,7 @@ export default function ImpactMonthlyTrendChart() {
   const maxDonations = Math.max(...MONTHLY_DONATION_TRENDS.map((item) => item.donations));
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6">
+    <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6">
       <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">
         Monthly donation trends
       </h2>

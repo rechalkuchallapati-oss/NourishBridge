@@ -27,7 +27,7 @@ const MY_DONATIONS_SELECT_CLASS = [
 
 const MY_DONATIONS_ACTION_CLASS = [
   "inline-flex min-h-[56px] min-w-[120px] items-center justify-center gap-[0.5cm]",
-  "rounded-none border border-[#E5E7EB] px-6 py-4",
+  "rounded-[16px] border border-[#E5E7EB] px-6 py-4",
   "text-base font-semibold leading-none text-[#16A34A]",
   "transition-all duration-300",
   "hover:-translate-y-0.5 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:shadow-[0_8px_20px_rgba(22,163,74,0.12)]",

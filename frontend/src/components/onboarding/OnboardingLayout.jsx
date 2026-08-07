@@ -30,6 +30,7 @@ export function OnboardingTextInput({
   onChange,
   required = true,
   autoComplete,
+  disabled = false,
 }) {
   return (
     <OnboardingField id={id} label={label}>
@@ -44,6 +45,7 @@ export function OnboardingTextInput({
           value={value}
           onChange={onChange}
           className={inputClassName}
+          disabled={disabled}
         />
       </div>
     </OnboardingField>
@@ -57,6 +59,7 @@ export function OnboardingTextarea({
   value,
   onChange,
   required = true,
+  disabled = false,
 }) {
   return (
     <OnboardingField id={id} label={label}>
@@ -70,6 +73,7 @@ export function OnboardingTextarea({
           onChange={onChange}
           rows={4}
           className={`${inputClassName} resize-none`}
+          disabled={disabled}
         />
       </div>
     </OnboardingField>
@@ -84,6 +88,7 @@ export default function OnboardingLayout({
   onSubmit,
   submitLabel = "Complete Setup",
   formError,
+  loading = false,
 }) {
   return (
     <section className="relative min-h-[calc(100vh-90px)] overflow-hidden bg-gradient-to-b from-[#F8FFF8] via-white to-[#F0FDF4] py-12 sm:py-16">
@@ -118,6 +123,8 @@ export default function OnboardingLayout({
             <div className="flex justify-center pt-[1cm]">
               <Button
                 type="submit"
+                loading={loading}
+                disabled={loading}
                 className="h-14 min-w-[280px] px-12 text-base sm:text-lg"
               >
                 {submitLabel}

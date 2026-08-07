@@ -106,7 +106,7 @@ export default function HelpSupport() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05, ease: EASE }}
             whileHover={{ y: -2 }}
-            className="flex items-center gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:shadow-md"
+            className="flex items-center gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:shadow-md"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#F0FDF4] text-[#16A34A]">
               <FaEnvelope className="text-xl" aria-hidden="true" />
@@ -124,7 +124,7 @@ export default function HelpSupport() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1, ease: EASE }}
             whileHover={{ y: -2 }}
-            className="flex items-center gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:shadow-md"
+            className="flex items-center gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:shadow-md"
           >
             <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#F0FDF4] text-[#16A34A]">
               <FaPhone className="text-xl" aria-hidden="true" />
@@ -140,7 +140,7 @@ export default function HelpSupport() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.12, ease: EASE }}
-          className={`relative rounded-none border border-[#E5E7EB] bg-white shadow-sm ${BOX_INSET}`}
+          className={`relative rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm ${BOX_INSET}`}
         >
           <div className="flex items-center gap-[0.5cm]">
             <FaQuestionCircle className="text-xl text-[#16A34A]" aria-hidden="true" />
@@ -155,7 +155,7 @@ export default function HelpSupport() {
                 initial={{ opacity: 0, x: -8 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.35, delay: 0.15 + index * 0.04, ease: EASE }}
-                className="rounded-none border border-[#F1F5F9] bg-[#F8FAFC] p-[0.5cm] transition-colors duration-300 hover:border-[#BBF7D0] hover:bg-[#F0FDF4]"
+                className="rounded-[16px] border border-[#F1F5F9] bg-[#F8FAFC] p-[0.5cm] transition-colors duration-300 hover:border-[#BBF7D0] hover:bg-[#F0FDF4]"
               >
                 <h3 className="text-base font-bold text-[#15803D] sm:text-lg">{item.q}</h3>
                 <p className="mt-[0.5cm] text-sm leading-7 text-[#64748B] sm:text-base">{item.a}</p>

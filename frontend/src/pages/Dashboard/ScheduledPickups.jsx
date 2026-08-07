@@ -23,7 +23,7 @@ const BOX_INSET = "pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm]";
 
 function InfoBlock({ icon: Icon, label, children }) {
   return (
-    <div className={`flex flex-col gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-[#F8FAFC] ${BOX_INSET}`}>
+    <div className={`flex flex-col gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] ${BOX_INSET}`}>
       <div className="flex items-center gap-[0.5cm]">
         <Icon className="shrink-0 text-lg text-[#16A34A]" aria-hidden="true" />
         <p className="text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
@@ -42,7 +42,7 @@ function PickupCard({ pickup, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.06 * index, ease: EASE }}
       whileHover={{ y: -2 }}
-      className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(15,23,42,0.08)]"
+      className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(15,23,42,0.08)]"
     >
       <div
         className={`flex flex-col gap-[0.5cm] border-b border-[#E5E7EB] bg-[#F8FAFC] sm:flex-row sm:items-center sm:justify-between ${BOX_INSET}`}
@@ -63,7 +63,7 @@ function PickupCard({ pickup, index }) {
           <DonationItemsList record={pickup} className="mt-2" />
         </div>
         <span
-          className={`inline-flex min-h-[48px] min-w-[140px] shrink-0 items-center justify-center self-start rounded-none px-6 py-3 text-center text-sm font-semibold sm:self-center sm:text-base ${PICKUP_STATUS_COLORS[pickup.status] ?? PICKUP_STATUS_COLORS.scheduled}`}
+          className={`inline-flex min-h-[48px] min-w-[140px] shrink-0 items-center justify-center self-start rounded-full px-6 py-3 text-center text-sm font-semibold sm:self-center sm:text-base ${PICKUP_STATUS_COLORS[pickup.status] ?? PICKUP_STATUS_COLORS.scheduled}`}
         >
           {pickup.statusLabel}
         </span>
@@ -109,7 +109,7 @@ function PickupCard({ pickup, index }) {
           </InfoBlock>
         </div>
 
-        <div className={`flex flex-col gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-white ${BOX_INSET}`}>
+        <div className={`flex flex-col gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-white ${BOX_INSET}`}>
           <div className="flex items-center gap-[0.5cm] pl-[0.25cm]">
             <FaClipboardList className="shrink-0 text-lg text-[#16A34A]" aria-hidden="true" />
             <p className="text-sm font-semibold uppercase tracking-wide text-[#94A3B8] sm:text-base">
@@ -121,7 +121,7 @@ function PickupCard({ pickup, index }) {
               <li key={item.step} className="flex items-center gap-[0.5cm]">
                 <span
                   className={[
-                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-none text-xs font-bold",
+                    "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                     item.done
                       ? "bg-[#16A34A] text-white"
                       : "border-2 border-[#E2E8F0] bg-white text-[#94A3B8]",
@@ -251,7 +251,7 @@ export default function ScheduledPickups() {
                       className="flex items-start gap-[0.5cm] text-sm leading-7 text-[#166534] sm:text-base"
                     >
                       <span
-                        className="mt-[0.15cm] flex h-6 w-6 shrink-0 items-center justify-center rounded-none bg-[#DCFCE7] text-xs font-bold text-[#15803D]"
+                        className="mt-[0.15cm] flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#DCFCE7] text-xs font-bold text-[#15803D]"
                         aria-hidden="true"
                       >
                         {ruleIndex + 1}

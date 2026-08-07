@@ -37,10 +37,10 @@ function ImpactMetricCard({
   return (
     <motion.div
       whileHover={{ y: -2 }}
-      className="flex min-h-[180px] flex-col items-center justify-center rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] text-center shadow-sm transition-shadow duration-300 hover:shadow-md sm:min-h-[200px]"
+      className="flex min-h-[180px] flex-col items-center justify-center rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] text-center shadow-sm transition-shadow duration-300 hover:shadow-md sm:min-h-[200px]"
     >
       <span
-        className={`flex h-12 w-12 items-center justify-center rounded-none border sm:h-14 sm:w-14 ${ACCENTS[accent] ?? ACCENTS.green}`}
+        className={`flex h-12 w-12 items-center justify-center rounded-[16px] border sm:h-14 sm:w-14 ${ACCENTS[accent] ?? ACCENTS.green}`}
       >
         <Icon className="text-xl sm:text-2xl" aria-hidden="true" />
       </span>
@@ -52,7 +52,7 @@ function ImpactMetricCard({
         <p className="mt-[0.3cm] max-w-xs text-xs leading-5 text-[#94A3B8] sm:text-sm">{hint}</p>
       ) : null}
       {estimate ? (
-        <span className="mt-[0.3cm] rounded-none bg-[#FEF3C7] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#B45309]">
+        <span className="mt-[0.3cm] rounded-full bg-[#FEF3C7] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#B45309]">
           Estimate
         </span>
       ) : null}
@@ -78,7 +78,7 @@ export default function MyImpact() {
         transition={{ duration: 0.5, ease: EASE }}
         className="flex flex-col gap-[0.5cm]"
       >
-        <div className="relative flex flex-col gap-[0.5cm] overflow-hidden rounded-none bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white p-[0.5cm]">
+        <div className="relative flex flex-col gap-[0.5cm] overflow-hidden rounded-[16px] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white p-[0.5cm]">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#16A34A]/10 blur-3xl"
             aria-hidden="true"
@@ -156,7 +156,7 @@ export default function MyImpact() {
 
         <section className="relative py-[0.5cm]">
           <div
-            className="pointer-events-none absolute -inset-x-4 -inset-y-2 rounded-none bg-gradient-to-r from-[#F0FDF4]/80 via-[#ECFDF5]/60 to-[#F0FDF4]/80 blur-sm"
+            className="pointer-events-none absolute -inset-x-4 -inset-y-2 rounded-full bg-gradient-to-r from-[#F0FDF4]/80 via-[#ECFDF5]/60 to-[#F0FDF4]/80 blur-sm"
             aria-hidden="true"
           />
           <div

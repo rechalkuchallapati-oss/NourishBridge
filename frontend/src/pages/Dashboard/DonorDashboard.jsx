@@ -48,7 +48,7 @@ function DashboardNavBox({ to, icon: Icon, title, description, accent = "green",
       <Link
         to={to}
         className={[
-          "flex h-full min-h-[140px] flex-col items-center justify-center gap-[0.3cm] rounded-none border p-[0.5cm] text-center shadow-sm transition-all duration-300 hover:shadow-md",
+          "flex h-full min-h-[140px] flex-col items-center justify-center gap-[0.3cm] rounded-[16px] border p-[0.5cm] text-center shadow-sm transition-all duration-300 hover:shadow-md",
           accents[accent] ?? accents.green,
         ].join(" ")}
       >
@@ -89,11 +89,11 @@ export default function DonorDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: EASE }}
-          className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+          className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
         >
           <div className="relative bg-gradient-to-r from-[#16A34A] to-[#15803D] px-6 py-8 sm:px-8 sm:py-10">
             <div
-              className="pointer-events-none absolute -right-8 top-0 h-40 w-40 rounded-none bg-white/10 blur-2xl"
+              className="pointer-events-none absolute -right-8 top-0 h-40 w-40 rounded-full bg-white/10 blur-2xl"
               aria-hidden="true"
             />
             <div className="relative flex flex-col gap-[0.5cm] lg:flex-row lg:items-center lg:justify-between">
@@ -179,7 +179,7 @@ export default function DonorDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.1, ease: EASE }}
-          className="relative overflow-hidden rounded-none border border-[#BBF7D0] bg-gradient-to-br from-[#F0FDF4] via-[#ECFDF5] to-white p-[0.5cm] shadow-[0_8px_30px_rgba(22,163,74,0.08)]"
+          className="relative overflow-hidden rounded-[16px] border border-[#BBF7D0] bg-gradient-to-br from-[#F0FDF4] via-[#ECFDF5] to-white p-[0.5cm] shadow-[0_8px_30px_rgba(22,163,74,0.08)]"
         >
           <div
             className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-[#16A34A]/10 blur-2xl"

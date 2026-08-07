@@ -58,7 +58,7 @@ function NavLink({ item, isActive }) {
     <Link
       to={item.to}
       className={[
-        "flex items-center gap-3 rounded-none px-4 py-2.5 transition-colors",
+        "flex items-center gap-3 rounded-[10px] px-4 py-2.5 transition-colors",
         emphasized ? "text-base font-semibold" : "text-sm font-medium",
         isActive
           ? "bg-[#F0FDF4] text-[#16A34A]"
@@ -78,7 +78,7 @@ export default function DonorSidebar() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="sticky top-8 flex h-[calc(100vh-72px)] max-h-[calc(100vh-72px)] w-full flex-col overflow-y-auto rounded-none border border-[#E5E7EB] bg-white px-5 py-7 shadow-sm">
+    <nav className="sticky top-8 flex h-[calc(100vh-72px)] max-h-[calc(100vh-72px)] w-full flex-col overflow-y-auto rounded-[16px] border border-[#E5E7EB] bg-white px-5 py-7 shadow-sm">
       <div className="flex flex-col gap-[0.5cm]">
         {NAV_SECTIONS.map((section) => (
           <div key={section.title ?? "dashboard"} className="flex flex-col gap-[0.5cm]">
@@ -99,7 +99,7 @@ export default function DonorSidebar() {
 
         <Link
           to={DASHBOARD_ROUTES.donorCreate}
-          className="flex w-full shrink-0 items-center justify-center gap-2.5 rounded-none bg-[#16A34A] px-5 py-4 text-base font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-all hover:bg-[#15803D]"
+          className="flex w-full shrink-0 items-center justify-center gap-2.5 rounded-[12px] bg-[#16A34A] px-5 py-4 text-base font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-all hover:bg-[#15803D]"
         >
           <FaPlus className="text-lg" aria-hidden="true" />
           Create Donation

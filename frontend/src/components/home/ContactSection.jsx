@@ -12,10 +12,10 @@ import volunteersBuildingImage from "../../assets/images/nourishbridge-volunteer
 const EASE = [0.22, 1, 0.36, 1];
 
 const inputClassName =
-  "box-border h-[1cm] w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 text-sm text-[#0F172A] outline-none transition-all duration-300 placeholder:text-[#94A3B8] focus:border-[#16A34A] focus:bg-white focus:ring-1 focus:ring-[#16A34A]/20";
+  "box-border h-[1cm] w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 text-sm text-[#0F172A] outline-none transition-all duration-300 placeholder:text-[#94A3B8] focus:border-[#16A34A] focus:bg-white focus:ring-1 focus:ring-[#16A34A]/20";
 
 const messageClassName =
-  "box-border h-[0.85in] w-full resize-none rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm text-[#0F172A] outline-none transition-all duration-300 placeholder:text-[#94A3B8] focus:border-[#16A34A] focus:bg-white focus:ring-1 focus:ring-[#16A34A]/20";
+  "box-border h-[0.85in] w-full resize-none rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm text-[#0F172A] outline-none transition-all duration-300 placeholder:text-[#94A3B8] focus:border-[#16A34A] focus:bg-white focus:ring-1 focus:ring-[#16A34A]/20";
 
 const contactDetails = [
   {
@@ -84,7 +84,7 @@ function FoundationImagePanel() {
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.65, delay: 0.15, ease: EASE }}
     >
-      <div className="relative h-[120px] w-full overflow-hidden rounded-none border border-[#E5E7EB] shadow-[0_4px_20px_rgba(15,23,42,0.06)] sm:h-[130px]">
+      <div className="relative h-[120px] w-full overflow-hidden rounded-[16px] border border-[#E5E7EB] shadow-[0_4px_20px_rgba(15,23,42,0.06)] sm:h-[130px]">
         <img
           src={volunteersBuildingImage}
           alt="Volunteers donating food with NourishBridge building in the background"
@@ -110,14 +110,14 @@ function ContactFormPanel() {
 
   return (
     <motion.div
-      className="mx-auto flex w-full max-w-[300px] shrink-0 flex-col items-center rounded-none border border-[#E5E7EB] bg-white p-3 text-center shadow-[0_4px_20px_rgba(15,23,42,0.05)] sm:max-w-[320px] sm:p-4"
+      className="mx-auto flex w-full max-w-[300px] shrink-0 flex-col items-center rounded-[16px] border border-[#E5E7EB] bg-white p-3 text-center shadow-[0_4px_20px_rgba(15,23,42,0.05)] sm:max-w-[320px] sm:p-4"
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.65, delay: 0.1, ease: EASE }}
     >
       <div className="flex flex-col items-center gap-2">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-[#E8F8EF] text-[#16A34A] ring-1 ring-[#DCFCE7]">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[#E8F8EF] text-[#16A34A] ring-1 ring-[#DCFCE7]">
           <HiChatBubbleBottomCenterText className="text-base" />
         </div>
         <div>
@@ -173,7 +173,7 @@ function ContactFormPanel() {
 
         <button
           type="submit"
-          className="group box-border inline-flex h-[1cm] w-full items-center justify-center gap-2 rounded-none bg-[#16A34A] text-xs font-semibold text-white transition-all duration-300 hover:bg-[#15803D] active:scale-[0.98] sm:text-sm"
+          className="group box-border inline-flex h-[1cm] w-full items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] text-xs font-semibold text-white transition-all duration-300 hover:bg-[#15803D] active:scale-[0.98] sm:text-sm"
         >
           Send Message
           <FaPaperPlane className="text-[10px] transition-transform duration-300 group-hover:translate-x-0.5" />

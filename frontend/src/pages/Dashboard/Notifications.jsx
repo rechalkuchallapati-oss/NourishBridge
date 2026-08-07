@@ -94,7 +94,7 @@ export default function Notifications() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.1, ease: EASE }}
               whileHover={{ y: -2 }}
-              className="shrink-0 self-start rounded-none border border-[#BBF7D0] bg-white px-5 py-3 text-sm font-semibold text-[#16A34A] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:shadow-md sm:text-base"
+              className="shrink-0 self-start rounded-[10px] border border-[#BBF7D0] bg-white px-5 py-3 text-sm font-semibold text-[#16A34A] shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:shadow-md sm:text-base"
             >
               Mark all as read
             </motion.button>
@@ -110,7 +110,7 @@ export default function Notifications() {
               transition={{ duration: 0.4, delay: 0.05 * index, ease: EASE }}
               whileHover={{ y: -2 }}
               className={[
-                "rounded-none border shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(15,23,42,0.08)]",
+                "rounded-[16px] border shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(15,23,42,0.08)]",
                 BOX_INSET,
                 item.read
                   ? "border-[#E5E7EB] bg-white"
@@ -126,11 +126,11 @@ export default function Notifications() {
                     <h2 className="text-base font-bold text-[#0F172A] sm:text-lg">
                       {item.title}
                     </h2>
-                    <span className="rounded-none bg-[#F1F5F9] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#64748B] sm:text-xs">
+                    <span className="rounded-full bg-[#F1F5F9] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#64748B] sm:text-xs">
                       {NOTIFICATION_TYPE_LABELS[item.type]}
                     </span>
                     {!item.read ? (
-                      <span className="rounded-none bg-[#16A34A] px-2.5 py-1 text-[10px] font-bold uppercase text-white sm:text-xs">
+                      <span className="rounded-full bg-[#16A34A] px-2.5 py-1 text-[10px] font-bold uppercase text-white sm:text-xs">
                         New
                       </span>
                     ) : null}

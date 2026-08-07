@@ -106,7 +106,7 @@ function FooterStayConnectedColumn() {
 
         <form
           onSubmit={handleSubmit}
-          className="flex overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]"
+          className="flex overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]"
         >
           <input
             type="email"
@@ -114,12 +114,12 @@ function FooterStayConnectedColumn() {
             required
             aria-label="Email address"
             placeholder="Enter your email"
-            className="min-w-0 flex-1 rounded-none border-none bg-transparent px-2 py-2 text-[10px] text-[#0F172A] outline-none placeholder:text-[#94A3B8] sm:px-2.5 sm:text-[11px]"
+            className="min-w-0 flex-1 rounded-[10px] border-none bg-transparent px-2 py-2 text-[10px] text-[#0F172A] outline-none placeholder:text-[#94A3B8] sm:px-2.5 sm:text-[11px]"
           />
           <button
             type="submit"
             aria-label="Subscribe to newsletter"
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-none bg-[#16A34A] text-white transition-colors duration-300 hover:bg-[#15803D] sm:h-9 sm:w-9"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-[#16A34A] text-white transition-colors duration-300 hover:bg-[#15803D] sm:h-9 sm:w-9"
           >
             <FaPaperPlane className="text-[10px] sm:text-xs" />
           </button>

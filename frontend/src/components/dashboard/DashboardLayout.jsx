@@ -44,16 +44,17 @@ export function StatCard({
   return (
     <article
       className={[
-        "rounded-none border p-[0.5cm] shadow-[0_4px_20px_rgba(15,23,42,0.04)]",
-        "transition-all duration-300 ease-out",
-        "hover:-translate-y-[3px] hover:shadow-[0_12px_32px_rgba(15,23,42,0.1)]",
+        "rounded-[16px] border p-6 shadow-[0_4px_20px_rgba(15,23,42,0.05)]",
+        "transition-all duration-300 ease-in-out",
+        "hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(15,23,42,0.1)]",
+        "nb-card",
         tint.card,
       ].join(" ")}
     >
       {Icon ? (
         <span
           className={[
-            "mb-[0.5cm] inline-flex h-11 w-11 items-center justify-center rounded-none border sm:h-12 sm:w-12",
+            "mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full border sm:h-12 sm:w-12",
             tint.icon,
           ].join(" ")}
         >
@@ -62,9 +63,9 @@ export function StatCard({
       ) : null}
 
       <p className="text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl">{value}</p>
-      <p className="mt-[0.3cm] text-sm font-semibold text-[#334155] sm:text-base">{label}</p>
+      <p className="mt-2 text-sm font-semibold text-[#334155] sm:text-base">{label}</p>
       {contextCaption ? (
-        <p className="mt-[0.3cm] text-xs leading-5 text-[#64748B] sm:text-sm">{contextCaption}</p>
+        <p className="mt-2 text-xs leading-5 text-[#64748B] sm:text-sm">{contextCaption}</p>
       ) : null}
     </article>
   );
@@ -95,7 +96,7 @@ export default function DashboardLayout({
           <Link
             to="/login"
             onClick={handleLogout}
-            className="hidden h-9 shrink-0 items-center gap-2 rounded-none border border-[#E5E7EB] px-3 text-sm font-medium text-[#64748B] transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-600 sm:flex sm:h-10"
+            className="hidden h-10 shrink-0 items-center gap-2 rounded-[10px] border border-[#E5E7EB] px-4 text-sm font-medium text-[#64748B] transition-all duration-200 hover:border-red-200 hover:bg-red-50 hover:text-red-600 sm:flex"
           >
             <FaSignOutAlt aria-hidden="true" />
             Logout
@@ -103,13 +104,13 @@ export default function DashboardLayout({
         </Container>
       </header>
 
-      <Container className="py-6 lg:py-8">
-        <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)] lg:gap-8">
+      <Container className="py-8 lg:py-10">
+        <div className="grid gap-8 lg:grid-cols-[260px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)] lg:gap-10">
           <aside className="hidden lg:block">
             <DonorSidebar />
           </aside>
 
-          <main className="flex flex-col gap-[0.5cm]">
+          <main className="flex flex-col gap-8">
             {actions ? <div className="lg:hidden">{actions}</div> : null}
             {children}
           </main>

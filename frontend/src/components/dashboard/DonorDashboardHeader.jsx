@@ -30,7 +30,7 @@ export default function DonorDashboardHeader({ unreadNotifications = 3 }) {
 
       <Link
         to={DASHBOARD_ROUTES.donorNotifications}
-        className="relative flex h-10 w-10 items-center justify-center rounded-none border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-colors duration-300 hover:border-[#16A34A]/30 hover:text-[#16A34A]"
+        className="relative flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-colors duration-300 hover:border-[#16A34A]/30 hover:text-[#16A34A]"
         aria-label={`Notifications${unreadNotifications > 0 ? `, ${unreadNotifications} unread` : ""}`}
       >
         <FaBell aria-hidden="true" />
@@ -43,7 +43,7 @@ export default function DonorDashboardHeader({ unreadNotifications = 3 }) {
 
       <button
         type="button"
-        className="flex max-w-[220px] items-center gap-2.5 rounded-none border border-[#E5E7EB] bg-white py-1.5 pl-1.5 pr-2.5 transition-colors duration-300 hover:border-[#16A34A]/30 hover:bg-[#F8FAFC] sm:max-w-none"
+        className="flex max-w-[220px] items-center gap-2.5 rounded-[10px] border border-[#E5E7EB] bg-white py-1.5 pl-1.5 pr-2.5 transition-colors duration-300 hover:border-[#16A34A]/30 hover:bg-[#F8FAFC] sm:max-w-none"
         aria-label="Donor account menu"
       >
         <img

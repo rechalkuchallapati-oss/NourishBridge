@@ -19,7 +19,7 @@ export default function EventTypeBadge({ eventType, className = "" }) {
 
   return (
     <span
-      className={`inline-flex rounded-none border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${style} ${className}`}
+      className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${style} ${className}`}
     >
       {EVENT_TYPES[eventType]}
     </span>

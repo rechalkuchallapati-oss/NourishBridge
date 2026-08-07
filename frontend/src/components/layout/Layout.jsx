@@ -6,9 +6,7 @@ const Layout = ({ children }) => {
     <>
       <Navbar />
 
-      <main>
-        {children}
-      </main>
+      <main className="min-h-[60vh] nb-animate-fade-in">{children}</main>
 
       <Footer />
     </>

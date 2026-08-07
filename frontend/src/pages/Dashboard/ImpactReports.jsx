@@ -35,7 +35,7 @@ function SummaryStatButton({ value, label, index }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: 0.05 * index, ease: EASE }}
       whileHover={{ y: -2 }}
-      className="flex min-h-[64px] items-center justify-center rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-4 text-center shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:shadow-md sm:min-h-[72px]"
+      className="flex min-h-[64px] items-center justify-center rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-4 text-center shadow-sm transition-all duration-300 hover:border-[#16A34A]/40 hover:bg-[#F0FDF4] hover:shadow-md sm:min-h-[72px]"
     >
       <p className="text-base font-semibold leading-snug text-[#0F172A] sm:text-lg">
         <span className="font-bold text-[#15803D]">{value}</span>{" "}
@@ -62,7 +62,7 @@ export default function ImpactReports() {
         transition={{ duration: 0.5, ease: EASE }}
         className="flex flex-col gap-[0.5cm]"
       >
-        <div className="relative flex flex-col gap-[0.5cm] overflow-hidden rounded-none bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white p-[0.5cm]">
+        <div className="relative flex flex-col gap-[0.5cm] overflow-hidden rounded-[16px] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white p-[0.5cm]">
           <div
             className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#16A34A]/10 blur-3xl"
             aria-hidden="true"
@@ -93,7 +93,7 @@ export default function ImpactReports() {
           </div>
         </div>
 
-        <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6">
+        <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-6">
           <h2 className="text-lg font-bold text-[#15803D] sm:text-xl">Latest summary</h2>
           <dl className="mt-[1cm] grid gap-[0.5cm] sm:grid-cols-2">
             {SUMMARY_ITEMS.map((item, index) => (

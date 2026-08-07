@@ -39,7 +39,7 @@ import { getDonorDisplayName, getSessionUser } from "../../utils/authStorage";
 const EASE = [0.22, 1, 0.36, 1];
 
 const CREATE_SECTION_CLASS =
-  "relative overflow-hidden rounded-none border border-[#E5E7EB] bg-white/95 p-5 shadow-sm backdrop-blur-sm sm:p-6";
+  "relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white/95 p-5 shadow-sm backdrop-blur-sm sm:p-6";
 
 const CREATE_ACTION_BUTTON_CLASS = `${dashboardButtonClass} !h-16 !min-h-[64px] !px-10 !py-4 !text-lg`;
 
@@ -97,7 +97,7 @@ function SectionHeading({ icon: Icon, label, accent, optional }) {
   return (
     <div className="flex items-center gap-[0.5cm] border-b border-[#E5E7EB] pb-[0.5cm]">
       <span
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-none ${accent}`}
+        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] ${accent}`}
       >
         <Icon className="text-lg" aria-hidden="true" />
       </span>
@@ -244,19 +244,19 @@ export default function CreateDonation() {
     >
       <div className="relative">
         <motion.div
-          className="pointer-events-none absolute -left-6 top-0 h-56 w-56 rounded-none bg-[#16A34A]/10 blur-3xl"
+          className="pointer-events-none absolute -left-6 top-0 h-56 w-56 rounded-full bg-[#16A34A]/10 blur-3xl"
           animate={{ opacity: [0.35, 0.6, 0.35], scale: [1, 1.08, 1] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true"
         />
         <motion.div
-          className="pointer-events-none absolute -right-4 top-32 h-48 w-48 rounded-none bg-[#2563EB]/10 blur-3xl"
+          className="pointer-events-none absolute -right-4 top-32 h-48 w-48 rounded-full bg-[#2563EB]/10 blur-3xl"
           animate={{ opacity: [0.25, 0.5, 0.25], x: [0, 12, 0] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true"
         />
         <motion.div
-          className="pointer-events-none absolute bottom-24 left-1/3 h-40 w-40 rounded-none bg-[#D97706]/10 blur-3xl"
+          className="pointer-events-none absolute bottom-24 left-1/3 h-40 w-40 rounded-full bg-[#D97706]/10 blur-3xl"
           animate={{ opacity: [0.2, 0.45, 0.2], y: [0, -10, 0] }}
           transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
           aria-hidden="true"
@@ -285,7 +285,7 @@ export default function CreateDonation() {
 
               <div className="flex items-center gap-[0.5cm]">
                 <motion.span
-                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-none bg-gradient-to-br from-[#16A34A] to-[#15803D] text-white shadow-[0_8px_24px_rgba(22,163,74,0.35)]"
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[16px] bg-gradient-to-br from-[#16A34A] to-[#15803D] text-white shadow-[0_8px_24px_rgba(22,163,74,0.35)]"
                   animate={{ rotate: [0, 4, 0, -4, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                 >
@@ -308,11 +308,11 @@ export default function CreateDonation() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.05, ease: EASE }}
-            className="rounded-none border border-dashed border-[#BBF7D0] bg-gradient-to-r from-[#F0FDF4] to-[#ECFDF5] px-5 py-4 pt-[calc(0.5cm+1rem)]"
+            className="rounded-[16px] border border-dashed border-[#BBF7D0] bg-gradient-to-r from-[#F0FDF4] to-[#ECFDF5] px-5 py-4 pt-[calc(0.5cm+1rem)]"
           >
             <div className="flex flex-col gap-[0.5cm] sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-[0.5cm]">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-none bg-[#E0E7FF] text-[#4338CA]">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] bg-[#E0E7FF] text-[#4338CA]">
                   <FaMagic aria-hidden="true" />
                 </span>
                 <div>
@@ -325,7 +325,7 @@ export default function CreateDonation() {
                   </p>
                 </div>
               </div>
-              <span className="inline-flex w-fit rounded-none bg-[#DCFCE7] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#15803D]">
+              <span className="inline-flex w-fit rounded-full bg-[#DCFCE7] px-4 py-2 text-xs font-bold uppercase tracking-wide text-[#15803D]">
                 Enhancement
               </span>
             </div>
@@ -383,7 +383,7 @@ export default function CreateDonation() {
                           <label
                             key={item.id}
                             className={[
-                              "inline-flex min-h-[68px] cursor-pointer items-center gap-3 rounded-none border px-7 py-5 text-base font-semibold transition-all sm:min-h-[72px] sm:text-lg",
+                              "inline-flex min-h-[68px] cursor-pointer items-center gap-3 rounded-[10px] border px-7 py-5 text-base font-semibold transition-all sm:min-h-[72px] sm:text-lg",
                               isActive
                                 ? `${styles.active} shadow-[0_4px_14px_rgba(15,23,42,0.08)]`
                                 : "border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#16A34A]/40 hover:bg-[#FAFFFE]",
@@ -400,7 +400,7 @@ export default function CreateDonation() {
                             <span>{item.label}</span>
                             {Icon ? (
                               <span
-                                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-none ${styles.badge}`}
+                                className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[16px] ${styles.badge}`}
                               >
                                 <Icon className="text-2xl" aria-hidden="true" />
                               </span>
@@ -572,7 +572,7 @@ export default function CreateDonation() {
                   Upload clear photos to help NGOs assess food quality and quantity.
                 </p>
 
-                <label className="flex min-h-[128px] cursor-pointer flex-col items-center justify-center rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-6 py-12 transition-colors hover:border-[#16A34A]/40 hover:bg-[#F0FDF4]">
+                <label className="flex min-h-[128px] cursor-pointer flex-col items-center justify-center rounded-[10px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] px-6 py-12 transition-colors hover:border-[#16A34A]/40 hover:bg-[#F0FDF4]">
                   <FaUpload className="text-3xl text-[#16A34A]" aria-hidden="true" />
                   <span className="mt-[0.5cm] text-base font-semibold text-[#0F172A]">
                     Click to upload photos
@@ -594,7 +594,7 @@ export default function CreateDonation() {
                     {photos.map((photo) => (
                       <div
                         key={photo.id}
-                        className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white"
+                        className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white"
                       >
                         <img
                           src={photo.preview}
