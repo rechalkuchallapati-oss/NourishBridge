@@ -16,7 +16,7 @@ import EventTypeBadge from "../common/EventTypeBadge";
 
 function DetailChip({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+    <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-6">
       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
         <Icon className="shrink-0 text-[#2563EB]" aria-hidden="true" />
         {label}
@@ -33,7 +33,7 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
   const packagingLabel = getPackagingLabel(donation);
 
   return (
-    <article className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow hover:shadow-[0_12px_40px_rgba(15,23,42,0.08)]">
+    <article className="nb-card overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)] transition-shadow hover:shadow-[0_12px_40px_rgba(15,23,42,0.08)]">
       <div className="flex flex-col lg:flex-row">
         {foodImage ? (
           <div className="relative h-48 w-full shrink-0 overflow-hidden bg-[#F8FAFC] lg:h-auto lg:w-56 xl:w-64">
@@ -43,7 +43,7 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
               className="h-full w-full object-cover"
             />
             <span
-              className={`absolute left-3 top-3 rounded-none px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${URGENCY_COLORS[donation.urgency] ?? URGENCY_COLORS.medium}`}
+              className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-bold uppercase tracking-wide ${URGENCY_COLORS[donation.urgency] ?? URGENCY_COLORS.medium}`}
             >
               {donation.urgency}
             </span>
@@ -72,7 +72,7 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
             </div>
             {!foodImage ? (
               <span
-                className={`inline-flex shrink-0 rounded-none px-3 py-1.5 text-xs font-bold uppercase ${URGENCY_COLORS[donation.urgency] ?? URGENCY_COLORS.medium}`}
+                className={`inline-flex shrink-0 rounded-full px-3 py-1.5 text-xs font-bold uppercase ${URGENCY_COLORS[donation.urgency] ?? URGENCY_COLORS.medium}`}
               >
                 {donation.urgency}
               </span>
@@ -115,21 +115,21 @@ export default function IncomingDonationCard({ donation, onAccept, onDecline, on
             <button
               type="button"
               onClick={() => onAccept(donation)}
-              className="flex-1 rounded-none bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8] sm:flex-none sm:min-w-[140px]"
+              className="flex-1 rounded-[10px] bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#1D4ED8] sm:flex-none sm:min-w-[140px]"
             >
               Accept Donation
             </button>
             <button
               type="button"
               onClick={() => onDecline(donation)}
-              className="flex-1 rounded-none border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 sm:flex-none sm:min-w-[120px]"
+              className="flex-1 rounded-[10px] border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 sm:flex-none sm:min-w-[120px]"
             >
               Decline
             </button>
             <button
               type="button"
               onClick={() => onViewDetails(donation)}
-              className="flex-1 rounded-none border border-[#E5E7EB] bg-white px-5 py-3 text-sm font-semibold text-[#64748B] transition-colors hover:border-[#2563EB]/30 hover:text-[#2563EB] sm:flex-none sm:min-w-[120px]"
+              className="flex-1 rounded-[10px] border border-[#E5E7EB] bg-white px-5 py-3 text-sm font-semibold text-[#64748B] transition-colors hover:border-[#2563EB]/30 hover:text-[#2563EB] sm:flex-none sm:min-w-[120px]"
             >
               View Details
             </button>

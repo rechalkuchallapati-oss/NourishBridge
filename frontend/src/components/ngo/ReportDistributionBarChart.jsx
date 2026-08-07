@@ -4,7 +4,7 @@ export default function ReportDistributionBarChart() {
   const maxMeals = Math.max(...DISTRIBUTION_ANALYTICS.map((item) => item.meals));
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+    <section className="nb-card rounded-[18px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Distribution Analytics</h2>
       <p className="mt-[0.3cm] text-sm text-[#64748B]">
         Meals distributed by beneficiary type — bar chart.

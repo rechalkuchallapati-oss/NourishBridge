@@ -9,7 +9,7 @@ export default function ReportVolunteerLeaderboard() {
   const entries = VOLUNTEER_LEADERBOARD[activeTab] ?? [];
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+    <section className="nb-card rounded-[18px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Volunteer Performance</h2>
@@ -25,7 +25,7 @@ export default function ReportVolunteerLeaderboard() {
             type="button"
             onClick={() => setActiveTab(tab.id)}
             className={[
-              "rounded-none px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm",
+              "rounded-[10px] px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm",
               activeTab === tab.id
                 ? "bg-[#2563EB] text-white"
                 : "border border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#2563EB]/30",
@@ -40,11 +40,11 @@ export default function ReportVolunteerLeaderboard() {
         {entries.map((entry) => (
           <li
             key={`${activeTab}-${entry.id}`}
-            className="flex items-center justify-between gap-3 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5"
+            className="flex items-center justify-between gap-3 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5"
           >
             <div className="flex items-center gap-3">
               <span
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-none text-xs font-bold text-white"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
                 style={{
                   backgroundColor:
                     entry.rank <= 3 ? RANK_COLORS[entry.rank - 1] : "#64748B",

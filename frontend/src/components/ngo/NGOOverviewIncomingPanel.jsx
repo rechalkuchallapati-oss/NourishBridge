@@ -23,7 +23,7 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
 
   if (donation.status === "accepted") {
     return (
-      <li className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-2.5">
+      <li className="rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] p-2.5">
         <p className="text-xs font-semibold text-[#15803D]">{donation.foodName} — Accepted</p>
         <p className="mt-0.5 text-[10px] text-[#64748B]">Volunteer coordination started.</p>
       </li>
@@ -32,7 +32,7 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
 
   if (donation.status === "declined") {
     return (
-      <li className="rounded-none border border-red-100 bg-red-50 p-2.5">
+      <li className="rounded-[16px] border border-red-100 bg-red-50 p-2.5">
         <p className="text-xs font-semibold text-red-700">{donation.foodName} — Declined</p>
         <p className="mt-0.5 text-[10px] text-red-600">{donation.declineReason}</p>
       </li>
@@ -40,10 +40,10 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
   }
 
   return (
-    <li className="rounded-none border border-[#E5E7EB] bg-white p-2.5 transition-shadow duration-300 hover:shadow-sm">
+    <li className="rounded-[16px] border border-[#E5E7EB] bg-white p-2.5 transition-shadow duration-300 hover:shadow-sm">
       <div className="flex gap-2.5">
         {foodImage ? (
-          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-none bg-[#F8FAFC] sm:h-[72px] sm:w-[72px]">
+          <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[10px] bg-[#F8FAFC] sm:h-[72px] sm:w-[72px]">
             <img src={foodImage} alt={donation.foodName} className="h-full w-full object-cover" />
           </div>
         ) : null}
@@ -88,14 +88,14 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
               <button
                 type="button"
                 onClick={() => onAccept(donation.id)}
-                className="rounded-none border-2 border-[#16A34A] bg-white px-2.5 py-1 text-[10px] font-semibold text-[#15803D] hover:bg-[#F0FDF4] sm:text-xs"
+                className="rounded-[10px] border-2 border-[#16A34A] bg-white px-2.5 py-1 text-[10px] font-semibold text-[#15803D] hover:bg-[#F0FDF4] sm:text-xs"
               >
                 Accept
               </button>
               <button
                 type="button"
                 onClick={() => onDecline(donation)}
-                className="rounded-none border-2 border-red-400 bg-white px-2.5 py-1 text-[10px] font-semibold text-red-600 hover:bg-red-50 sm:text-xs"
+                className="rounded-[10px] border-2 border-red-400 bg-white px-2.5 py-1 text-[10px] font-semibold text-red-600 hover:bg-red-50 sm:text-xs"
               >
                 Decline
               </button>

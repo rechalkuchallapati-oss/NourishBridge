@@ -4,7 +4,7 @@ function BarChart({ title, items, valueSuffix = "", maxValue }) {
   const peak = maxValue ?? Math.max(...items.map((i) => i.value), 1);
 
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+    <div className="nb-card rounded-[16px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">{title}</p>
       <ul className="mt-3 flex flex-col gap-2">
         {items.map((item) => (
@@ -16,7 +16,7 @@ function BarChart({ title, items, valueSuffix = "", maxValue }) {
                 {valueSuffix}
               </span>
             </div>
-            <div className="h-2 overflow-hidden rounded-none bg-[#E2E8F0]">
+            <div className="h-2 overflow-hidden rounded-full bg-[#E2E8F0]">
               <div
                 className="h-full transition-all"
                 style={{
@@ -36,7 +36,7 @@ function FlowChart({ title, data }) {
   const peak = Math.max(...data.flatMap((d) => [d.incoming, d.outgoing]), 1);
 
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+    <div className="nb-card rounded-[16px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">{title}</p>
       <div className="mt-3 flex items-end justify-between gap-2" style={{ minHeight: 120 }}>
         {data.map((point) => (
@@ -73,7 +73,7 @@ function CompareChart({ title, incoming, outgoing }) {
   const peak = Math.max(incoming, outgoing, 1);
 
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+    <div className="nb-card rounded-[16px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">{title}</p>
       <div className="mt-4 flex flex-col gap-3">
         <div>

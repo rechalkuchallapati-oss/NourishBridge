@@ -34,7 +34,7 @@ export default function InventoryBatchDrawer({ batch, onClose }) {
         <div className="flex flex-wrap items-center gap-2">
           <EventTypeBadge eventType={batch.eventType} />
           <span
-            className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${INVENTORY_STATUS_COLORS[batch.status]}`}
+            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${INVENTORY_STATUS_COLORS[batch.status]}`}
           >
             {INVENTORY_STATUS_LABELS[batch.status]}
           </span>
@@ -52,7 +52,7 @@ export default function InventoryBatchDrawer({ batch, onClose }) {
           <DetailBlock label="Quality Status" value={batch.qualityStatus} />
         </div>
 
-        <section className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm]">
+        <section className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-6">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
             Storage Instructions
           </p>
@@ -68,7 +68,7 @@ export default function InventoryBatchDrawer({ batch, onClose }) {
               {batch.history.map((entry) => (
                 <li
                   key={entry.time + entry.action}
-                  className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm"
+                  className="rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm"
                 >
                   <p className="font-semibold text-[#0F172A]">{entry.action}</p>
                   <p className="text-xs text-[#64748B]">{entry.time}</p>

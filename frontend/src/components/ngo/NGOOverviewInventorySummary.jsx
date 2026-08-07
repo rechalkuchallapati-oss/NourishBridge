@@ -11,9 +11,9 @@ function InventoryCategoryCard({ item }) {
   const statusClass = INVENTORY_STATUS_POPUP[item.status] ?? INVENTORY_STATUS_POPUP.good;
 
   return (
-    <li className="flex gap-2.5 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-2.5 transition-shadow duration-300 hover:shadow-sm">
+    <li className="flex gap-2.5 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-2.5 transition-shadow duration-300 hover:shadow-sm">
       {image ? (
-        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-none bg-white">
+        <div className="h-14 w-14 shrink-0 overflow-hidden rounded-[10px] bg-white">
           <img src={image} alt={item.label} className="h-full w-full object-cover" />
         </div>
       ) : null}
@@ -27,7 +27,7 @@ function InventoryCategoryCard({ item }) {
             <p className="truncate text-xs font-bold text-[#0F172A]">{item.label}</p>
           </div>
           <span
-            className={`shrink-0 rounded-none border px-1.5 py-0.5 text-[9px] font-bold uppercase ${statusClass}`}
+            className={`shrink-0 rounded-full border px-1.5 py-0.5 text-[9px] font-bold uppercase ${statusClass}`}
             title={item.statusLabel}
           >
             {item.statusLabel}

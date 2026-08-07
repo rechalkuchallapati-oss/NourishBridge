@@ -33,7 +33,7 @@ export default function NGODashboard() {
     <NGOLayout organizationName={orgName}>
       <Toaster position="top-center" />
 
-      <div className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
+      <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_8px_30px_rgba(15,23,42,0.05)]">
         <NGOContentHeader organizationName={orgName} unreadNotifications={5} />
 
         <div className="grid gap-2 p-3 sm:grid-cols-2 sm:p-4 xl:grid-cols-3 [&_*]:text-sm">

@@ -39,12 +39,12 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${ACCEPTED_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ACCEPTED_STATUS_COLORS[status]}`}
     >
       {ACCEPTED_STATUS_LABELS[status]}
     </span>
@@ -58,14 +58,14 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
 
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Quick Actions</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onTrack}
             disabled={!canTrack}
-            className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaMapMarkerAlt aria-hidden="true" />
             Track Live
@@ -73,7 +73,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
           {hasVolunteer ? (
             <a
               href={`tel:${selected.volunteerPhone?.replace(/\s/g, "")}`}
-              className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC]"
+              className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC]"
             >
               <FaPhone aria-hidden="true" />
               Call Volunteer
@@ -82,7 +82,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
             <button
               type="button"
               disabled
-              className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] opacity-40"
+              className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] opacity-40"
             >
               <FaPhone aria-hidden="true" />
               Call Volunteer
@@ -91,7 +91,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
           {selected?.donorPhone ? (
             <a
               href={`tel:${selected.donorPhone.replace(/\s/g, "")}`}
-              className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC]"
+              className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC]"
             >
               <FaPhone aria-hidden="true" />
               Contact Donor
@@ -100,7 +100,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
             <button
               type="button"
               disabled={!selected}
-              className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <FaPhone aria-hidden="true" />
               Contact Donor
@@ -110,7 +110,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
             type="button"
             onClick={onReportIssue}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-amber-200 bg-white px-4 py-2.5 text-sm font-semibold text-amber-700 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-amber-200 bg-white px-4 py-2.5 text-sm font-semibold text-amber-700 transition-colors hover:bg-amber-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaExclamationTriangle aria-hidden="true" />
             Report Issue
@@ -119,7 +119,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
             type="button"
             onClick={onRejectArrival}
             disabled={!canReject}
-            className="flex items-center justify-center gap-2 rounded-none border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Reject on Arrival
           </button>
@@ -127,7 +127,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
             type="button"
             onClick={onViewDetails}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEye aria-hidden="true" />
             View Details
@@ -135,14 +135,14 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Status Flow</h2>
         <div className="mt-3 flex flex-col gap-1">
           {ACCEPTED_PIPELINE_STEPS.map((step, index) => (
             <div key={step.id} className="flex items-center gap-2">
               <span
                 className={[
-                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-none text-xs font-bold",
+                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                   selected?.status === step.id
                     ? "bg-[#16A34A] text-white"
                     : "bg-[#F1F5F9] text-[#64748B]",
@@ -164,7 +164,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
       </div>
 
       {selected ? (
-        <div className="rounded-none border border-[#DCFCE7] bg-gradient-to-br from-[#F0FDF4] to-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#DCFCE7] bg-gradient-to-br from-[#F0FDF4] to-white p-[0.5cm] shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">Selected</p>
           <p className="mt-2 text-lg font-bold text-[#0F172A]">{selected.id}</p>
           <p className="mt-1 font-semibold text-[#334155]">{selected.foodItem}</p>
@@ -179,7 +179,7 @@ function SidePanel({ selected, onTrack, onViewDetails, onReportIssue, onRejectAr
           ) : null}
         </div>
       ) : (
-        <div className="rounded-none border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
+        <div className="rounded-[16px] border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
           <p className="text-sm text-[#64748B]">
             Select a donation to track, contact, or inspect.
           </p>
@@ -243,7 +243,7 @@ export default function NGOAcceptedDonations() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -272,7 +272,7 @@ export default function NGOAcceptedDonations() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -283,7 +283,7 @@ export default function NGOAcceptedDonations() {
                       type="button"
                       onClick={() => setFilters((prev) => ({ ...prev, quick: item.id }))}
                       className={[
-                        "rounded-none px-4 py-2 text-sm font-semibold transition-colors",
+                        "rounded-[10px] px-4 py-2 text-sm font-semibold transition-colors",
                         filters.quick === item.id
                           ? "bg-[#16A34A] text-white"
                           : "border border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#16A34A]/30",
@@ -317,7 +317,7 @@ export default function NGOAcceptedDonations() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Accepted Donations Table
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[980px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -365,7 +365,7 @@ export default function NGOAcceptedDonations() {
                                 e.stopPropagation();
                                 handleTrack(donation);
                               }}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#16A34A] transition-colors hover:border-[#16A34A]/30 hover:bg-[#F0FDF4]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#16A34A] transition-colors hover:border-[#16A34A]/30 hover:bg-[#F0FDF4]"
                             >
                               <FaMapMarkerAlt aria-hidden="true" />
                               Track

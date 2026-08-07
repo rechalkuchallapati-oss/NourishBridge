@@ -41,7 +41,7 @@ export default function DonationDetailsDrawer({
             {donation.donorPhone ? (
               <a
                 href={`tel:${donation.donorPhone.replace(/\s/g, "")}`}
-                className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF]"
+                className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF]"
               >
                 <FaPhone aria-hidden="true" />
                 Contact Donor
@@ -52,7 +52,7 @@ export default function DonationDetailsDrawer({
                 <button
                   type="button"
                   onClick={() => onAccept(donation)}
-                  className="flex-1 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
+                  className="flex-1 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
                 >
                   Accept Donation
                 </button>
@@ -61,7 +61,7 @@ export default function DonationDetailsDrawer({
                 <button
                   type="button"
                   onClick={() => onReject(donation)}
-                  className="flex-1 rounded-none border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
+                  className="flex-1 rounded-[10px] border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                 >
                   Reject Donation
                 </button>
@@ -83,7 +83,7 @@ export default function DonationDetailsDrawer({
         <div className="flex flex-wrap items-center gap-2">
           <EventTypeBadge eventType={donation.eventType} />
           <span
-            className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${DONATION_STATUS_COLORS[donation.status]}`}
+            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${DONATION_STATUS_COLORS[donation.status]}`}
           >
             {DONATION_TABLE_STATUS_LABELS[donation.status]}
           </span>
@@ -116,7 +116,7 @@ export default function DonationDetailsDrawer({
         </section>
 
         {donation.volunteer && donation.volunteer !== "—" ? (
-          <section className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+          <section className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
               Volunteer Details
             </p>
@@ -138,7 +138,7 @@ export default function DonationDetailsDrawer({
             ) : null}
           </section>
         ) : (
-          <section className="rounded-none border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+          <section className="rounded-[16px] border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-6">
             <p className="text-sm font-semibold text-[#64748B]">Volunteer Assignment</p>
             <p className="mt-1 text-sm text-[#94A3B8]">
               No volunteer assigned yet. Accept donation to begin coordination.
@@ -147,7 +147,7 @@ export default function DonationDetailsDrawer({
         )}
 
         {donation.liveTracking ? (
-          <section className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm]">
+          <section className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
               Live Tracking
             </p>
@@ -165,7 +165,7 @@ export default function DonationDetailsDrawer({
           <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
             Live Status Timeline
           </p>
-          <div className="mt-3 rounded-none border border-[#E5E7EB] p-[0.5cm]">
+          <div className="mt-3 rounded-[16px] border border-[#E5E7EB] p-6">
             <DonationStatusTimeline
               currentStatus={donation.status}
               timeline={donation.timeline}

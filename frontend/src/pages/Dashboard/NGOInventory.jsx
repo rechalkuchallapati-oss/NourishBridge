@@ -47,12 +47,12 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${INVENTORY_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${INVENTORY_STATUS_COLORS[status]}`}
     >
       {INVENTORY_STATUS_LABELS[status]}
     </span>
@@ -73,14 +73,14 @@ function SidePanel({
 
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Quick Actions</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onAssign}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaTruck aria-hidden="true" />
             Assign for Distribution
@@ -89,7 +89,7 @@ function SidePanel({
             type="button"
             onClick={onReserve}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaClipboardList aria-hidden="true" />
             Reserve Batch
@@ -98,7 +98,7 @@ function SidePanel({
             type="button"
             onClick={onMarkExpired}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaBan aria-hidden="true" />
             Mark Expired
@@ -107,7 +107,7 @@ function SidePanel({
             type="button"
             onClick={onUpdateQuantity}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEdit aria-hidden="true" />
             Update Quantity
@@ -116,7 +116,7 @@ function SidePanel({
             type="button"
             onClick={onViewHistory}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaHistory aria-hidden="true" />
             View History
@@ -125,7 +125,7 @@ function SidePanel({
             type="button"
             onClick={onViewDetails}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEye aria-hidden="true" />
             View Details
@@ -133,7 +133,7 @@ function SidePanel({
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">
           Inventory Status
         </h2>
@@ -142,7 +142,7 @@ function SidePanel({
             <li
               key={key}
               className={[
-                "flex items-center gap-2 rounded-none px-2 py-1 text-xs",
+                "flex items-center gap-2 rounded-full px-2 py-1 text-xs",
                 selected?.status === key ? "bg-[#F0FDF4]" : "",
               ].join(" ")}
             >
@@ -153,7 +153,7 @@ function SidePanel({
       </div>
 
       {selected ? (
-        <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">Selected Batch</p>
           <p className="mt-2 text-lg font-bold text-[#0F172A]">{selected.id}</p>
           <p className="mt-1 font-semibold text-[#334155]">{selected.foodItem}</p>
@@ -166,7 +166,7 @@ function SidePanel({
           <p className="mt-3 text-sm text-[#64748B]">{selected.currentLocation}</p>
         </div>
       ) : (
-        <div className="rounded-none border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
+        <div className="rounded-[16px] border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
           <p className="text-sm text-[#64748B]">Select a batch to manage stock or view details.</p>
         </div>
       )}
@@ -270,7 +270,7 @@ export default function NGOInventory() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -303,7 +303,7 @@ export default function NGOInventory() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -314,7 +314,7 @@ export default function NGOInventory() {
                       type="button"
                       onClick={() => setFilters((prev) => ({ ...prev, quick: item.id }))}
                       className={[
-                        "rounded-none px-4 py-2 text-sm font-semibold transition-colors",
+                        "rounded-[10px] px-4 py-2 text-sm font-semibold transition-colors",
                         filters.quick === item.id
                           ? "bg-[#2563EB] text-white"
                           : "border border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#2563EB]/30",
@@ -418,7 +418,7 @@ export default function NGOInventory() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Main Inventory Table
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[1100px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -469,7 +469,7 @@ export default function NGOInventory() {
                                 e.stopPropagation();
                                 handleView(batch);
                               }}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
                             >
                               <FaEye aria-hidden="true" />
                               View

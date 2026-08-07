@@ -43,12 +43,12 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#7C3AED]/30 focus:border-[#7C3AED] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#7C3AED]/30 focus:border-[#7C3AED] focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20";
 
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${DISTRIBUTION_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${DISTRIBUTION_STATUS_COLORS[status]}`}
     >
       {DISTRIBUTION_STATUS_LABELS[status]}
     </span>
@@ -58,7 +58,7 @@ function StatusBadge({ status }) {
 function SidePanel({ selected }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">
           Distribution Status
         </h2>
@@ -72,7 +72,7 @@ function SidePanel({ selected }) {
             <div className="flex flex-col gap-1">
               {DISTRIBUTION_PIPELINE_STEPS.map((step, index) => (
                 <div key={step.id} className="flex items-center gap-2 text-xs text-[#64748B]">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-none bg-[#F1F5F9] font-bold">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F1F5F9] font-bold">
                     {index + 1}
                   </span>
                   {step.label}
@@ -83,7 +83,7 @@ function SidePanel({ selected }) {
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">
           Beneficiary Details
         </h2>
@@ -92,7 +92,7 @@ function SidePanel({ selected }) {
             <li
               key={loc.id}
               className={[
-                "flex items-center justify-between rounded-none border px-3 py-2 text-sm",
+                "flex items-center justify-between rounded-[10px] border px-3 py-2 text-sm",
                 selected?.destinationKey === loc.id
                   ? "border-[#7C3AED] bg-[#F5F3FF]"
                   : "border-[#E5E7EB] bg-[#F8FAFC]",
@@ -107,7 +107,7 @@ function SidePanel({ selected }) {
 
       <DistributionMapVisual />
 
-      <div className="rounded-none border border-[#EDE9FE] bg-gradient-to-br from-[#F5F3FF] to-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#EDE9FE] bg-gradient-to-br from-[#F5F3FF] to-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#7C3AED]">
           Distribution Summary
         </h2>
@@ -226,7 +226,7 @@ export default function NGODistributionQueue() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F5F3FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F5F3FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -255,7 +255,7 @@ export default function NGODistributionQueue() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -303,7 +303,7 @@ export default function NGODistributionQueue() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Distribution Queue
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[900px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -343,7 +343,7 @@ export default function NGODistributionQueue() {
                                 e.stopPropagation();
                                 handleView(batch);
                               }}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#7C3AED] transition-colors hover:border-[#7C3AED]/30 hover:bg-[#F5F3FF]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#7C3AED] transition-colors hover:border-[#7C3AED]/30 hover:bg-[#F5F3FF]"
                             >
                               <FaEye aria-hidden="true" />
                               View
@@ -366,7 +366,7 @@ export default function NGODistributionQueue() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Food Batch Tracking
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[720px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -401,7 +401,7 @@ export default function NGODistributionQueue() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Volunteer Assignment
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[800px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>

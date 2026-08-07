@@ -40,7 +40,7 @@ export default function AcceptedDonationDrawer({ donation, onClose }) {
         <div className="flex flex-wrap items-center gap-2">
           <EventTypeBadge eventType={donation.eventType} />
           <span
-            className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${ACCEPTED_STATUS_COLORS[donation.status]}`}
+            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${ACCEPTED_STATUS_COLORS[donation.status]}`}
           >
             {ACCEPTED_STATUS_LABELS[donation.status]}
           </span>
@@ -61,7 +61,7 @@ export default function AcceptedDonationDrawer({ donation, onClose }) {
         </section>
 
         {donation.specialInstructions ? (
-          <section className="rounded-none border border-[#FEF3C7] bg-[#FFFBEB] p-[0.5cm]">
+          <section className="rounded-[16px] border border-[#FEF3C7] bg-[#FFFBEB] p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#B45309]">
               Special Instructions
             </p>
@@ -70,7 +70,7 @@ export default function AcceptedDonationDrawer({ donation, onClose }) {
         ) : null}
 
         {donation.volunteer && donation.volunteer !== "—" ? (
-          <section className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+          <section className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
               Volunteer Details
             </p>
@@ -94,7 +94,7 @@ export default function AcceptedDonationDrawer({ donation, onClose }) {
         ) : null}
 
         {donation.liveTracking ? (
-          <section className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-[0.5cm]">
+          <section className="rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] p-6">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
               Live Tracking
             </p>
@@ -112,7 +112,7 @@ export default function AcceptedDonationDrawer({ donation, onClose }) {
           <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">
             Delivery Timeline
           </p>
-          <div className="mt-3 rounded-none border border-[#E5E7EB] p-[0.5cm]">
+          <div className="mt-3 rounded-[16px] border border-[#E5E7EB] p-6">
             <AcceptedDonationTimeline
               currentStatus={donation.status}
               timeline={donation.timeline}

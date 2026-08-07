@@ -33,7 +33,7 @@ export default function DeclineDonationModal({ donation, onClose, onConfirm }) {
           {DECLINE_REASONS.map((item) => (
             <label
               key={item.id}
-              className="flex cursor-pointer items-center gap-3 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 transition-colors hover:border-[#2563EB]/30"
+              className="flex cursor-pointer items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 transition-colors hover:border-[#2563EB]/30"
             >
               <input
                 type="radio"
@@ -58,21 +58,21 @@ export default function DeclineDonationModal({ donation, onClose, onConfirm }) {
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
             placeholder="Explain any operational constraints..."
-            className="w-full resize-none rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 text-sm text-[#0F172A] outline-none focus:border-[#2563EB] focus:bg-white"
+            className="w-full resize-none rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 text-sm text-[#0F172A] outline-none focus:border-[#2563EB] focus:bg-white"
           />
         </div>
 
         <div className="flex flex-wrap gap-[0.5cm] pt-2">
           <button
             type="submit"
-            className="rounded-none bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-700"
+            className="rounded-[10px] bg-red-600 px-5 py-3 text-sm font-semibold text-white hover:bg-red-700"
           >
             Confirm Decline
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-none border border-[#E5E7EB] px-5 py-3 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC]"
+            className="rounded-[10px] border border-[#E5E7EB] px-5 py-3 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC]"
           >
             Cancel
           </button>

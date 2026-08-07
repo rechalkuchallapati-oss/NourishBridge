@@ -49,7 +49,7 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
                 type="file"
                 accept="image/*"
                 multiple
-                className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+                className="rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -61,7 +61,7 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
                 defaultValue={batch.beneficiaryCount ?? ""}
                 required
                 placeholder="e.g. 120"
-                className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+                className="rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -71,7 +71,7 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
                 rows={2}
                 defaultValue={batch.proofNotes ?? ""}
                 placeholder="Distribution notes..."
-                className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+                className="rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -81,12 +81,12 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
                 type="text"
                 defaultValue={batch.completionTime ?? ""}
                 placeholder="e.g. Today, 5:30 PM"
-                className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+                className="rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
               />
             </label>
             <button
               type="submit"
-              className="rounded-none bg-[#7C3AED] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#6D28D9]"
+              className="rounded-[10px] bg-[#7C3AED] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#6D28D9]"
             >
               Save Proof
             </button>
@@ -102,7 +102,7 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
         <div className="flex flex-wrap items-center gap-2">
           <EventTypeBadge eventType={batch.eventType} />
           <span
-            className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${DISTRIBUTION_STATUS_COLORS[batch.status]}`}
+            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${DISTRIBUTION_STATUS_COLORS[batch.status]}`}
           >
             {DISTRIBUTION_STATUS_LABELS[batch.status]}
           </span>
@@ -123,7 +123,7 @@ export default function DistributionBatchDrawer({ batch, onClose, onSubmitProof 
           <p className="text-xs font-semibold uppercase tracking-wide text-[#7C3AED]">
             Distribution Status
           </p>
-          <div className="mt-3 rounded-none border border-[#E5E7EB] p-[0.5cm]">
+          <div className="mt-3 rounded-[16px] border border-[#E5E7EB] p-6">
             <DistributionStatusTimeline
               currentStatus={batch.status}
               timeline={batch.timeline}

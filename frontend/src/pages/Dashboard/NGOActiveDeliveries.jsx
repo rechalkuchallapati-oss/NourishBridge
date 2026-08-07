@@ -22,7 +22,7 @@ function ActiveDeliveryCard({ delivery }) {
     delivery.currentStatus;
 
   return (
-    <article className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+    <article className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
       <div className="flex flex-col xl:flex-row">
         {foodImage ? (
           <div className="h-44 w-full shrink-0 overflow-hidden bg-[#F8FAFC] xl:h-auto xl:w-52">
@@ -45,14 +45,14 @@ function ActiveDeliveryCard({ delivery }) {
               <p className="mt-1 text-xs font-medium text-[#94A3B8]">{delivery.quantity}</p>
             </div>
             <span
-              className={`inline-flex rounded-none px-3 py-1.5 text-xs font-semibold ${DELIVERY_STATUS_BADGE[delivery.currentStatus] ?? DELIVERY_STATUS_BADGE.accepted}`}
+              className={`inline-flex rounded-full px-3 py-1.5 text-xs font-semibold ${DELIVERY_STATUS_BADGE[delivery.currentStatus] ?? DELIVERY_STATUS_BADGE.accepted}`}
             >
               {statusLabel}
             </span>
           </div>
 
           <div className="grid gap-[0.5cm] lg:grid-cols-2">
-            <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+            <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                 Volunteer
               </p>
@@ -67,7 +67,7 @@ function ActiveDeliveryCard({ delivery }) {
               </a>
             </div>
 
-            <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+            <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                 ETA & Location
               </p>
@@ -85,7 +85,7 @@ function ActiveDeliveryCard({ delivery }) {
           </div>
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[1fr_auto]">
-            <div className="rounded-none border border-[#E5E7EB] p-[0.5cm]">
+            <div className="rounded-[16px] border border-[#E5E7EB] p-[0.5cm]">
               <p className="mb-[0.5cm] text-sm font-semibold text-[#0F172A]">Status progression</p>
               <DeliveryStatusTimeline
                 currentStatus={delivery.currentStatus}
@@ -93,7 +93,7 @@ function ActiveDeliveryCard({ delivery }) {
               />
             </div>
 
-            <div className="flex flex-col gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-[#EFF6FF] p-[0.5cm]">
+            <div className="flex flex-col gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-[#EFF6FF] p-[0.5cm]">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
                 Escalation
               </p>
@@ -109,7 +109,7 @@ function ActiveDeliveryCard({ delivery }) {
               </a>
               <button
                 type="button"
-                className="mt-auto rounded-none border border-[#2563EB] bg-white px-4 py-2 text-sm font-semibold text-[#2563EB] hover:bg-[#DBEAFE]"
+                className="mt-auto rounded-[10px] border border-[#2563EB] bg-white px-4 py-2 text-sm font-semibold text-[#2563EB] hover:bg-[#DBEAFE]"
               >
                 Contact coordinator
               </button>
@@ -131,7 +131,7 @@ export default function NGOActiveDeliveries() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader

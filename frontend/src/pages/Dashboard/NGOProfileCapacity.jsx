@@ -18,7 +18,7 @@ import {
 
 const EASE = [0.22, 1, 0.36, 1];
 const inputClass =
-  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:bg-white sm:text-base";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-4 py-3 text-sm outline-none focus:border-[#2563EB] focus:bg-white sm:text-base";
 
 export default function NGOProfileCapacity() {
   const user = getSessionUser();
@@ -49,7 +49,7 @@ export default function NGOProfileCapacity() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <form
           onSubmit={handleSubmit}
@@ -61,7 +61,7 @@ export default function NGOProfileCapacity() {
             description="Operational information used for donation matching — service areas, capacity, storage, and availability."
           />
 
-          <div className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm] text-sm text-[#1D4ED8]">
+          <div className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm] text-sm text-[#1D4ED8]">
             Future matching score:{" "}
             <code className="text-xs">
               distanceScore + capacityScore + urgencyScore + foodCompatibilityScore +
@@ -231,7 +231,7 @@ export default function NGOProfileCapacity() {
                 <label
                   key={type}
                   className={[
-                    "cursor-pointer rounded-none border px-3 py-2 text-sm font-medium transition-colors",
+                    "cursor-pointer rounded-[10px] border px-3 py-2 text-sm font-medium transition-colors",
                     profile.foodTypesAccepted.includes(type)
                       ? "border-[#2563EB] bg-[#EFF6FF] text-[#2563EB]"
                       : "border-[#E5E7EB] bg-white text-[#64748B]",
@@ -251,7 +251,7 @@ export default function NGOProfileCapacity() {
 
           <button
             type="submit"
-            className="self-start rounded-none bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+            className="self-start rounded-[16px] bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
           >
             Save profile & capacity
           </button>

@@ -13,7 +13,7 @@ export default function NGOPageHeader({ icon: Icon, title, description, actions 
       <div className="flex items-start gap-[0.5cm] sm:items-center">
         {Icon ? (
           <motion.span
-            className="group flex h-14 w-14 shrink-0 items-center justify-center rounded-none bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white shadow-[0_8px_24px_rgba(37,99,235,0.35)]"
+            className="group flex h-14 w-14 shrink-0 items-center justify-center rounded-[16px] bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] text-white shadow-[0_8px_24px_rgba(37,99,235,0.35)]"
             animate={{ y: [0, -3, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             whileHover={{ scale: 1.06 }}

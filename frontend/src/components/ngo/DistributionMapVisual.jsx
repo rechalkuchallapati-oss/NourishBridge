@@ -3,7 +3,7 @@ import { DISTRIBUTION_MAP_STOPS } from "../../data/ngoDistributionQueue";
 
 export default function DistributionMapVisual() {
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F5F3FF] to-white p-[0.5cm]">
+    <div className="nb-card rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F5F3FF] to-white p-6">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#7C3AED]">
         Distribution Map
       </p>
@@ -13,7 +13,7 @@ export default function DistributionMapVisual() {
             <div className="flex items-center gap-2">
               <span
                 className={[
-                  "flex h-8 min-w-[8rem] items-center gap-2 rounded-none px-3 py-1.5 text-xs font-semibold",
+                  "flex h-8 min-w-[8rem] items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold",
                   stop.type === "origin"
                     ? "bg-[#7C3AED] text-white"
                     : stop.type === "destination"

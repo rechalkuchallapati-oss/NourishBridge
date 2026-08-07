@@ -29,6 +29,6 @@ export function NGOSectionHeader({ title, badge, actionTo, actionLabel = "View a
 }
 
 export const NGO_SECTION_CLASS =
-  "rounded-none border border-[#E5E7EB] bg-white p-3 shadow-sm sm:p-4";
+  "nb-card rounded-[16px] border border-[#E5E7EB] bg-white p-6 shadow-sm sm:p-6";
 
 export const NGO_SECTION_TEXT = "text-xs text-[#64748B] sm:text-sm";

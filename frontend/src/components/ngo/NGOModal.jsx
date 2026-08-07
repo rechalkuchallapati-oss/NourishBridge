@@ -24,7 +24,7 @@ export default function NGOModal({ title, children, onClose, wide = false }) {
     >
       <div
         className={[
-          "max-h-[90vh] w-full overflow-y-auto rounded-none border border-[#E5E7EB] bg-white shadow-2xl",
+          "max-h-[90vh] w-full overflow-y-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-2xl",
           wide ? "max-w-3xl" : "max-w-lg",
         ].join(" ")}
         onClick={(event) => event.stopPropagation()}
@@ -36,7 +36,7 @@ export default function NGOModal({ title, children, onClose, wide = false }) {
           <button
             type="button"
             onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-none border border-[#E5E7EB] text-[#64748B] transition-colors hover:bg-[#F8FAFC] hover:text-[#0F172A]"
+            className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#E5E7EB] text-[#64748B] transition-colors hover:bg-[#F8FAFC] hover:text-[#0F172A]"
             aria-label="Close"
           >
             <FaTimes aria-hidden="true" />

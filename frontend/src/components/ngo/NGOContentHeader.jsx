@@ -52,7 +52,7 @@ export default function NGOContentHeader({
 
         <Link
           to={DASHBOARD_ROUTES.ngoNotifications}
-          className="relative flex h-10 w-10 items-center justify-center rounded-none border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-colors duration-300 hover:border-[#16A34A]/30 hover:text-[#16A34A]"
+          className="relative flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] transition-colors duration-300 hover:border-[#16A34A]/30 hover:text-[#16A34A]"
           aria-label={`Notifications${unreadNotifications > 0 ? `, ${unreadNotifications} unread` : ""}`}
         >
           <FaBell aria-hidden="true" />
@@ -65,7 +65,7 @@ export default function NGOContentHeader({
 
         <button
           type="button"
-          className="flex items-center gap-2 rounded-none border border-[#E5E7EB] bg-white py-1.5 pl-1.5 pr-2.5 transition-colors duration-300 hover:border-[#16A34A]/30 hover:bg-[#F8FAFC]"
+          className="flex items-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white py-1.5 pl-1.5 pr-2.5 transition-colors duration-300 hover:border-[#16A34A]/30 hover:bg-[#F8FAFC]"
           aria-label="NGO Admin menu"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-[#16A34A] to-[#15803D] text-sm font-bold text-white">

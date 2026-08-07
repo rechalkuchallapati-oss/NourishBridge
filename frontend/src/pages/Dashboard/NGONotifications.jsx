@@ -55,7 +55,7 @@ export default function NGONotifications() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -72,7 +72,7 @@ export default function NGONotifications() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.35, delay: 0.04 * index, ease: EASE }}
                 className={[
-                  "rounded-none border p-[0.5cm] shadow-sm",
+                  "rounded-[16px] border p-[0.5cm] shadow-sm",
                   item.unread
                     ? "border-[#DBEAFE] bg-[#EFF6FF]"
                     : "border-[#E5E7EB] bg-white",
@@ -84,7 +84,7 @@ export default function NGONotifications() {
                     <p className="mt-[0.3cm] text-sm leading-6 text-[#64748B]">{item.body}</p>
                   </div>
                   {item.unread ? (
-                    <span className="shrink-0 rounded-none bg-[#2563EB] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                    <span className="shrink-0 rounded-full bg-[#2563EB] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
                       New
                     </span>
                   ) : null}

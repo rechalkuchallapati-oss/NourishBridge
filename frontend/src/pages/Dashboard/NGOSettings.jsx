@@ -62,7 +62,7 @@ export default function NGOSettings() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -74,7 +74,7 @@ export default function NGOSettings() {
           {NGO_SETTING_GROUPS.map((group) => (
             <section
               key={group.title}
-              className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
+              className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
             >
               <h2 className="text-base font-bold text-[#0F172A]">{group.title}</h2>
               <ul className="mt-[0.5cm] flex flex-col gap-[0.5cm]">
@@ -90,7 +90,7 @@ export default function NGOSettings() {
                       aria-checked={settings[item.key]}
                       onClick={() => toggle(item.key)}
                       className={[
-                        "relative h-7 w-12 shrink-0 rounded-none transition-colors",
+                        "relative h-7 w-12 shrink-0 rounded-[16px] transition-colors",
                         settings[item.key] ? "bg-[#2563EB]" : "bg-[#CBD5E1]",
                       ].join(" ")}
                     >

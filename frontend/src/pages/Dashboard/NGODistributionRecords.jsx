@@ -30,7 +30,7 @@ export default function NGODistributionRecords() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -41,7 +41,7 @@ export default function NGODistributionRecords() {
               <button
                 type="button"
                 onClick={() => setShowForm((prev) => !prev)}
-                className="rounded-none bg-[#2563EB] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+                className="rounded-[10px] bg-[#2563EB] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
               >
                 {showForm ? "Cancel" : "New record"}
               </button>
@@ -51,7 +51,7 @@ export default function NGODistributionRecords() {
           {showForm ? (
             <form
               onSubmit={handleSubmit}
-              className="grid gap-[0.5cm] rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] sm:grid-cols-2"
+              className="grid gap-[0.5cm] rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] sm:grid-cols-2"
             >
               <FormField label="Distribution location" required>
                 <input type="text" required className={inputClass} placeholder="Shelter / kitchen name" />
@@ -88,13 +88,13 @@ export default function NGODistributionRecords() {
                 <input
                   type="file"
                   accept="image/*"
-                  className="w-full text-sm file:mr-3 file:rounded-none file:border-0 file:bg-[#2563EB] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+                  className="w-full text-sm file:mr-3 file:rounded-[16px] file:border-0 file:bg-[#2563EB] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
                 />
               </FormField>
               <div className="sm:col-span-2">
                 <button
                   type="submit"
-                  className="rounded-none bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+                  className="rounded-[10px] bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
                 >
                   Save distribution record
                 </button>
@@ -109,7 +109,7 @@ export default function NGODistributionRecords() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.04 * index, ease: EASE }}
-                className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
+                className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
@@ -117,7 +117,7 @@ export default function NGODistributionRecords() {
                     <h3 className="text-lg font-bold text-[#0F172A]">{record.location}</h3>
                     <p className="text-sm text-[#64748B]">{record.dateTime}</p>
                   </div>
-                  <span className="rounded-none bg-[#DBEAFE] px-3 py-1 text-xs font-semibold text-[#1D4ED8]">
+                  <span className="rounded-[10px] bg-[#DBEAFE] px-3 py-1 text-xs font-semibold text-[#1D4ED8]">
                     {record.beneficiaryGroup}
                   </span>
                 </div>
@@ -149,7 +149,7 @@ export default function NGODistributionRecords() {
 }
 
 const inputClass =
-  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB] focus:bg-white";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB] focus:bg-white";
 
 function FormField({ label, required, children, className = "" }) {
   return (

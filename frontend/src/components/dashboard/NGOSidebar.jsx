@@ -38,7 +38,7 @@ function NavLink({ item, isActive }) {
     <Link
       to={item.to}
       className={[
-        "flex items-center gap-3 rounded-none px-4 py-2.5 transition-colors duration-200",
+        "flex items-center gap-3 rounded-[10px] px-4 py-2.5 transition-colors duration-200",
         item.emphasized ? "text-base font-semibold" : "text-sm font-medium",
         isActive
           ? "bg-[#F0FDF4] text-[#15803D]"
@@ -58,7 +58,7 @@ export default function NGOSidebar() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="sticky top-6 flex h-[calc(100vh-88px)] max-h-[calc(100vh-88px)] w-full flex-col rounded-none border border-[#E5E7EB] bg-white px-4 py-5 shadow-sm sm:px-5 sm:py-6">
+    <nav className="sticky top-6 flex h-[calc(100vh-88px)] max-h-[calc(100vh-88px)] w-full flex-col rounded-[16px] border border-[#E5E7EB] bg-white px-4 py-5 shadow-sm sm:px-5 sm:py-6">
       <div className="flex min-h-0 flex-1 flex-col gap-[0.5cm] overflow-y-auto">
         {NAV_ITEMS.map((item) => (
           <NavLink
@@ -70,7 +70,7 @@ export default function NGOSidebar() {
 
         <Link
           to={DASHBOARD_ROUTES.ngoIncoming}
-          className="mt-[0.3cm] flex w-full shrink-0 items-center justify-center gap-2.5 rounded-none bg-[#16A34A] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-colors duration-300 hover:bg-[#15803D] sm:text-base"
+          className="mt-[0.3cm] flex w-full shrink-0 items-center justify-center gap-2.5 rounded-[12px] bg-[#16A34A] px-4 py-3.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-colors duration-300 hover:bg-[#15803D] sm:text-base"
         >
           <FaInbox className="text-lg" aria-hidden="true" />
           Review Donations

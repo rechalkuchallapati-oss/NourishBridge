@@ -41,10 +41,10 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
           <img
             src={photo}
             alt={volunteer.name}
-            className="mx-auto h-24 w-24 rounded-none object-cover ring-2 ring-[#E5E7EB]"
+            className="mx-auto h-24 w-24 rounded-full object-cover ring-2 ring-[#E5E7EB]"
           />
         ) : (
-          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-none bg-[#F1F5F9] text-2xl font-bold text-[#64748B]">
+          <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#F1F5F9] text-2xl font-bold text-[#64748B]">
             {volunteer.name.charAt(0)}
           </div>
         )}
@@ -55,7 +55,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
             {volunteer.rating}
           </span>
           <span
-            className={`inline-flex items-center gap-1 rounded-none px-2.5 py-1 text-xs font-semibold ${VOLUNTEER_STATUS_COLORS[volunteer.status]}`}
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${VOLUNTEER_STATUS_COLORS[volunteer.status]}`}
           >
             {VOLUNTEER_STATUS_ICONS[volunteer.status]} {VOLUNTEER_STATUS_LABELS[volunteer.status]}
           </span>
@@ -70,7 +70,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
           <DetailBlock label="Location" value={volunteer.location} />
         </div>
 
-        <section className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+        <section className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-6">
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-[#64748B]">
             <FaCertificate aria-hidden="true" />
             Certificates
@@ -79,7 +79,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
             {volunteer.certificates.map((cert) => (
               <li
                 key={cert}
-                className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] px-2 py-1 text-xs font-medium text-[#1D4ED8]"
+                className="rounded-full border border-[#DBEAFE] bg-[#EFF6FF] px-2 py-1 text-xs font-medium text-[#1D4ED8]"
               >
                 {cert}
               </li>
@@ -95,7 +95,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
             {volunteer.todaysSchedule.map((item) => (
               <li
                 key={item.time + item.task}
-                className="flex gap-3 rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+                className="flex gap-3 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
               >
                 <span className="shrink-0 font-semibold text-[#2563EB]">{item.time}</span>
                 <span className="text-[#64748B]">{item.task}</span>
@@ -113,7 +113,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
               {volunteer.missionHistory.map((m) => (
                 <li
                   key={m.id}
-                  className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm"
+                  className="rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm"
                 >
                   <p className="font-semibold text-[#0F172A]">
                     {m.id} · {m.type}
@@ -136,7 +136,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
               {volunteer.reviews.map((review) => (
                 <li
                   key={review.author + review.text}
-                  className="rounded-none border border-[#FEF3C7] bg-[#FFFBEB] px-3 py-2 text-sm"
+                  className="rounded-[10px] border border-[#FEF3C7] bg-[#FFFBEB] px-3 py-2 text-sm"
                 >
                   <p className="font-semibold text-[#0F172A]">
                     {review.author} · {"⭐".repeat(review.rating)}
@@ -150,7 +150,7 @@ export default function VolunteerDetailsDrawer({ volunteer, onClose }) {
 
         <a
           href={`tel:${volunteer.phone.replace(/\s/g, "")}`}
-          className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
+          className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
         >
           <FaPhone aria-hidden="true" />
           Call Volunteer

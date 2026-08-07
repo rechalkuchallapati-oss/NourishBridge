@@ -46,12 +46,12 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${BENEFICIARY_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${BENEFICIARY_STATUS_COLORS[status]}`}
     >
       {BENEFICIARY_STATUS_LABELS[status]}
     </span>
@@ -61,7 +61,7 @@ function StatusBadge({ status }) {
 function PriorityBadge({ priority }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${PRIORITY_COLORS[priority]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${PRIORITY_COLORS[priority]}`}
     >
       {PRIORITY_LABELS[priority]}
     </span>
@@ -91,14 +91,14 @@ function DetailRow({ label, value, href }) {
 function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, onReport }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Quick Actions</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onSchedule}
             disabled={!selected || selected.status !== "active"}
-            className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaTruck aria-hidden="true" />
             Schedule Delivery
@@ -107,7 +107,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             type="button"
             onClick={onViewHistory}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaHistory aria-hidden="true" />
             View History
@@ -116,7 +116,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             type="button"
             onClick={onEdit}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEdit aria-hidden="true" />
             Edit Details
@@ -125,7 +125,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             type="button"
             onClick={onContact}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaPhone aria-hidden="true" />
             Contact Beneficiary
@@ -134,7 +134,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             type="button"
             onClick={onReport}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#64748B] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#64748B] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaFileAlt aria-hidden="true" />
             Generate Report
@@ -142,14 +142,14 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Beneficiary Types</h2>
         <ul className="mt-3 flex flex-col gap-1.5">
           {Object.entries(BENEFICIARY_TYPE_LABELS).map(([key, label]) => (
             <li
               key={key}
               className={[
-                "rounded-none px-2 py-1 text-xs font-medium",
+                "rounded-full px-2 py-1 text-xs font-medium",
                 selected?.type === key ? "bg-[#EFF6FF] text-[#2563EB]" : "text-[#64748B]",
               ].join(" ")}
             >
@@ -159,7 +159,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
         </ul>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Priority Level</h2>
         <ul className="mt-3 flex flex-col gap-2">
           {Object.entries(PRIORITY_LABELS).map(([key, label]) => (
@@ -173,7 +173,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
 
       {selected ? (
         <>
-          <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+          <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">Details Panel</p>
             <p className="mt-2 text-lg font-bold text-[#0F172A]">{selected.organization}</p>
             <p className="text-sm text-[#64748B]">{selected.id}</p>
@@ -194,7 +194,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             </div>
           </div>
 
-          <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+          <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
             <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Food Requirement</h2>
             <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
               <div>
@@ -224,7 +224,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
             </dl>
           </div>
 
-          <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+          <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
             <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Delivery History</h2>
             <div className="mt-3 overflow-x-auto">
               <table className="w-full min-w-[400px] text-left text-xs">
@@ -253,7 +253,7 @@ function DetailsPanel({ selected, onSchedule, onViewHistory, onEdit, onContact, 
           </div>
         </>
       ) : (
-        <div className="rounded-none border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
+        <div className="rounded-[16px] border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
           <p className="text-sm text-[#64748B]">
             Select a beneficiary to view contact details, food requirements, and delivery history.
           </p>
@@ -321,7 +321,7 @@ export default function NGOBeneficiaries() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -350,7 +350,7 @@ export default function NGOBeneficiaries() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -420,7 +420,7 @@ export default function NGOBeneficiaries() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Main Table
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[960px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -466,7 +466,7 @@ export default function NGOBeneficiaries() {
               ) : null}
 
               {selected ? (
-                <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm lg:hidden">
+                <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm lg:hidden">
                   <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Delivery History</h2>
                   <div className="mt-3 overflow-x-auto">
                     <table className="w-full min-w-[520px] text-left text-sm">

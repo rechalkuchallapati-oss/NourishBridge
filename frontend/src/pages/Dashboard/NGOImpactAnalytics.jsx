@@ -53,10 +53,10 @@ const EXPORT_ACTIONS = [
 function SidePanel({ onExport }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Environmental Impact</h2>
         <dl className="mt-[0.5cm] flex flex-col gap-3">
-          <div className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-3">
+          <div className="rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] p-3">
             <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
               Food Waste Prevented
             </dt>
@@ -64,7 +64,7 @@ function SidePanel({ onExport }) {
               {ENVIRONMENTAL_IMPACT.foodWastePrevented}
             </dd>
           </div>
-          <div className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-3">
+          <div className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-3">
             <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
               Estimated CO₂ Reduction
             </dt>
@@ -72,7 +72,7 @@ function SidePanel({ onExport }) {
               {ENVIRONMENTAL_IMPACT.co2Reduction}
             </dd>
           </div>
-          <div className="rounded-none border border-[#E0E7FF] bg-[#EEF2FF] p-3">
+          <div className="rounded-[16px] border border-[#E0E7FF] bg-[#EEF2FF] p-3">
             <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">Water Saved</dt>
             <dd className="mt-1 text-xl font-bold text-[#4F46E5]">
               {ENVIRONMENTAL_IMPACT.waterSaved}
@@ -81,7 +81,7 @@ function SidePanel({ onExport }) {
         </dl>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Download Reports</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           {EXPORT_ACTIONS.map(({ id, label, icon: Icon }) => (
@@ -89,7 +89,7 @@ function SidePanel({ onExport }) {
               key={id}
               type="button"
               onClick={() => onExport(id)}
-              className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
+              className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
             >
               <Icon aria-hidden="true" />
               {label}
@@ -97,7 +97,7 @@ function SidePanel({ onExport }) {
           ))}
           <Link
             to={DASHBOARD_ROUTES.ngoReports}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#DBEAFE] bg-[#EFF6FF] px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#DBEAFE]"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#DBEAFE] bg-[#EFF6FF] px-4 py-2.5 text-sm font-semibold text-[#2563EB] transition-colors hover:bg-[#DBEAFE]"
           >
             <FaDownload aria-hidden="true" />
             View All Reports
@@ -105,13 +105,13 @@ function SidePanel({ onExport }) {
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Recent Success Stories</h2>
         <ul className="mt-[0.5cm] flex flex-col gap-2">
           {SUCCESS_STORIES.map((story) => (
             <li
               key={story.id}
-              className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5"
+              className="rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5"
             >
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-bold text-[#0F172A]">{story.title}</p>
@@ -147,7 +147,7 @@ export default function NGOImpactAnalytics() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -184,7 +184,7 @@ export default function NGOImpactAnalytics() {
               </div>
 
               <div className="grid gap-[0.5cm] lg:grid-cols-2">
-                <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+                <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
                   <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Top Performing Donors</h2>
                   <p className="mt-[0.3cm] text-sm text-[#64748B]">
                     Organizations contributing the most meals.
@@ -206,7 +206,7 @@ export default function NGOImpactAnalytics() {
                           >
                             <td className="px-3 py-2.5">
                               <div className="flex items-center gap-2">
-                                <span className="flex h-6 w-6 items-center justify-center rounded-none bg-[#2563EB] text-xs font-bold text-white">
+                                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#2563EB] text-xs font-bold text-white">
                                   {index + 1}
                                 </span>
                                 <span className="font-semibold text-[#0F172A]">{donor.name}</span>
@@ -223,19 +223,19 @@ export default function NGOImpactAnalytics() {
                   </div>
                 </section>
 
-                <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+                <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
                   <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Top Volunteers</h2>
                   <p className="mt-[0.3cm] text-sm text-[#64748B]">Highest impact volunteers on platform.</p>
                   <ul className="mt-[0.5cm] flex flex-col gap-3">
                     {TOP_VOLUNTEERS.map((vol) => (
                       <li
                         key={vol.id}
-                        className="flex items-center gap-3 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-3"
+                        className="flex items-center gap-3 rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] p-3"
                       >
                         <img
                           src={getVolunteerAvatar(vol.avatarKey)}
                           alt=""
-                          className="h-12 w-12 rounded-none object-cover"
+                          className="h-12 w-12 rounded-[16px] object-cover"
                         />
                         <div className="min-w-0 flex-1">
                           <p className="font-bold text-[#0F172A]">{vol.name}</p>
@@ -254,14 +254,14 @@ export default function NGOImpactAnalytics() {
                 </section>
               </div>
 
-              <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+              <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
                 <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Impact Timeline</h2>
                 <p className="mt-[0.3cm] text-sm text-[#64748B]">Monthly meals distributed over the year.</p>
                 <div className="mt-[0.5cm] flex gap-3 overflow-x-auto pb-2">
                   {IMPACT_TIMELINE.map((entry) => (
                     <div
                       key={entry.month}
-                      className="flex min-w-[120px] shrink-0 flex-col rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-3"
+                      className="flex min-w-[120px] shrink-0 flex-col rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-3"
                     >
                       <p className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                         {entry.month}

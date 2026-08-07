@@ -59,13 +59,13 @@ export default function NGOOverviewImpactMonth() {
             <div
               key={item.id}
               className={[
-                "rounded-none border p-2.5 shadow-[0_2px_12px_rgba(15,23,42,0.04)]",
+                "rounded-[16px] border p-2.5 shadow-[0_2px_12px_rgba(15,23,42,0.04)]",
                 "transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.08)]",
                 item.card,
               ].join(" ")}
             >
               <span
-                className={`inline-flex h-7 w-7 items-center justify-center rounded-none border ${item.iconBox}`}
+                className={`inline-flex h-7 w-7 items-center justify-center rounded-[10px] border ${item.iconBox}`}
               >
                 <Icon className="text-xs" aria-hidden="true" />
               </span>

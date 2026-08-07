@@ -53,7 +53,7 @@ export default function DonationDetailsModal({ donation, onClose, onAccept, onDe
               onAccept(donation);
               onClose();
             }}
-            className="rounded-none bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+            className="rounded-[10px] bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
           >
             Accept Donation
           </button>
@@ -63,7 +63,7 @@ export default function DonationDetailsModal({ donation, onClose, onAccept, onDe
               onDecline(donation);
               onClose();
             }}
-            className="rounded-none border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
+            className="rounded-[10px] border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
           >
             Decline
           </button>

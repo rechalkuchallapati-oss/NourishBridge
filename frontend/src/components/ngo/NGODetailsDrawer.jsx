@@ -45,7 +45,7 @@ export default function NGODetailsDrawer({ open, title, onClose, children, foote
               <button
                 type="button"
                 onClick={onClose}
-                className="flex h-9 w-9 items-center justify-center rounded-none border border-[#E5E7EB] text-[#64748B] transition-colors hover:bg-[#F8FAFC]"
+                className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#E5E7EB] text-[#64748B] transition-colors hover:bg-[#F8FAFC]"
                 aria-label="Close drawer"
               >
                 <FaTimes aria-hidden="true" />

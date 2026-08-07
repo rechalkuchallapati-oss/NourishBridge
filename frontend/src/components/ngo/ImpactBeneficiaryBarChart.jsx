@@ -4,7 +4,7 @@ export default function ImpactBeneficiaryBarChart() {
   const maxMeals = Math.max(...BENEFICIARY_DISTRIBUTION.map((item) => item.meals));
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:p-5">
+    <section className="nb-card rounded-[18px] border border-[#E5E7EB] bg-white p-6 shadow-sm">
       <h2 className="text-lg font-bold text-[#0F172A] sm:text-xl">Beneficiary Distribution</h2>
       <p className="mt-[0.3cm] text-sm text-[#64748B]">Meals served by beneficiary type — bar chart.</p>
 

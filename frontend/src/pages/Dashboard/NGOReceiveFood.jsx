@@ -62,7 +62,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
           <select
             value={form.packaging}
             onChange={(e) => update("packaging", e.target.value)}
-            className="w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+            className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
           >
             <option value="">Select...</option>
             {PACKAGING_OPTIONS.map((opt) => (
@@ -78,7 +78,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
             <select
               value={form.temperature}
               onChange={(e) => update("temperature", e.target.value)}
-              className="w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+              className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
             >
               <option value="">Select...</option>
               {TEMPERATURE_OPTIONS.map((opt) => (
@@ -94,7 +94,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
           <select
             value={form.spoilage}
             onChange={(e) => update("spoilage", e.target.value)}
-            className="w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+            className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
           >
             <option value="">Select...</option>
             {SPOILAGE_OPTIONS.map((opt) => (
@@ -111,7 +111,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
             value={form.quantityReceived}
             onChange={(e) => update("quantityReceived", e.target.value)}
             placeholder={`Listed: ${item.listedQuantity}`}
-            className="w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+            className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
           />
         </Field>
 
@@ -120,7 +120,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
             type="text"
             value={form.categoryConfirmed}
             onChange={(e) => update("categoryConfirmed", e.target.value)}
-            className="w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+            className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
           />
         </Field>
 
@@ -129,7 +129,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
             type="text"
             value={item.arrivedAt}
             readOnly
-            className="w-full rounded-none border border-[#E5E7EB] bg-[#F1F5F9] px-3 py-2 text-sm text-[#64748B]"
+            className="w-full rounded-[10px] border border-[#E5E7EB] bg-[#F1F5F9] px-3 py-2 text-sm text-[#64748B]"
           />
         </Field>
       </div>
@@ -139,7 +139,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
           rows={2}
           value={form.notes}
           onChange={(e) => update("notes", e.target.value)}
-          className="w-full resize-none rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
+          className="w-full resize-none rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2 text-sm outline-none focus:border-[#2563EB]"
         />
       </Field>
 
@@ -147,7 +147,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
         <input
           type="file"
           accept="image/*"
-          className="w-full text-sm text-[#64748B] file:mr-3 file:rounded-none file:border-0 file:bg-[#2563EB] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+          className="w-full text-sm text-[#64748B] file:mr-3 file:rounded-[16px] file:border-0 file:bg-[#2563EB] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
         />
       </Field>
 
@@ -155,7 +155,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
         <legend className="mb-[0.3cm] w-full text-sm font-semibold text-[#0F172A]">
           Inspection result *
         </legend>
-        <label className="flex cursor-pointer items-center gap-2 rounded-none border border-[#DCFCE7] bg-[#F0FDF4] px-4 py-2">
+        <label className="flex cursor-pointer items-center gap-2 rounded-[10px] border border-[#DCFCE7] bg-[#F0FDF4] px-4 py-2">
           <input
             type="radio"
             name={`result-${item.id}`}
@@ -166,7 +166,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
           />
           <span className="text-sm font-semibold text-[#15803D]">Accept for distribution</span>
         </label>
-        <label className="flex cursor-pointer items-center gap-2 rounded-none border border-red-100 bg-red-50 px-4 py-2">
+        <label className="flex cursor-pointer items-center gap-2 rounded-[10px] border border-red-100 bg-red-50 px-4 py-2">
           <input
             type="radio"
             name={`result-${item.id}`}
@@ -181,7 +181,7 @@ function ReceivingInspectionForm({ item, onSubmit }) {
 
       <button
         type="submit"
-        className="self-start rounded-none bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+        className="self-start rounded-[10px] bg-[#2563EB] px-5 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
       >
         Submit inspection
       </button>
@@ -227,7 +227,7 @@ export default function NGOReceiveFood() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -236,7 +236,7 @@ export default function NGOReceiveFood() {
             description="Verify food on arrival before it enters inventory. Record packaging, temperature, quantity, and acceptance or rejection."
           />
 
-          <div className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm] text-sm text-[#1D4ED8]">
+          <div className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm] text-sm text-[#1D4ED8]">
             <strong>State model:</strong> ARRIVED → INSPECTION_PENDING → ACCEPTED_FOR_DISTRIBUTION
             · or INSPECTION_FAILED → REJECTED_WITH_REASON
           </div>
@@ -248,7 +248,7 @@ export default function NGOReceiveFood() {
             pending.map((item) => (
               <article
                 key={item.id}
-                className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
+                className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm"
               >
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
@@ -267,7 +267,7 @@ export default function NGOReceiveFood() {
                       {item.donorName} · Volunteer: {item.volunteer}
                     </p>
                   </div>
-                  <span className="rounded-none bg-[#FFEDD5] px-3 py-1 text-xs font-semibold text-[#C2410C]">
+                  <span className="rounded-[10px] bg-[#FFEDD5] px-3 py-1 text-xs font-semibold text-[#C2410C]">
                     {STATE_LABELS[item.status]}
                   </span>
                 </div>
@@ -283,7 +283,7 @@ export default function NGOReceiveFood() {
                 {completed.map((item) => (
                   <li
                     key={item.id}
-                    className={`rounded-none border px-[0.5cm] py-[0.5cm] text-sm ${
+                    className={`rounded-[16px] border px-[0.5cm] py-[0.5cm] text-sm ${
                       item.finalStatus === RECEIVING_STATES.ACCEPTED
                         ? "border-[#DCFCE7] bg-[#F0FDF4] text-[#15803D]"
                         : "border-red-100 bg-red-50 text-red-700"
@@ -299,7 +299,7 @@ export default function NGOReceiveFood() {
           ) : null}
 
           <h2 className="mt-[0.5cm] text-lg font-bold text-[#0F172A]">Recent receiving log</h2>
-          <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white">
+          <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                 <tr>

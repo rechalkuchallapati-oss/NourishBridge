@@ -9,9 +9,9 @@ const PIN_COLORS = {
 
 export default function VolunteerLiveMapVisual({ selectedPinId }) {
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] to-white p-[0.5cm]">
+    <div className="nb-card rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] to-white p-6">
       <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">Live Map</p>
-      <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+      <div className="relative mt-3 aspect-[4/3] overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC]">
         <div className="absolute inset-0 opacity-30">
           <div className="grid h-full w-full grid-cols-6 grid-rows-5">
             {Array.from({ length: 30 }).map((_, i) => (
@@ -35,7 +35,7 @@ export default function VolunteerLiveMapVisual({ selectedPinId }) {
           >
             <span
               className={[
-                "whitespace-nowrap rounded-none px-1.5 py-0.5 text-[10px] font-semibold text-white shadow-sm",
+                "whitespace-nowrap rounded-full px-1.5 py-0.5 text-[10px] font-semibold text-white shadow-sm",
                 selectedPinId === pin.id ? "ring-2 ring-[#0F172A]" : "",
               ].join(" ")}
               style={{ backgroundColor: PIN_COLORS[pin.type] ?? "#64748B" }}
@@ -49,7 +49,7 @@ export default function VolunteerLiveMapVisual({ selectedPinId }) {
             />
           </div>
         ))}
-        <div className="absolute bottom-2 left-2 rounded-none bg-white/90 px-2 py-1 text-[10px] text-[#64748B]">
+        <div className="absolute bottom-2 left-2 rounded-[10px] bg-white/90 px-2 py-1 text-[10px] text-[#64748B]">
           Hyderabad · Live view
         </div>
       </div>

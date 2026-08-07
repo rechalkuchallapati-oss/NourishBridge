@@ -89,7 +89,7 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 const EXPORT_ACTIONS = [
   { id: "pdf", label: "Download PDF", icon: FaFilePdf, accent: "text-red-600 border-red-100 bg-red-50 hover:bg-red-100" },
@@ -101,7 +101,7 @@ const EXPORT_ACTIONS = [
 function SidePanel({ period, onExport, monthlyImpact }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Export Reports</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           {EXPORT_ACTIONS.map(({ id, label, icon: Icon, accent }) => (
@@ -109,7 +109,7 @@ function SidePanel({ period, onExport, monthlyImpact }) {
               key={id}
               type="button"
               onClick={() => onExport(id)}
-              className={`flex items-center justify-center gap-2 rounded-none border px-4 py-2.5 text-sm font-semibold transition-colors ${accent}`}
+              className={`flex items-center justify-center gap-2 rounded-[10px] border px-4 py-2.5 text-sm font-semibold transition-colors ${accent}`}
             >
               <Icon aria-hidden="true" />
               {label}
@@ -118,7 +118,7 @@ function SidePanel({ period, onExport, monthlyImpact }) {
         </div>
       </div>
 
-      <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#2563EB]">Monthly Impact</h2>
         <dl className="mt-[0.5cm] grid grid-cols-2 gap-3">
           <div>
@@ -192,7 +192,7 @@ export default function NGOReports() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -230,7 +230,7 @@ export default function NGOReports() {
                   type="button"
                   onClick={() => setPeriod(card.id)}
                   className={[
-                    "rounded-none border p-4 text-left transition-all",
+                    "rounded-[16px] border p-4 text-left transition-all",
                     period === card.id
                       ? "border-[#2563EB] bg-[#EFF6FF] shadow-sm"
                       : "border-[#E5E7EB] bg-white hover:border-[#2563EB]/30",
@@ -262,7 +262,7 @@ export default function NGOReports() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_280px] xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Report Filters
                 </p>
@@ -314,7 +314,7 @@ export default function NGOReports() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Recent Reports
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[640px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -333,7 +333,7 @@ export default function NGOReports() {
                           <td className="px-4 py-3 font-semibold text-[#0F172A]">{report.name}</td>
                           <td className="px-4 py-3 text-[#64748B]">{report.date}</td>
                           <td className="px-4 py-3">
-                            <span className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-2 py-0.5 text-xs font-semibold text-[#64748B]">
+                            <span className="rounded-full border border-[#E5E7EB] bg-[#F8FAFC] px-2 py-0.5 text-xs font-semibold text-[#64748B]">
                               {report.type}
                             </span>
                           </td>
@@ -341,7 +341,7 @@ export default function NGOReports() {
                             <button
                               type="button"
                               onClick={() => handleDownloadReport(report)}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
                             >
                               <FaDownload aria-hidden="true" />
                               Download
@@ -354,7 +354,7 @@ export default function NGOReports() {
                 </div>
               </div>
 
-              <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <div className="flex items-center gap-2">
                   <FaLightbulb className="text-lg text-amber-500" aria-hidden="true" />
                   <h2 className="text-lg font-bold text-[#0F172A]">Insights</h2>
@@ -367,7 +367,7 @@ export default function NGOReports() {
                   {AUTO_INSIGHTS.map((insight) => (
                     <li
                       key={insight.id}
-                      className="flex items-start gap-2 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 text-sm"
+                      className="flex items-start gap-2 rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 text-sm"
                     >
                       {insight.direction === "up" ? (
                         <FaArrowUp className="mt-0.5 shrink-0 text-green-600" aria-hidden="true" />
@@ -380,7 +380,7 @@ export default function NGOReports() {
                 </ul>
 
                 <dl className="mt-[0.5cm] grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-none border border-[#DBEAFE] bg-[#EFF6FF] p-3">
+                  <div className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-3">
                     <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       Highest demand area
                     </dt>
@@ -388,7 +388,7 @@ export default function NGOReports() {
                       {INSIGHT_HIGHLIGHTS.highestDemandArea}
                     </dd>
                   </div>
-                  <div className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-3">
+                  <div className="rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] p-3">
                     <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       Most donated food
                     </dt>
@@ -396,7 +396,7 @@ export default function NGOReports() {
                       {INSIGHT_HIGHLIGHTS.mostDonatedFood}
                     </dd>
                   </div>
-                  <div className="rounded-none border border-[#EDE9FE] bg-[#F5F3FF] p-3">
+                  <div className="rounded-[16px] border border-[#EDE9FE] bg-[#F5F3FF] p-3">
                     <dt className="text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       Best performing volunteer
                     </dt>

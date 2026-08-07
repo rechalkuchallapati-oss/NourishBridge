@@ -32,10 +32,10 @@ export default function NGOOverviewActiveDeliveries() {
           return (
             <li
               key={delivery.id}
-              className="flex gap-2.5 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
+              className="flex gap-2.5 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-2.5 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-sm"
             >
               {foodImage ? (
-                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-none bg-white">
+                <div className="h-14 w-14 shrink-0 overflow-hidden rounded-[10px] bg-white">
                   <img
                     src={foodImage}
                     alt={delivery.foodName}
@@ -57,7 +57,7 @@ export default function NGOOverviewActiveDeliveries() {
                     <DonationItemsList record={delivery} className="mt-1" maxItems={2} />
                   </div>
                   <span
-                    className={`inline-flex shrink-0 rounded-none px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_BADGE[delivery.statusKey] ?? STATUS_BADGE.pending}`}
+                    className={`inline-flex shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold ${STATUS_BADGE[delivery.statusKey] ?? STATUS_BADGE.pending}`}
                   >
                     {delivery.status}
                   </span>

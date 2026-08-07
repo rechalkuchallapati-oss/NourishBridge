@@ -44,7 +44,7 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 function FilterSelect({ label, value, onChange, options }) {
   return (
@@ -64,7 +64,7 @@ function FilterSelect({ label, value, onChange, options }) {
 function PriorityBadge({ priority }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${PRIORITY_COLORS[priority]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${PRIORITY_COLORS[priority]}`}
     >
       {PRIORITY_LABELS[priority]}
     </span>
@@ -74,7 +74,7 @@ function PriorityBadge({ priority }) {
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${REQUEST_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${REQUEST_STATUS_COLORS[status]}`}
     >
       {REQUEST_STATUS_LABELS[status]}
     </span>
@@ -86,7 +86,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
 
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Priority Management</h2>
         <ul className="mt-[0.5cm] flex flex-col gap-2">
           {Object.entries(PRIORITY_LABELS).map(([key, label]) => (
@@ -103,13 +103,13 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
         </ul>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Quick Actions</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onCreate}
-            className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D]"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#15803D]"
           >
             <FaPlus aria-hidden="true" />
             Create Request
@@ -118,7 +118,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
             type="button"
             onClick={onDuplicate}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaCopy aria-hidden="true" />
             Duplicate Request
@@ -127,7 +127,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
             type="button"
             onClick={onEdit}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:border-[#2563EB]/30 hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEdit aria-hidden="true" />
             Edit Request
@@ -136,7 +136,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
             type="button"
             onClick={onCancel}
             disabled={!canModify}
-            className="flex items-center justify-center gap-2 rounded-none border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-red-200 bg-white px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaTimes aria-hidden="true" />
             Cancel Request
@@ -145,7 +145,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
       </div>
 
       {selected ? (
-        <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
           <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Request Summary</h2>
           <p className="mt-2 text-lg font-bold text-[#0F172A]">{selected.id}</p>
           <p className="mt-1 font-semibold text-[#334155]">{selected.foodNeeded}</p>
@@ -157,7 +157,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
           <p className="mt-3 text-sm text-[#64748B]">{selected.notes}</p>
         </div>
       ) : (
-        <div className="rounded-none border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
+        <div className="rounded-[16px] border border-dashed border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] text-center">
           <p className="text-sm text-[#64748B]">Select a request from the table to view details and take action.</p>
         </div>
       )}
@@ -274,7 +274,7 @@ export default function NGOFoodRequests() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -285,7 +285,7 @@ export default function NGOFoodRequests() {
               <button
                 type="button"
                 onClick={handleCreate}
-                className="flex items-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-colors hover:bg-[#15803D]"
+                className="flex items-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-colors hover:bg-[#15803D]"
               >
                 <FaPlus aria-hidden="true" />
                 Create Request
@@ -313,7 +313,7 @@ export default function NGOFoodRequests() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -355,7 +355,7 @@ export default function NGOFoodRequests() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Request Table
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                 <table className="w-full min-w-[900px] text-left text-sm">
                   <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                     <tr>
@@ -393,7 +393,7 @@ export default function NGOFoodRequests() {
                           <button
                             type="button"
                             onClick={() => handleView(request)}
-                            className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
+                            className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
                           >
                             <FaEye aria-hidden="true" />
                             View
@@ -415,7 +415,7 @@ export default function NGOFoodRequests() {
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                     Request History
                   </p>
-                  <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                  <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                     <table className="w-full min-w-[900px] text-left text-sm">
                       <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                         <tr>
@@ -552,13 +552,13 @@ export default function NGOFoodRequests() {
               <button
                 type="button"
                 onClick={() => setShowCreateModal(false)}
-                className="rounded-none border border-[#E5E7EB] px-4 py-2.5 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC]"
+                className="rounded-[10px] border border-[#E5E7EB] px-4 py-2.5 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC]"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
+                className="rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
               >
                 Create Request
               </button>

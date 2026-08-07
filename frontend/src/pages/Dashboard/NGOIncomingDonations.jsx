@@ -43,7 +43,7 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 function loadPersistedActions() {
   try {
@@ -61,7 +61,7 @@ function savePersistedActions(actions) {
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex rounded-none px-2.5 py-1 text-xs font-semibold ${DONATION_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${DONATION_STATUS_COLORS[status]}`}
     >
       {DONATION_TABLE_STATUS_LABELS[status]}
     </span>
@@ -71,7 +71,7 @@ function StatusBadge({ status }) {
 function RightPanel() {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#2563EB]">
           Upcoming Deliveries
         </h2>
@@ -88,7 +88,7 @@ function RightPanel() {
           {UPCOMING_DELIVERIES_SUMMARY.items.map((item) => (
             <li
               key={item.id}
-              className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
+              className="rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2 text-sm"
             >
               <p className="font-semibold text-[#0F172A]">
                 {item.id} · {item.donor}
@@ -102,7 +102,7 @@ function RightPanel() {
         </ul>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">
           Storage Capacity
         </h2>
@@ -113,7 +113,7 @@ function RightPanel() {
               {STORAGE_CAPACITY.usedKg} / {STORAGE_CAPACITY.totalKg} kg
             </span>
           </div>
-          <div className="mt-2 h-2 overflow-hidden rounded-none bg-[#E2E8F0]">
+          <div className="mt-2 h-2 overflow-hidden rounded-[16px] bg-[#E2E8F0]">
             <div
               className="h-full bg-[#2563EB]"
               style={{ width: `${STORAGE_CAPACITY.usedPercent}%` }}
@@ -126,7 +126,7 @@ function RightPanel() {
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">
           Today&apos;s Schedule
         </h2>
@@ -242,7 +242,7 @@ export default function NGOIncomingDonations() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EFF6FF] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -271,7 +271,7 @@ export default function NGOIncomingDonations() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -282,7 +282,7 @@ export default function NGOIncomingDonations() {
                       type="button"
                       onClick={() => setFilters((prev) => ({ ...prev, quick: item.id }))}
                       className={[
-                        "rounded-none px-4 py-2 text-sm font-semibold transition-colors",
+                        "rounded-[10px] px-4 py-2 text-sm font-semibold transition-colors",
                         filters.quick === item.id
                           ? "bg-[#2563EB] text-white"
                           : "border border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#2563EB]/30",
@@ -351,7 +351,7 @@ export default function NGOIncomingDonations() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Live Incoming Donations Table
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[960px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -395,7 +395,7 @@ export default function NGOIncomingDonations() {
                             <button
                               type="button"
                               onClick={() => setSelectedId(donation.id)}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563EB] transition-colors hover:border-[#2563EB]/30 hover:bg-[#EFF6FF]"
                             >
                               <FaMapMarkerAlt aria-hidden="true" />
                               Track

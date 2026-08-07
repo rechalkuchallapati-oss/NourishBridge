@@ -25,7 +25,7 @@ export default function DeliveryStatusTimeline({ currentStatus, timeline = [] })
 
             <span
               className={[
-                "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-none border-2 text-xs font-bold",
+                "relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold",
                 isComplete
                   ? "border-[#2563EB] bg-[#2563EB] text-white"
                   : isCurrent

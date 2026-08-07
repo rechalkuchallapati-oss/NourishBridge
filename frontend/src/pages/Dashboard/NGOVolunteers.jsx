@@ -49,7 +49,7 @@ const STAT_CONFIG = [
 ];
 
 const FILTER_SELECT_CLASS =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-colors hover:border-[#2563EB]/30 focus:border-[#2563EB] focus:outline-none focus:ring-2 focus:ring-[#2563EB]/20";
 
 const PERFORMANCE_KPIS = [
   { key: "missionsCompleted", label: "Missions Completed" },
@@ -65,7 +65,7 @@ const PERFORMANCE_KPIS = [
 function StatusBadge({ status }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-none px-2.5 py-1 text-xs font-semibold ${VOLUNTEER_STATUS_COLORS[status]}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ${VOLUNTEER_STATUS_COLORS[status]}`}
     >
       {VOLUNTEER_STATUS_ICONS[status]} {VOLUNTEER_STATUS_LABELS[status]}
     </span>
@@ -87,14 +87,14 @@ function SidePanel({
 }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Assignment Panel</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onAssignPickup}
             disabled={!selected || selected.status !== "available"}
-            className="flex items-center justify-center gap-2 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Assign Pickup
           </button>
@@ -102,7 +102,7 @@ function SidePanel({
             type="button"
             onClick={onAssignDistribution}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Assign Distribution
           </button>
@@ -110,7 +110,7 @@ function SidePanel({
             type="button"
             onClick={onAssignEmergency}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#EDE9FE] bg-[#F5F3FF] px-4 py-2.5 text-sm font-semibold text-[#6D28D9] hover:bg-[#EDE9FE] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#EDE9FE] bg-[#F5F3FF] px-4 py-2.5 text-sm font-semibold text-[#6D28D9] hover:bg-[#EDE9FE] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Assign Emergency Request
           </button>
@@ -118,7 +118,7 @@ function SidePanel({
             type="button"
             onClick={onAssignBatch}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             Assign Batch
           </button>
@@ -126,7 +126,7 @@ function SidePanel({
             type="button"
             onClick={onChangeVolunteer}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaExchangeAlt aria-hidden="true" />
             Change Volunteer
@@ -134,14 +134,14 @@ function SidePanel({
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Quick Actions</h2>
         <div className="mt-[0.5cm] flex flex-col gap-2">
           <button
             type="button"
             onClick={onCall}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaPhone aria-hidden="true" />
             Call Volunteer
@@ -150,7 +150,7 @@ function SidePanel({
             type="button"
             onClick={onMessage}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaComments aria-hidden="true" />
             Send Message
@@ -159,7 +159,7 @@ function SidePanel({
             type="button"
             onClick={onAssignMission}
             disabled={!selected || selected.status !== "available"}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#16A34A] hover:bg-[#F0FDF4] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#16A34A] hover:bg-[#F0FDF4] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaClipboardList aria-hidden="true" />
             Assign Mission
@@ -168,7 +168,7 @@ function SidePanel({
             type="button"
             onClick={onViewProfile}
             disabled={!selected}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaEye aria-hidden="true" />
             View Profile
@@ -177,7 +177,7 @@ function SidePanel({
             type="button"
             onClick={onTrackLive}
             disabled={!selected || !selected.mapPin}
-            className="flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#2563EB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <FaMapMarkerAlt aria-hidden="true" />
             Track Live
@@ -185,7 +185,7 @@ function SidePanel({
         </div>
       </div>
 
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
         <h2 className="text-sm font-bold uppercase tracking-wide text-[#64748B]">Status Types</h2>
         <ul className="mt-3 flex flex-col gap-1.5">
           {Object.entries(VOLUNTEER_STATUS_LABELS).map(([key, label]) => (
@@ -199,7 +199,7 @@ function SidePanel({
       <VolunteerLiveMapVisual selectedPinId={selected?.mapPinId ?? null} />
 
       {selected ? (
-        <div className="rounded-none border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#DBEAFE] bg-gradient-to-br from-[#EFF6FF] to-white p-[0.5cm] shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-[#2563EB]">
             Volunteer Performance
           </p>
@@ -274,7 +274,7 @@ export default function NGOVolunteers() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: EASE }}
-        className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+        className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4] via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
       >
         <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
           <NGOPageHeader
@@ -303,7 +303,7 @@ export default function NGOVolunteers() {
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">
-              <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+              <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
                 <p className="mb-[0.5cm] text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Filters
                 </p>
@@ -314,7 +314,7 @@ export default function NGOVolunteers() {
                       type="button"
                       onClick={() => setFilters((p) => ({ ...p, quick: item.id }))}
                       className={[
-                        "rounded-none px-4 py-2 text-sm font-semibold transition-colors",
+                        "rounded-[10px] px-4 py-2 text-sm font-semibold transition-colors",
                         filters.quick === item.id
                           ? "bg-[#16A34A] text-white"
                           : "border border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#16A34A]/30",
@@ -370,7 +370,7 @@ export default function NGOVolunteers() {
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Volunteer Directory
                 </p>
-                <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+                <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
                   <table className="w-full min-w-[900px] text-left text-sm">
                     <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
                       <tr>
@@ -419,7 +419,7 @@ export default function NGOVolunteers() {
                                   setDrawerOpen(true);
                                 }
                               }}
-                              className="inline-flex items-center gap-1.5 rounded-none border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#16A34A] transition-colors hover:border-[#16A34A]/30 hover:bg-[#F0FDF4]"
+                              className="inline-flex items-center gap-1.5 rounded-[10px] border border-[#E5E7EB] bg-white px-3 py-1.5 text-xs font-semibold text-[#16A34A] transition-colors hover:border-[#16A34A]/30 hover:bg-[#F0FDF4]"
                             >
                               {vol.status === "available" ? "Assign" : "View"}
                             </button>
