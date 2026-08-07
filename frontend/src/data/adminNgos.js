@@ -219,3 +219,68 @@ export function filterAdminNgos(ngos, filters) {
     return true;
   });
 }
+
+export const MONTHLY_NGO_GROWTH = [
+  { month: "Jan", ngos: 38, newNgos: 3 },
+  { month: "Feb", ngos: 42, newNgos: 4 },
+  { month: "Mar", ngos: 45, newNgos: 3 },
+  { month: "Apr", ngos: 49, newNgos: 4 },
+  { month: "May", ngos: 53, newNgos: 4 },
+  { month: "Jun", ngos: 58, newNgos: 5 },
+  { month: "Jul", ngos: 62, newNgos: 4 },
+];
+
+export const NGO_CITY_CHART = [
+  { name: "Hyderabad", value: 38, color: "#22C55E" },
+  { name: "Secunderabad", value: 18, color: "#3B82F6" },
+  { name: "Gachibowli", value: 14, color: "#8B5CF6" },
+  { name: "Madhapur", value: 12, color: "#F59E0B" },
+  { name: "Kukatpally", value: 10, color: "#EC4899" },
+  { name: "Other", value: 8, color: "#94A3B8" },
+];
+
+export const NGO_VERIFICATION_CHART = [
+  { name: "Verified", value: 54, color: "#16A34A" },
+  { name: "Pending", value: 6, color: "#F59E0B" },
+  { name: "Rejected", value: 3, color: "#EF4444" },
+];
+
+export const MEALS_SERVED_TREND = [
+  { month: "Jan", meals: 82000 },
+  { month: "Feb", meals: 88000 },
+  { month: "Mar", meals: 94000 },
+  { month: "Apr", meals: 102000 },
+  { month: "May", meals: 112000 },
+  { month: "Jun", meals: 118000 },
+  { month: "Jul", meals: 128400 },
+];
+
+export const CAPACITY_UTILIZATION = [
+  { ngo: "Hope Shelter", utilization: 81 },
+  { ngo: "Helping Hands", utilization: 72 },
+  { ngo: "Sunrise Home", utilization: 65 },
+  { ngo: "Community", utilization: 58 },
+  { ngo: "Feeding India", utilization: 45 },
+];
+
+export const NGO_ALERTS = [
+  { id: "n1", emoji: "📋", title: "Pending verifications", description: "6 NGOs awaiting document review and capacity verification.", action: "Review queue", color: "border-[#BFDBFE] bg-[#EFF6FF]" },
+  { id: "n2", emoji: "🏆", title: "Top performer", description: "Helping Hands Foundation served 54,820 meals — highest on platform.", action: "View profile", color: "border-[#BBF7D0] bg-[#F0FDF4]" },
+  { id: "n3", emoji: "⚠️", title: "Capacity alert", description: "Hope Shelter Trust at 81% utilization — nearing storage limits.", action: "View capacity", color: "border-[#FDE68A] bg-[#FFFBEB]" },
+  { id: "n4", emoji: "⛔", title: "Suspended NGO", description: "Community Kitchen Network suspended pending compliance review.", action: "Open case", color: "border-[#FECACA] bg-[#FEF2F2]" },
+  { id: "n5", emoji: "📈", title: "New registrations", description: "4 new NGO applications submitted this week across Hyderabad.", action: "View applications", color: "border-[#DDD6FE] bg-[#F5F3FF]" },
+];
+
+export function getTopNgosByMeals(ngos = ADMIN_NGOS, limit = 5) {
+  return [...ngos]
+    .filter((n) => n.mealsServed && n.mealsServed !== "—")
+    .sort((a, b) => parseInt(String(b.mealsServed).replace(/,/g, ""), 10) - parseInt(String(a.mealsServed).replace(/,/g, ""), 10))
+    .slice(0, limit);
+}
+
+export const NGO_PLATFORM_SUMMARY = [
+  { label: "Total Meals Served", value: "128,400", sub: "This month" },
+  { label: "Avg. NGO Rating", value: "4.7", sub: "Verified NGOs" },
+  { label: "Avg. Utilization", value: "68%", sub: "Storage capacity" },
+  { label: "Active Service Areas", value: "24", sub: "Cities & zones" },
+];

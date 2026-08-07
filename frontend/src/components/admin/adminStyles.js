@@ -1,17 +1,61 @@
-export const ADMIN_PAGE_BG =
-  "relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#F0FDF4]/80 via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]";
-
-export const ADMIN_INTERACTIVE_CARD =
-  "rounded-none border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300 ease-out hover:-translate-y-1 hover:border-[#BBF7D0] hover:shadow-[0_12px_32px_rgba(22,163,74,0.12)] active:scale-[0.99] active:border-[#16A34A] active:shadow-[0_0_0_2px_rgba(22,163,74,0.2)] focus-within:border-[#16A34A] focus-within:shadow-[0_0_0_2px_rgba(22,163,74,0.15)]";
-
-export const ADMIN_FILTER_INPUT =
-  "w-full rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-sm font-medium text-[#0F172A] transition-all duration-200 hover:border-[#16A34A]/30 focus:border-[#16A34A] focus:outline-none focus:ring-2 focus:ring-[#16A34A]/20";
-
-export const ADMIN_PRIMARY_BTN =
-  "inline-flex h-[42px] items-center gap-2 rounded-none bg-[#16A34A] px-4 text-sm font-semibold text-white transition-all duration-200 hover:bg-[#15803D] hover:shadow-md active:scale-[0.98]";
-
-export const ADMIN_SECONDARY_BTN =
-  "inline-flex h-[42px] items-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 text-sm font-semibold text-[#15803D] transition-all duration-200 hover:border-[#BBF7D0] hover:bg-[#F0FDF4] active:scale-[0.98]";
-
-export const ADMIN_TEXT_LINK =
-  "text-sm font-semibold text-[#16A34A] transition-all duration-200 hover:text-[#15803D] hover:underline";
+export {
+  NB,
+  CARD_BASE,
+  CARD_PAD,
+  KPI_CARD,
+  CHART_CARD,
+  BTN_BASE,
+  BTN_PRIMARY,
+  BTN_SECONDARY,
+  BTN_DANGER,
+  BTN_SUCCESS,
+  BTN_WARNING,
+  BTN_ICON,
+  INPUT_BASE,
+  LABEL_BASE,
+  FIELD_STACK,
+  TABLE_WRAP,
+  TABLE_BASE,
+  TABLE_HEAD,
+  TABLE_TH,
+  TABLE_TD,
+  TABLE_TR,
+  TABLE_TR_CLICK,
+  BADGE_BASE,
+  BADGE_GREEN,
+  BADGE_BLUE,
+  BADGE_ORANGE,
+  BADGE_RED,
+  BADGE_GRAY,
+  PAGE_INNER,
+  PAGE_BG,
+  ANALYTICS_GRID,
+  ALERTS_GRID,
+  SECTION_TITLE,
+  DEFAULT_PAGE_SIZE_OPTIONS,
+  TABLE_MIN_ROWS,
+  ADMIN_PAGE_BG,
+  ADMIN_PAGE_INNER,
+  ADMIN_INTERACTIVE_CARD,
+  ADMIN_FILTER_INPUT,
+  ADMIN_PRIMARY_BTN,
+  ADMIN_SECONDARY_BTN,
+  ADMIN_TEXT_LINK,
+  ADMIN_TABLE_WRAP,
+  ADMIN_TABLE,
+  ADMIN_TABLE_HEAD,
+  ADMIN_TH,
+  ADMIN_TH_SORT,
+  ADMIN_TD,
+  ADMIN_TD_LEFT,
+  ADMIN_TD_NUM,
+  ADMIN_TR,
+  ADMIN_TR_SELECTED,
+  ADMIN_TR_CLICKABLE,
+  ADMIN_CHART_CARD,
+  ADMIN_KPI_CARD,
+  ADMIN_ANALYTICS_GRID,
+  ADMIN_ALERTS_GRID,
+  ADMIN_SECTION_TITLE,
+  ADMIN_TABLE_MIN_ROWS,
+} from "../../styles/designTokens";

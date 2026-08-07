@@ -6,7 +6,6 @@ import {
   FaBell,
   FaDownload,
   FaFilter,
-  FaSearch,
   FaSort,
   FaSortDown,
   FaSortUp,
@@ -14,14 +13,23 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import AdminInteractivePanel from "../../components/admin/AdminInteractivePanel";
-import AdminPagination from "../../components/admin/AdminPagination";
+import AdminSearchInput from "../../components/admin/AdminSearchInput";
+import AdminTableShell, { AdminTableSpacerRows } from "../../components/admin/AdminTableShell";
+import AdminAvatar from "../../components/admin/AdminAvatar";
 import TicketActionsMenu from "../../components/admin/TicketActionsMenu";
 import TicketAnalyticsPanel from "../../components/admin/TicketAnalyticsPanel";
 import {
   ADMIN_FILTER_INPUT,
   ADMIN_PAGE_BG,
+  ADMIN_PAGE_INNER,
   ADMIN_PRIMARY_BTN,
   ADMIN_SECONDARY_BTN,
+  ADMIN_TABLE_HEAD,
+  ADMIN_TD,
+  ADMIN_TH,
+  ADMIN_TH_SORT,
+  ADMIN_TR,
+  DEFAULT_PAGE_SIZE_OPTIONS,
 } from "../../components/admin/adminStyles";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { ADMIN_PROFILE } from "../../data/adminDashboard";
@@ -44,7 +52,7 @@ import {
 } from "../../data/adminSupportTickets";
 
 const EASE = [0.22, 1, 0.36, 1];
-const PAGE_SIZE = 6;
+const COL_SPAN = 9;
 
 const STATUS_TABS = [
   { id: "all", label: "All Tickets" },
@@ -67,7 +75,7 @@ const SORTABLE_COLUMNS = [
 
 function Badge({ status, labels, colors }) {
   return (
-    <span className={`inline-flex rounded-none border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
+    <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
       {labels[status]}
     </span>
   );
@@ -82,19 +90,8 @@ function SortIcon({ column, sortKey, sortDir }) {
   );
 }
 
-function UserAvatar({ name }) {
-  const initials = name
-    .split(" ")
-    .map((p) => p[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
-  return (
-    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none border border-[#BBF7D0] bg-[#F0FDF4] text-xs font-bold text-[#16A34A]">
-      {initials}
-    </span>
-  );
+function UserAvatar({ name, id, role }) {
+  return <AdminAvatar id={id} name={name} role={role} size="md" />;
 }
 
 export default function AdminSupportTickets() {
@@ -102,6 +99,7 @@ export default function AdminSupportTickets() {
   const [activeTab, setActiveTab] = useState("all");
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [headerSearch, setHeaderSearch] = useState("");
   const [sortKey, setSortKey] = useState("lastUpdated");
   const [sortDir, setSortDir] = useState("desc");
@@ -134,13 +132,13 @@ export default function AdminSupportTickets() {
     [tickets, activeTab, combinedSearch, filters, sortKey, sortDir],
   );
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paginated = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    return filtered.slice(start, start + PAGE_SIZE);
-  }, [filtered, currentPage]);
+    const start = (currentPage - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, currentPage, pageSize]);
 
-  useEffect(() => setCurrentPage(1), [activeTab, filters, headerSearch, sortKey, sortDir]);
+  useEffect(() => setCurrentPage(1), [activeTab, filters, headerSearch, sortKey, sortDir, pageSize]);
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
@@ -258,11 +256,11 @@ export default function AdminSupportTickets() {
         transition={{ duration: 0.5, ease: EASE }}
         className={ADMIN_PAGE_BG}
       >
-        <div className="flex flex-col gap-5 p-5 sm:p-6">
+        <div className={ADMIN_PAGE_INNER}>
           {/* Main Header */}
           <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
             <div className="flex items-start gap-4">
-              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-none border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
+              <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[10px] border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
                 <FaTicketAlt className="text-2xl" aria-hidden="true" />
               </span>
               <div>
@@ -278,19 +276,13 @@ export default function AdminSupportTickets() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 xl:justify-end">
-              <label className="relative min-w-[200px] flex-1 xl:max-w-[240px]">
-                <FaSearch
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-                  aria-hidden="true"
-                />
-                <input
-                  type="text"
-                  value={headerSearch}
-                  onChange={(e) => setHeaderSearch(e.target.value)}
-                  placeholder="Search tickets..."
-                  className={`${ADMIN_FILTER_INPUT} pl-9`}
-                />
-              </label>
+              <AdminSearchInput
+                value={headerSearch}
+                onChange={(e) => setHeaderSearch(e.target.value)}
+                onClear={() => setHeaderSearch("")}
+                placeholder="Search for tickets..."
+                className="xl:max-w-[240px]"
+              />
               <button
                 type="button"
                 onClick={() => toast("Advanced filters below")}
@@ -307,7 +299,7 @@ export default function AdminSupportTickets() {
               </button>
               <Link
                 to={DASHBOARD_ROUTES.adminNotifications}
-                className="relative inline-flex h-[42px] w-[42px] items-center justify-center rounded-none border border-[#E5E7EB] bg-white text-[#64748B] transition-all duration-200 hover:border-[#BBF7D0] hover:bg-[#F0FDF4] hover:text-[#16A34A]"
+                className="relative inline-flex h-[42px] w-[42px] items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-white text-[#64748B] transition-all duration-200 hover:border-[#BBF7D0] hover:bg-[#F0FDF4] hover:text-[#16A34A]"
                 aria-label="Notifications"
               >
                 <FaBell aria-hidden="true" />
@@ -317,7 +309,7 @@ export default function AdminSupportTickets() {
               </Link>
               <Link
                 to={DASHBOARD_ROUTES.adminProfile}
-                className="flex h-[42px] items-center gap-2 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-3 transition-all duration-200 hover:border-[#16A34A] hover:shadow-sm"
+                className="flex h-[42px] items-center gap-2 rounded-[10px] border border-[#BBF7D0] bg-[#F0FDF4] px-3 transition-all duration-200 hover:border-[#16A34A] hover:shadow-sm"
                 aria-label="Admin profile"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#16A34A] text-xs font-bold text-white">
@@ -368,19 +360,12 @@ export default function AdminSupportTickets() {
           {/* Filters Row */}
           <AdminInteractivePanel>
             <div className="flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-end">
-              <label className="relative min-w-[200px] flex-1">
-                <FaSearch
-                  className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-                  aria-hidden="true"
-                />
-                <input
-                  type="text"
-                  value={filters.search}
-                  onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
-                  placeholder="Search by ID, subject, user..."
-                  className={`${ADMIN_FILTER_INPUT} pl-9`}
-                />
-              </label>
+              <AdminSearchInput
+                value={filters.search}
+                onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
+                onClear={() => setFilters((p) => ({ ...p, search: "" }))}
+                placeholder="Search for tickets by ID, subject, or user..."
+              />
               <label className="min-w-[140px]">
                 <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                   Priority
@@ -463,70 +448,75 @@ export default function AdminSupportTickets() {
           </AdminInteractivePanel>
 
           {/* Main Content: Table + Analytics */}
-          <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px]">
             <AdminInteractivePanel className="!p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[1000px] text-left text-sm">
-                  <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
-                    <tr>
-                      {SORTABLE_COLUMNS.map((col) => (
-                        <th key={col.key} className="px-4 py-3">
-                          <button
-                            type="button"
-                            onClick={() => handleSort(col.key)}
-                            className="inline-flex items-center gap-1 transition-colors hover:text-[#16A34A]"
-                          >
-                            {col.label}
-                            <SortIcon column={col.key} sortKey={sortKey} sortDir={sortDir} />
-                          </button>
-                        </th>
-                      ))}
-                      <th className="px-4 py-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {paginated.map((ticket) => (
-                      <tr
-                        key={ticket.id}
-                        className="group border-b border-[#E5E7EB] transition-all duration-200 last:border-0 hover:bg-[#F0FDF4] hover:shadow-[inset_3px_0_0_#16A34A]"
-                      >
-                        <td className="px-4 py-4 font-semibold text-[#15803D]">{ticket.id}</td>
-                        <td className="px-4 py-4">
-                          <p className="font-semibold text-[#0F172A]">{ticket.subject}</p>
-                          <p className="mt-0.5 line-clamp-1 text-xs text-[#94A3B8]">
-                            {ticket.description}
-                          </p>
-                        </td>
-                        <td className="px-4 py-4">
-                          <div className="flex items-center gap-2">
-                            <UserAvatar name={ticket.user} />
-                            <span className="font-medium text-[#0F172A]">{ticket.user}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="inline-flex rounded-none border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-1 text-xs font-semibold text-[#475569]">
-                            {TICKET_USER_TYPE_LABELS[ticket.userRole]}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 text-[#64748B]">
-                          {TICKET_CATEGORY_LABELS[ticket.category]}
-                        </td>
-                        <td className="px-4 py-4">
-                          <Badge
-                            status={ticket.priority}
-                            labels={TICKET_PRIORITY_LABELS}
-                            colors={TICKET_PRIORITY_COLORS}
-                          />
-                        </td>
-                        <td className="px-4 py-4">
-                          <Badge
-                            status={ticket.status}
-                            labels={TICKET_STATUS_LABELS}
-                            colors={TICKET_STATUS_COLORS}
-                          />
-                        </td>
-                        <td className="px-4 py-4 text-[#64748B]">{ticket.lastUpdated}</td>
-                        <td className="px-4 py-4 text-right">
+              <AdminTableShell
+                isEmpty={filtered.length === 0}
+                emptyMessage="No tickets match these filters."
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={filtered.length}
+                pageSize={pageSize}
+                pageSizeOptions={DEFAULT_PAGE_SIZE_OPTIONS}
+                onPageChange={setCurrentPage}
+                onPageSizeChange={setPageSize}
+              >
+                <thead className={ADMIN_TABLE_HEAD}>
+                  <tr>
+                    {SORTABLE_COLUMNS.map((col) => (
+                      <th key={col.key} className={ADMIN_TH}>
+                        <button
+                          type="button"
+                          onClick={() => handleSort(col.key)}
+                          className={ADMIN_TH_SORT}
+                        >
+                          {col.label}
+                          <SortIcon column={col.key} sortKey={sortKey} sortDir={sortDir} />
+                        </button>
+                      </th>
+                    ))}
+                    <th className={ADMIN_TH}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginated.map((ticket) => (
+                    <tr key={ticket.id} className={ADMIN_TR}>
+                      <td className={`${ADMIN_TD} font-semibold text-[#15803D]`}>{ticket.id}</td>
+                      <td className={ADMIN_TD}>
+                        <p className="font-semibold text-[#0F172A]">{ticket.subject}</p>
+                        <p className="mt-0.5 line-clamp-1 text-xs text-[#94A3B8]">
+                          {ticket.description}
+                        </p>
+                      </td>
+                      <td className={ADMIN_TD}>
+                        <div className="flex items-center justify-center gap-2">
+                          <UserAvatar name={ticket.user} id={ticket.id} role={ticket.userRole} />
+                          <span className="font-medium text-[#0F172A]">{ticket.user}</span>
+                        </div>
+                      </td>
+                      <td className={ADMIN_TD}>
+                        <span className="inline-flex rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-2 py-1 text-xs font-semibold text-[#475569]">
+                          {TICKET_USER_TYPE_LABELS[ticket.userRole]}
+                        </span>
+                      </td>
+                      <td className={ADMIN_TD}>{TICKET_CATEGORY_LABELS[ticket.category]}</td>
+                      <td className={ADMIN_TD}>
+                        <Badge
+                          status={ticket.priority}
+                          labels={TICKET_PRIORITY_LABELS}
+                          colors={TICKET_PRIORITY_COLORS}
+                        />
+                      </td>
+                      <td className={ADMIN_TD}>
+                        <Badge
+                          status={ticket.status}
+                          labels={TICKET_STATUS_LABELS}
+                          colors={TICKET_STATUS_COLORS}
+                        />
+                      </td>
+                      <td className={ADMIN_TD}>{ticket.lastUpdated}</td>
+                      <td className={ADMIN_TD}>
+                        <div className="flex justify-center">
                           <TicketActionsMenu
                             ticket={ticket}
                             isOpen={openMenuId === ticket.id}
@@ -536,26 +526,13 @@ export default function AdminSupportTickets() {
                             onClose={() => setOpenMenuId(null)}
                             onAction={handleTicketAction}
                           />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                {filtered.length === 0 ? (
-                  <p className="px-4 py-10 text-center text-sm text-[#64748B]">
-                    No tickets match these filters.
-                  </p>
-                ) : null}
-              </div>
-
-              <AdminPagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                totalItems={filtered.length}
-                pageSize={PAGE_SIZE}
-                onPageChange={setCurrentPage}
-              />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  <AdminTableSpacerRows count={Math.max(0, pageSize - paginated.length)} colSpan={COL_SPAN} />
+                </tbody>
+              </AdminTableShell>
             </AdminInteractivePanel>
 
             <TicketAnalyticsPanel onAction={handlePanelAction} />

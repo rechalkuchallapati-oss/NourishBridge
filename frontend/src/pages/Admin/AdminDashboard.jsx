@@ -71,7 +71,7 @@ function PanelHeader({ icon: Icon, title, subtitle, viewAll }) {
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="flex items-start gap-3">
         {Icon ? (
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-none border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
             <Icon aria-hidden="true" />
           </span>
         ) : null}
@@ -133,7 +133,7 @@ export default function AdminDashboard() {
             />
             <ul className="flex max-h-56 flex-col gap-2 overflow-y-auto">
               {visibleActivity.map((item) => (
-                <li key={item.id} className="flex items-start gap-2 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]">
+                <li key={item.id} className="flex items-start gap-2 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-2.5 transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]">
                   <span className="text-base leading-none" aria-hidden="true">{item.icon}</span>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-[#0F172A]">{item.message}</p>
@@ -180,7 +180,7 @@ export default function AdminDashboard() {
                       <td className="py-2.5 pr-3 text-[#64748B]">{row.food}</td>
                       <td className="py-2.5 pr-3 text-[#64748B]">{row.ngo}</td>
                       <td className="py-2.5 pr-3">
-                        <span className={`inline-flex rounded-none px-2 py-0.5 text-xs font-semibold ${DONATION_STATUS_COLORS[row.status] ?? "bg-slate-50 text-slate-600"}`}>
+                        <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${DONATION_STATUS_COLORS[row.status] ?? "bg-slate-50 text-slate-600"}`}>
                           {row.status}
                         </span>
                       </td>
@@ -207,8 +207,8 @@ export default function AdminDashboard() {
             />
             <ul className="flex flex-col gap-2">
               {visibleNgos.map((ngo, index) => (
-                <li key={ngo.id} className="flex items-center gap-3 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 transition-all hover:border-[#BBF7D0] hover:bg-[#F0FDF4]">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-[#16A34A] text-sm font-bold text-white">
+                <li key={ngo.id} className="flex items-center gap-3 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 transition-all hover:border-[#BBF7D0] hover:bg-[#F0FDF4]">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#16A34A] text-sm font-bold text-white">
                     {index + 1}
                   </span>
                   <div className="min-w-0 flex-1">
@@ -240,9 +240,9 @@ export default function AdminDashboard() {
                 <Link
                   key={item.label}
                   to={item.to}
-                  className="flex items-center gap-3 rounded-none border border-[#E5E7EB] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#BBF7D0] hover:bg-[#F0FDF4] hover:shadow-md active:scale-[0.99]"
+                  className="flex items-center gap-3 rounded-[16px] border border-[#E5E7EB] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#BBF7D0] hover:bg-[#F0FDF4] hover:shadow-md active:scale-[0.99]"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-none bg-[#F0FDF4] text-[#16A34A]">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-[#F0FDF4] text-[#16A34A]">
                     <Icon aria-hidden="true" />
                   </span>
                   <div>
@@ -265,14 +265,14 @@ export default function AdminDashboard() {
               <article
                 key={card.id}
                 className={[
-                  "rounded-none border p-5 shadow-sm transition-all duration-300",
+                  "rounded-[16px] border p-5 shadow-sm transition-all duration-300",
                   "hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(22,163,74,0.1)]",
                   "active:scale-[0.99] active:shadow-[0_0_0_2px_rgba(22,163,74,0.15)]",
                   accent.card,
                 ].join(" ")}
               >
                 <div className="flex items-start gap-4">
-                  <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-none ${accent.icon}`}>
+                  <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-[10px] ${accent.icon}`}>
                     <Icon className="text-lg" aria-hidden="true" />
                   </span>
                   <div>

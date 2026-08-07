@@ -38,25 +38,25 @@ export default function AdminStatCardTrend({
   return (
     <article
       className={[
-        "rounded-none border p-5 shadow-[0_4px_20px_rgba(15,23,42,0.04)]",
+        "rounded-[16px] border p-5 shadow-[0_4px_16px_rgba(15,23,42,0.04)]",
         "transition-all duration-300 ease-out",
-        "hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(22,163,74,0.12)]",
-        "active:scale-[0.99] active:shadow-[0_0_0_2px_rgba(22,163,74,0.2)]",
+        "hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(22,163,74,0.12)]",
+        "active:scale-[0.99]",
         tint.card,
       ].join(" ")}
     >
       {Icon ? (
         <span
           className={[
-            "mb-3 inline-flex h-12 w-12 items-center justify-center rounded-none border",
+            "mb-3 inline-flex h-10 w-10 items-center justify-center rounded-full border",
             tint.icon,
           ].join(" ")}
         >
-          <Icon className="text-xl" aria-hidden="true" />
+          <Icon className="text-lg" aria-hidden="true" />
         </span>
       ) : null}
-      <p className="text-3xl font-bold tracking-tight text-[#0F172A]">{value}</p>
-      <p className="mt-1 text-sm font-semibold text-[#334155]">{label}</p>
+      <p className="text-2xl font-bold tracking-tight text-[#0F172A]">{value}</p>
+      <p className="mt-1 text-xs font-semibold text-[#334155]">{label}</p>
       <p
         className={[
           "mt-2 flex items-center gap-1 text-xs font-semibold",

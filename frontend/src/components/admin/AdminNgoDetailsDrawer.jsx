@@ -10,7 +10,7 @@ import ngoLogo from "../../assets/dashboard/ngo-food/ngo-logo-helping-hands.png"
 
 function Badge({ status, labels, colors }) {
   return (
-    <span className={`inline-flex rounded-none border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
+    <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
       {labels[status]}
     </span>
   );
@@ -37,14 +37,14 @@ export default function AdminNgoDetailsDrawer({ ngo, onClose, onVerify, onReject
             <button
               type="button"
               onClick={() => onEdit?.(ngo)}
-              className="inline-flex items-center justify-center gap-2 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:bg-[#F8FAFC]"
+              className="inline-flex items-center justify-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-[#0F172A] transition-colors hover:bg-[#F8FAFC]"
             >
               <FaEye aria-hidden="true" /> View Details
             </button>
             <button
               type="button"
               onClick={() => onEdit?.(ngo)}
-              className="inline-flex items-center justify-center gap-2 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-4 py-2.5 text-sm font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]"
+              className="inline-flex items-center justify-center gap-2 rounded-[10px] border border-[#BBF7D0] bg-[#F0FDF4] px-4 py-2.5 text-sm font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]"
             >
               <FaEdit aria-hidden="true" /> Edit NGO
             </button>
@@ -52,7 +52,7 @@ export default function AdminNgoDetailsDrawer({ ngo, onClose, onVerify, onReject
               type="button"
               onClick={() => onSuspend(ngo)}
               disabled={ngo.status === "suspended" || ngo.status === "rejected"}
-              className="inline-flex items-center justify-center gap-2 rounded-none border border-[#FECACA] bg-[#FEF2F2] px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-[#FEE2E2] disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center justify-center gap-2 rounded-[10px] border border-[#FECACA] bg-[#FEF2F2] px-4 py-2.5 text-sm font-semibold text-red-600 transition-colors hover:bg-[#FEE2E2] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <FaBan aria-hidden="true" /> Suspend NGO
             </button>
@@ -61,14 +61,14 @@ export default function AdminNgoDetailsDrawer({ ngo, onClose, onVerify, onReject
                 <button
                   type="button"
                   onClick={() => onVerify(ngo)}
-                  className="flex-1 rounded-none bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
+                  className="flex-1 rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
                 >
                   Verify NGO
                 </button>
                 <button
                   type="button"
                   onClick={() => onReject(ngo)}
-                  className="flex-1 rounded-none border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
+                  className="flex-1 rounded-[10px] border border-[#E5E7EB] bg-white px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                 >
                   Reject
                 </button>
@@ -80,13 +80,13 @@ export default function AdminNgoDetailsDrawer({ ngo, onClose, onVerify, onReject
     >
       {ngo ? (
         <div className="flex flex-col gap-5">
-          <div className="rounded-none border border-[#DCFCE7] bg-[#F0FDF4] p-4">
+          <div className="rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] p-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-[#16A34A]">Summary</p>
             <p className="mt-2 text-sm leading-6 text-[#334155]">{ngo.mission}</p>
           </div>
 
           <div className="flex items-start gap-4">
-            <img src={ngoLogo} alt="" className="h-16 w-16 rounded-none border border-[#E5E7EB] object-cover" />
+            <img src={ngoLogo} alt="" className="h-16 w-16 rounded-[10px] border border-[#E5E7EB] object-cover" />
             <div>
               <p className="font-bold text-[#0F172A]">{ngo.name}</p>
               <p className="mt-1 text-sm text-[#15803D]">{ngo.id}</p>
@@ -120,7 +120,7 @@ export default function AdminNgoDetailsDrawer({ ngo, onClose, onVerify, onReject
               <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">Service Areas</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {ngo.serviceAreas.map((area) => (
-                  <span key={area} className="rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-semibold text-[#15803D]">
+                  <span key={area} className="rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-semibold text-[#15803D]">
                     {area}
                   </span>
                 ))}

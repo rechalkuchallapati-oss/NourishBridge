@@ -43,7 +43,7 @@ export default function TicketAnalyticsPanel({ onAction }) {
 
       <AdminInteractivePanel>
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-none border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
+          <span className="flex h-12 w-12 items-center justify-center rounded-[10px] border border-[#BBF7D0] bg-[#F0FDF4] text-[#16A34A]">
             <FaClock className="text-xl" aria-hidden="true" />
           </span>
           <div>

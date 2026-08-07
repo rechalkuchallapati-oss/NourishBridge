@@ -31,7 +31,7 @@ export default function AdminIdentityPanel() {
 
         <Link
           to={DASHBOARD_ROUTES.adminProfile}
-          className="mt-1 flex w-full items-center justify-center rounded-none bg-[#16A34A] px-2 py-2 text-[10px] font-semibold text-white transition-colors duration-300 hover:bg-[#15803D] sm:text-xs"
+          className="mt-1 flex w-full items-center justify-center rounded-[10px] bg-[#16A34A] px-2 py-2 text-[10px] font-semibold text-white transition-colors duration-300 hover:bg-[#15803D] sm:text-xs"
         >
           View Admin Profile
         </Link>

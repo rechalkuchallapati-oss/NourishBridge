@@ -10,7 +10,7 @@ export default function AdminInteractivePanel({
   return (
     <Component
       onClick={onClick}
-      className={[ADMIN_INTERACTIVE_CARD, "p-5 sm:p-6", className].join(" ")}
+      className={[ADMIN_INTERACTIVE_CARD, "p-6 sm:p-7", className].join(" ")}
       {...props}
     >
       {children}

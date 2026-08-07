@@ -10,28 +10,49 @@ import {
   FaFilter,
   FaMapMarkerAlt,
   FaPlus,
-  FaSearch,
   FaStar,
   FaTimesCircle,
   FaUserCheck,
 } from "react-icons/fa";
+import AdminChartCard from "../../components/admin/AdminChartCard";
 import AdminInteractivePanel from "../../components/admin/AdminInteractivePanel";
 import AdminNgoDetailsDrawer from "../../components/admin/AdminNgoDetailsDrawer";
 import AdminPageHeader from "../../components/admin/AdminPageHeader";
-import AdminPagination from "../../components/admin/AdminPagination";
 import AdminStatCardTrend from "../../components/admin/AdminStatCardTrend";
+import AdminTableShell, { AdminTableRow, AdminTableSpacerRows } from "../../components/admin/AdminTableShell";
+import AdminAvatar from "../../components/admin/AdminAvatar";
+import AdminSearchInput from "../../components/admin/AdminSearchInput";
 import NgoActionsMenu from "../../components/admin/NgoActionsMenu";
 import {
+  CapacityUtilizationChart,
+  MealsServedTrendChart,
+  NgoCityChart,
+  NgoGrowthChart,
+  NgoPlatformSummaryCards,
+  NgoVerificationChart,
+  TopNgosByMealsPanel,
+} from "../../components/admin/ngos/NgoCharts";
+import {
+  ADMIN_ALERTS_GRID,
+  ADMIN_ANALYTICS_GRID,
   ADMIN_FILTER_INPUT,
   ADMIN_PAGE_BG,
+  ADMIN_PAGE_INNER,
   ADMIN_PRIMARY_BTN,
   ADMIN_SECONDARY_BTN,
+  ADMIN_SECTION_TITLE,
+  ADMIN_TABLE_HEAD,
+  ADMIN_TD,
+  ADMIN_TH,
+  DEFAULT_PAGE_SIZE_OPTIONS,
 } from "../../components/admin/adminStyles";
 import {
   ADMIN_NGO_STATS,
   ADMIN_NGO_STAT_TRENDS,
   ADMIN_NGOS,
   CITY_FILTER_OPTIONS,
+  NGO_ALERTS,
+  NGO_PLATFORM_SUMMARY,
   NGO_STATUS_COLORS,
   NGO_STATUS_FILTER_OPTIONS,
   NGO_STATUS_LABELS,
@@ -42,20 +63,19 @@ import {
 } from "../../data/adminNgos";
 
 const EASE = [0.22, 1, 0.36, 1];
-const PAGE_SIZE = 5;
+const COL_SPAN = 9;
 
 const STAT_CONFIG = [
   { key: "totalNgos", label: "Total NGOs", accent: "green", icon: FaBuilding },
   { key: "verifiedNgos", label: "Verified NGOs", accent: "green", icon: FaUserCheck },
   { key: "pendingVerification", label: "Pending Verification", accent: "amber", icon: FaClock },
   { key: "suspendedNgos", label: "Suspended NGOs", accent: "slate", icon: FaBan },
-  { key: "rejectedNgos", label: "Rejected NGOs", accent: "purple", icon: FaTimesCircle },
   { key: "activeNgos", label: "Active NGOs", accent: "blue", icon: FaCheckCircle },
 ];
 
 function StatusBadge({ status, labels, colors }) {
   return (
-    <span className={`inline-flex rounded-none border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
+    <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-semibold ${colors[status]}`}>
       {labels[status]}
     </span>
   );
@@ -66,16 +86,17 @@ export default function AdminNgos() {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [selectedNgo, setSelectedNgo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [filters, setFilters] = useState({ search: "", verification: "all", city: "all", status: "all" });
 
   const filtered = useMemo(() => filterAdminNgos(ngos, filters), [ngos, filters]);
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const paginated = useMemo(() => {
-    const start = (currentPage - 1) * PAGE_SIZE;
-    return filtered.slice(start, start + PAGE_SIZE);
-  }, [filtered, currentPage]);
+    const start = (currentPage - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, currentPage, pageSize]);
 
-  useEffect(() => setCurrentPage(1), [filters]);
+  useEffect(() => setCurrentPage(1), [filters, pageSize]);
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
@@ -148,10 +169,10 @@ export default function AdminNgos() {
         transition={{ duration: 0.5, ease: EASE }}
         className={ADMIN_PAGE_BG}
       >
-        <div className="flex flex-col gap-5 p-5 sm:p-6">
+        <div className={ADMIN_PAGE_INNER}>
           <AdminPageHeader title="NGOs" description="Review, verify, and manage registered NGOs on NourishBridge." />
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {STAT_CONFIG.map((stat) => {
               const trendData = ADMIN_NGO_STAT_TRENDS[stat.key];
               return (
@@ -172,17 +193,13 @@ export default function AdminNgos() {
             <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
               <h2 className="text-xl font-bold text-[#0F172A]">All NGOs</h2>
               <div className="flex flex-wrap items-end gap-2">
-                <label className="relative min-w-[200px] flex-1">
-                  <FaSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" aria-hidden="true" />
-                  <input
-                    type="text"
-                    value={filters.search}
-                    onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
-                    onKeyDown={(e) => e.key === "Enter" && filtered[0] && openNgo(filtered[0])}
-                    placeholder="Search NGO name, ID, contact..."
-                    className={`${ADMIN_FILTER_INPUT} pl-9`}
-                  />
-                </label>
+                <AdminSearchInput
+                  value={filters.search}
+                  onChange={(e) => setFilters((p) => ({ ...p, search: e.target.value }))}
+                  onClear={() => setFilters((p) => ({ ...p, search: "" }))}
+                  onKeyDown={(e) => e.key === "Enter" && filtered[0] && openNgo(filtered[0])}
+                  placeholder="Search for NGOs..."
+                />
                 <label className="min-w-[130px]">
                   <span className="mb-1 flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
                     <FaUserCheck aria-hidden="true" /> Verification
@@ -218,58 +235,63 @@ export default function AdminNgos() {
           </AdminInteractivePanel>
 
           <AdminInteractivePanel className="!p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1050px] text-left text-sm">
-                <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
-                  <tr>
-                    <th className="px-4 py-3">NGO ID</th>
-                    <th className="px-4 py-3">NGO Name</th>
-                    <th className="px-4 py-3">Contact Person</th>
-                    <th className="px-4 py-3">City</th>
-                    <th className="px-4 py-3">Verification</th>
-                    <th className="px-4 py-3">Capacity</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3">Joined Date</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginated.map((ngo) => (
-                    <tr
-                      key={ngo.id}
-                      onClick={() => openNgo(ngo)}
-                      className={[
-                        "cursor-pointer border-b border-[#E5E7EB] transition-colors last:border-0 hover:bg-[#F0FDF4]",
-                        selectedNgo?.id === ngo.id ? "bg-[#F0FDF4]" : "",
-                      ].join(" ")}
-                    >
-                      <td className="px-4 py-3 font-semibold text-[#15803D]">{ngo.id}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-none bg-[#F0FDF4] text-[#16A34A]">
-                            <FaBuilding aria-hidden="true" />
-                          </span>
-                          <div>
-                            <p className="font-medium text-[#0F172A]">{ngo.name}</p>
-                            {ngo.rating ? (
-                              <p className="flex items-center gap-1 text-xs text-amber-600">
-                                <FaStar aria-hidden="true" /> {ngo.rating}
-                              </p>
-                            ) : null}
-                          </div>
+            <AdminTableShell
+              isEmpty={filtered.length === 0}
+              emptyMessage="No NGOs match these filters."
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              pageSize={pageSize}
+              pageSizeOptions={DEFAULT_PAGE_SIZE_OPTIONS}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={setPageSize}
+            >
+              <thead className={ADMIN_TABLE_HEAD}>
+                <tr>
+                  <th className={ADMIN_TH}>NGO ID</th>
+                  <th className={ADMIN_TH}>NGO Name</th>
+                  <th className={ADMIN_TH}>Contact Person</th>
+                  <th className={ADMIN_TH}>City</th>
+                  <th className={ADMIN_TH}>Verification</th>
+                  <th className={ADMIN_TH}>Capacity</th>
+                  <th className={ADMIN_TH}>Status</th>
+                  <th className={ADMIN_TH}>Joined Date</th>
+                  <th className={ADMIN_TH}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginated.map((ngo) => (
+                  <AdminTableRow
+                    key={ngo.id}
+                    onClick={() => openNgo(ngo)}
+                    selected={selectedNgo?.id === ngo.id}
+                  >
+                    <td className={`${ADMIN_TD} font-semibold text-[#15803D]`}>{ngo.id}</td>
+                    <td className={ADMIN_TD}>
+                      <div className="flex items-center justify-center gap-2">
+                        <AdminAvatar id={ngo.id} name={ngo.name} role="ngo" type="ngo" size="md" />
+                        <div>
+                          <p className="font-medium text-[#0F172A]">{ngo.name}</p>
+                          {ngo.rating ? (
+                            <p className="flex items-center gap-1 text-xs text-amber-600">
+                              <FaStar aria-hidden="true" /> {ngo.rating}
+                            </p>
+                          ) : null}
                         </div>
-                      </td>
-                      <td className="px-4 py-3 text-[#64748B]">{ngo.contactPerson}</td>
-                      <td className="px-4 py-3 text-[#64748B]">{ngo.city}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={ngo.verification} labels={NGO_VERIFICATION_LABELS} colors={NGO_VERIFICATION_COLORS} />
-                      </td>
-                      <td className="px-4 py-3 text-[#64748B]">{ngo.capacity}</td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={ngo.status} labels={NGO_STATUS_LABELS} colors={NGO_STATUS_COLORS} />
-                      </td>
-                      <td className="px-4 py-3 text-[#64748B]">{ngo.joinedDate}</td>
-                      <td className="px-4 py-3 text-right" onClick={(e) => e.stopPropagation()}>
+                      </div>
+                    </td>
+                    <td className={ADMIN_TD}>{ngo.contactPerson}</td>
+                    <td className={ADMIN_TD}>{ngo.city}</td>
+                    <td className={ADMIN_TD}>
+                      <StatusBadge status={ngo.verification} labels={NGO_VERIFICATION_LABELS} colors={NGO_VERIFICATION_COLORS} />
+                    </td>
+                    <td className={ADMIN_TD}>{ngo.capacity}</td>
+                    <td className={ADMIN_TD}>
+                      <StatusBadge status={ngo.status} labels={NGO_STATUS_LABELS} colors={NGO_STATUS_COLORS} />
+                    </td>
+                    <td className={ADMIN_TD}>{ngo.joinedDate}</td>
+                    <td className={ADMIN_TD} onClick={(e) => e.stopPropagation()}>
+                      <div className="flex justify-center">
                         <NgoActionsMenu
                           ngo={ngo}
                           isOpen={openMenuId === ngo.id}
@@ -277,23 +299,56 @@ export default function AdminNgos() {
                           onClose={() => setOpenMenuId(null)}
                           onAction={handleAction}
                         />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {filtered.length === 0 ? (
-                <p className="px-4 py-8 text-center text-sm text-[#64748B]">No NGOs match these filters.</p>
-              ) : null}
-            </div>
-            <AdminPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              totalItems={filtered.length}
-              pageSize={PAGE_SIZE}
-              onPageChange={setCurrentPage}
-            />
+                      </div>
+                    </td>
+                  </AdminTableRow>
+                ))}
+                <AdminTableSpacerRows count={Math.max(0, pageSize - paginated.length)} colSpan={COL_SPAN} />
+              </tbody>
+            </AdminTableShell>
           </AdminInteractivePanel>
+
+          <div>
+            <h2 className="mb-4 text-lg font-bold tracking-tight text-[#0F172A]">Platform Overview</h2>
+            <NgoPlatformSummaryCards items={NGO_PLATFORM_SUMMARY} />
+          </div>
+
+          <div className={ADMIN_ANALYTICS_GRID}>
+            <AdminChartCard title="Monthly NGO Registrations">
+              <NgoGrowthChart />
+            </AdminChartCard>
+            <AdminChartCard title="NGOs by City">
+              <NgoCityChart />
+            </AdminChartCard>
+            <AdminChartCard title="Verification Status">
+              <NgoVerificationChart />
+            </AdminChartCard>
+            <AdminChartCard title="Meals Served Trend">
+              <MealsServedTrendChart />
+            </AdminChartCard>
+            <AdminChartCard title="Top NGOs by Meals Served">
+              <TopNgosByMealsPanel />
+            </AdminChartCard>
+            <AdminChartCard title="Storage Capacity Utilization">
+              <CapacityUtilizationChart />
+            </AdminChartCard>
+          </div>
+
+          <div>
+            <h2 className={`${ADMIN_SECTION_TITLE} mb-4`}>NGO Alerts</h2>
+            <div className={ADMIN_ALERTS_GRID}>
+              {NGO_ALERTS.map((alert) => (
+                <article key={alert.id} className={`rounded-[16px] border p-4 ${alert.color} transition-transform hover:-translate-y-0.5`}>
+                  <p className="text-xl">{alert.emoji}</p>
+                  <p className="mt-2 text-sm font-bold text-[#0F172A]">{alert.title}</p>
+                  <p className="mt-1 text-xs leading-5 text-[#64748B]">{alert.description}</p>
+                  <button type="button" onClick={() => toast(alert.action)} className="mt-2 text-xs font-semibold text-[#16A34A] hover:underline">
+                    {alert.action} →
+                  </button>
+                </article>
+              ))}
+            </div>
+          </div>
         </div>
       </motion.section>
 

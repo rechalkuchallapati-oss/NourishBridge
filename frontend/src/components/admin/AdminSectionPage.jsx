@@ -10,7 +10,7 @@ export default function AdminSectionPage({ sectionId }) {
 
   if (!section) {
     return (
-      <div className="rounded-none border border-[#E5E7EB] bg-white p-6">
+      <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-6">
         <p className="text-sm text-[#64748B]">Section not found.</p>
       </div>
     );
@@ -21,7 +21,7 @@ export default function AdminSectionPage({ sectionId }) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: EASE }}
-      className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-gradient-to-br from-[#EEF2FF]/60 via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
+      className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-gradient-to-br from-[#EEF2FF]/60 via-[#F8FAFC] to-white shadow-[0_12px_40px_rgba(15,23,42,0.06)]"
     >
       <div className="flex flex-col gap-[0.5cm] p-[0.5cm] sm:p-6">
         <AdminPageHeader title={section.title} description={section.description} />
@@ -39,7 +39,7 @@ export default function AdminSectionPage({ sectionId }) {
           </div>
         ) : null}
 
-        <div className="overflow-x-auto rounded-none border border-[#E5E7EB] bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm">
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead className="border-b border-[#E5E7EB] bg-[#F8FAFC] text-xs font-semibold uppercase tracking-wide text-[#64748B]">
               <tr>
