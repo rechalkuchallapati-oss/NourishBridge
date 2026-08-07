@@ -11,7 +11,7 @@ export default function ImpactMilestones() {
   const completed = VOLUNTEER_IMPACT.missionsCompleted;
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
+    <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-4 shadow-sm">
       <h2 className="text-sm font-bold text-[#0F172A]">Milestones</h2>
       <p className="mt-1 text-[10px] text-[#64748B]">
         Recognition for your rescue journey — not used for mission priority.
@@ -27,7 +27,7 @@ export default function ImpactMilestones() {
             <li
               key={milestone.id}
               className={[
-                "rounded-none border p-3 transition-colors",
+                "rounded-[16px] border p-3 transition-colors",
                 unlocked
                   ? "border-[#BBF7D0] bg-[#F0FDF4]"
                   : "border-[#E5E7EB] bg-[#F8FAFC]",
@@ -36,7 +36,7 @@ export default function ImpactMilestones() {
               <div className="flex items-start gap-3">
                 <span
                   className={[
-                    "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-none border",
+                    "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border",
                     unlocked
                       ? "border-[#BBF7D0] bg-[#DCFCE7] text-[#16A34A]"
                       : "border-[#E2E8F0] bg-white text-[#94A3B8]",

@@ -10,7 +10,7 @@ export default function VolunteerPerformanceChart({ compact = false }) {
   const chartHeight = compact ? 120 : 160;
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+    <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
         <div>
           <h2 className="text-sm font-bold text-[#0F172A]">
@@ -151,7 +151,7 @@ function Stat({ label, value }) {
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.4cm]"
+      className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-[0.4cm]"
     >
       <p className="text-[9px] font-semibold uppercase tracking-wide text-[#94A3B8]">
         {label}

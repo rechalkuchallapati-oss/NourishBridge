@@ -53,7 +53,7 @@ function NavLink({ item, isActive }) {
     <Link
       to={item.to}
       className={[
-        "flex items-center gap-3 rounded-none px-5 py-3 transition-colors duration-200",
+        "flex items-center gap-3 rounded-[10px] px-5 py-3 transition-colors duration-200",
         item.emphasized ? "text-base font-semibold" : "text-sm font-medium",
         isActive
           ? "bg-[#F0FDF4] text-[#15803D]"
@@ -73,7 +73,7 @@ export default function VolunteerSidebar() {
   const { pathname } = useLocation();
 
   return (
-    <nav className="sticky top-6 flex h-[calc(100vh-88px)] max-h-[calc(100vh-88px)] w-full flex-col rounded-none border border-[#E5E7EB] bg-white px-4 py-5 shadow-sm sm:px-5 sm:py-6">
+    <nav className="sticky top-6 flex h-[calc(100vh-88px)] max-h-[calc(100vh-88px)] w-full flex-col rounded-[16px] border border-[#E5E7EB] bg-white px-4 py-5 shadow-sm sm:px-5 sm:py-6">
       <div className="flex min-h-0 flex-1 flex-col gap-[0.5cm] overflow-y-auto">
         {NAV_SECTIONS.map((section) => (
           <div key={section.title ?? "overview"} className="flex flex-col gap-[0.5cm]">

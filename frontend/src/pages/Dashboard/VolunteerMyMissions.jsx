@@ -104,13 +104,13 @@ export default function VolunteerMyMissions() {
         />
 
         <div className="flex flex-wrap gap-[0.5cm]">
-          <span className="rounded-none bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#1D4ED8] transition-colors hover:bg-[#DBEAFE]">
+          <span className="rounded-full bg-[#EFF6FF] px-3 py-1.5 text-xs font-semibold text-[#1D4ED8] transition-colors hover:bg-[#DBEAFE]">
             {upcomingCount} upcoming
           </span>
-          <span className="rounded-none bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]">
+          <span className="rounded-full bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#15803D] transition-colors hover:bg-[#DCFCE7]">
             {completedCount} completed this month
           </span>
-          <span className="rounded-none bg-[#F1F5F9] px-3 py-1.5 text-xs font-semibold text-[#475569] transition-colors hover:bg-[#E2E8F0]">
+          <span className="rounded-full bg-[#F1F5F9] px-3 py-1.5 text-xs font-semibold text-[#475569] transition-colors hover:bg-[#E2E8F0]">
             {tableRows.length} missions logged
           </span>
         </div>

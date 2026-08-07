@@ -70,7 +70,7 @@ export default function VolunteerPickupsSection({
       </div>
 
       {dashboardPickups.length === 0 ? (
-        <p className="rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-xs text-[#64748B]">
+        <p className="rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-xs text-[#64748B]">
           No pickup requests right now. Check back soon or view your schedule below.
         </p>
       ) : (

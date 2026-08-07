@@ -24,7 +24,7 @@ function MissionDetailRow({ row }) {
   const statusStyle = DELIVERY_STATUS_STYLES[statusKey] ?? DELIVERY_STATUS_STYLES.delivered;
 
   return (
-    <li className="rounded-none border border-[#E5E7EB] bg-white">
+    <li className="rounded-[16px] border border-[#E5E7EB] bg-white">
       <button
         type="button"
         onClick={() => setExpanded((prev) => !prev)}
@@ -49,7 +49,7 @@ function MissionDetailRow({ row }) {
         </div>
         <span
           className={[
-            "shrink-0 rounded-none border px-2 py-0.5 text-[10px] font-semibold",
+            "shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-semibold",
             statusStyle,
           ].join(" ")}
         >
@@ -136,7 +136,7 @@ export default function VolunteerProfileMissionHistory() {
   }, [allRows, statusFilter, search]);
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+    <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
       <h2 className="text-sm font-bold text-[#0F172A]">Mission History</h2>
       <p className="mt-1 text-[10px] text-[#64748B]">
         Filter and expand missions for pickup, delivery, and food item details.
@@ -150,7 +150,7 @@ export default function VolunteerProfileMissionHistory() {
               type="button"
               onClick={() => setStatusFilter(filter.id)}
               className={[
-                "rounded-none border px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
+                "rounded-[10px] border px-2.5 py-1.5 text-[10px] font-semibold transition-colors",
                 statusFilter === filter.id
                   ? "border-[#16A34A] bg-[#F0FDF4] text-[#15803D]"
                   : "border-[#E5E7EB] bg-white text-[#64748B] hover:border-[#BBF7D0]",
@@ -169,7 +169,7 @@ export default function VolunteerProfileMissionHistory() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search missions..."
-            className="w-full rounded-none border border-[#E5E7EB] py-2 pl-8 pr-3 text-[11px] outline-none focus:border-[#16A34A] sm:w-52"
+            className="w-full rounded-[10px] border border-[#E5E7EB] py-2 pl-8 pr-3 text-[11px] outline-none focus:border-[#16A34A] sm:w-52"
           />
         </label>
       </div>
@@ -179,7 +179,7 @@ export default function VolunteerProfileMissionHistory() {
       </p>
 
       {filteredRows.length === 0 ? (
-        <p className="mt-[0.5cm] rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-xs text-[#64748B]">
+        <p className="mt-[0.5cm] rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-xs text-[#64748B]">
           No missions match your filters.
         </p>
       ) : (

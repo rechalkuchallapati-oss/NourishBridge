@@ -108,7 +108,7 @@ export default function VolunteerPickupVerification() {
   return (
     <>
       <Toaster position="top-center" />
-      <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
+      <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Pickup Verification</h1>
         <p className="mt-1 text-xs text-[#64748B]">
           Before collecting food, complete this short safety checklist.
@@ -116,7 +116,7 @@ export default function VolunteerPickupVerification() {
 
         {activeMission ? (
           <form onSubmit={handleSubmit} className="mt-4 max-w-xl space-y-4 text-xs">
-            <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-3">
+            <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-3">
               <p className="font-semibold text-[#0F172A]">{activeMission.foodName}</p>
               <p className="mt-0.5 text-[10px] text-[#64748B]">
                 {activeMission.donorName} · Listed: {activeMission.quantity}
@@ -131,7 +131,7 @@ export default function VolunteerPickupVerification() {
                 <label
                   key={item.id}
                   className={[
-                    "flex cursor-pointer items-center gap-3 rounded-none border px-3 py-2.5 transition-colors",
+                    "flex cursor-pointer items-center gap-3 rounded-[16px] border px-3 py-2.5 transition-colors",
                     checklist[item.id]
                       ? "border-[#BBF7D0] bg-[#F0FDF4]"
                       : "border-[#E5E7EB] bg-white hover:bg-[#F8FAFC]",
@@ -145,7 +145,7 @@ export default function VolunteerPickupVerification() {
                   />
                   <span
                     className={[
-                      "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-none border",
+                      "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[10px] border",
                       checklist[item.id]
                         ? "border-[#16A34A] bg-[#16A34A] text-white"
                         : "border-[#CBD5E1] bg-white text-transparent",
@@ -169,7 +169,7 @@ export default function VolunteerPickupVerification() {
                   required
                   value={actualQuantity}
                   onChange={(event) => setActualQuantity(event.target.value)}
-                  className="w-full max-w-[140px] rounded-none border border-[#E5E7EB] px-3 py-2"
+                  className="w-full max-w-[140px] rounded-[10px] border border-[#E5E7EB] px-3 py-2"
                 />
                 <span className="text-[10px] text-[#64748B]">kg</span>
               </div>
@@ -182,7 +182,7 @@ export default function VolunteerPickupVerification() {
                 value={notes}
                 onChange={(event) => setNotes(event.target.value)}
                 placeholder="Any observations about packaging, temperature, or donor instructions..."
-                className="rounded-none border border-[#E5E7EB] px-3 py-2"
+                className="rounded-[10px] border border-[#E5E7EB] px-3 py-2"
               />
             </label>
 
@@ -210,7 +210,7 @@ export default function VolunteerPickupVerification() {
                   Upload Photo
                 </button>
               ) : (
-                <div className="overflow-hidden rounded-none border border-[#E5E7EB]">
+                <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB]">
                   <div className="relative">
                     <img
                       src={photoPreview}
@@ -220,7 +220,7 @@ export default function VolunteerPickupVerification() {
                     <button
                       type="button"
                       onClick={clearPhoto}
-                      className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-none bg-[#0F172A]/70 text-white hover:bg-[#0F172A]"
+                      className="absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-[10px] bg-[#0F172A]/70 text-white hover:bg-[#0F172A]"
                       aria-label="Remove photo"
                     >
                       <FaTimes className="text-xs" />

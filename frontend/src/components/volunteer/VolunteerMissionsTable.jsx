@@ -63,12 +63,12 @@ function FoodItemExpandable({ item, mission }) {
   };
 
   return (
-    <li className="rounded-none border border-[#F1F5F9] bg-white transition-colors hover:border-[#BBF7D0] hover:bg-[#FAFFFA]">
+    <li className="rounded-[16px] border border-[#F1F5F9] bg-white transition-colors hover:border-[#BBF7D0] hover:bg-[#FAFFFA]">
       <div className="flex items-start gap-[0.5cm] p-[0.5cm]">
         <button
           type="button"
           onClick={handleToggle}
-          className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-none border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] hover:border-[#BBF7D0] hover:text-[#16A34A]"
+          className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] text-[#64748B] hover:border-[#BBF7D0] hover:text-[#16A34A]"
           aria-expanded={open}
           aria-label={`${open ? "Collapse" : "Expand"} details for ${item.name}`}
         >
@@ -82,7 +82,7 @@ function FoodItemExpandable({ item, mission }) {
           <p className={`${VOLUNTEER_INSET_LINE_GAP} text-xs leading-relaxed text-[#64748B]`}>
             {item.quantity}
             {item.cuisine ? (
-              <span className="ml-1.5 inline-block rounded-none bg-[#F1F5F9] px-1.5 py-px text-[10px] font-semibold text-[#475569]">
+              <span className="ml-1.5 inline-block rounded-full bg-[#F1F5F9] px-1.5 py-px text-[10px] font-semibold text-[#475569]">
                 {item.cuisine}
               </span>
             ) : null}
@@ -107,7 +107,7 @@ function FoodItemExpandable({ item, mission }) {
                     <img
                       src={imageSrc}
                       alt={item.name}
-                      className="h-28 w-full max-w-[140px] rounded-none border border-[#E5E7EB] object-cover"
+                      className="h-28 w-full max-w-[140px] rounded-[16px] border border-[#E5E7EB] object-cover"
                       onError={() => {
                         if (FOOD_IMAGE_FALLBACK && imageSrc !== FOOD_IMAGE_FALLBACK) {
                           setImageSrc(FOOD_IMAGE_FALLBACK);
@@ -115,22 +115,22 @@ function FoodItemExpandable({ item, mission }) {
                       }}
                     />
                   ) : (
-                    <div className="flex h-28 w-full max-w-[140px] items-center justify-center rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-[10px] text-[#94A3B8]">
+                    <div className="flex h-28 w-full max-w-[140px] items-center justify-center rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] text-[10px] text-[#94A3B8]">
                       No image
                     </div>
                   )}
                 </div>
 
-                <p className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-center text-xs font-semibold leading-relaxed text-[#0F172A]">
+                <p className="rounded-[16px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-center text-xs font-semibold leading-relaxed text-[#0F172A]">
                   {mission.pickupAt ?? "—"}
                 </p>
 
-                <p className="rounded-none border border-[#E5E7EB] bg-white px-3 py-2.5 text-center text-xs font-semibold leading-relaxed text-[#0F172A]">
+                <p className="rounded-[16px] border border-[#E5E7EB] bg-white px-3 py-2.5 text-center text-xs font-semibold leading-relaxed text-[#0F172A]">
                   {mission.deliveredAt ?? "—"}
                 </p>
 
                 <div className={`${VOLUNTEER_CONTENT_STACK}`}>
-                  <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] text-xs leading-relaxed text-[#64748B]">
+                  <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] text-xs leading-relaxed text-[#64748B]">
                     <p className="font-semibold text-[#0F172A]">{item.name}</p>
                     <p className={VOLUNTEER_INSET_LINE_GAP}>{item.quantity}</p>
                     {item.cuisine ? (
@@ -232,14 +232,14 @@ function MissionAction({ mission }) {
 export default function VolunteerMissionsTable({ rows }) {
   if (!rows.length) {
     return (
-      <p className="rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-sm leading-relaxed text-[#64748B]">
+      <p className="rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center text-sm leading-relaxed text-[#64748B]">
         No missions recorded yet.
       </p>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-none border border-[#E5E7EB] shadow-[0_4px_20px_rgba(22,163,74,0.06)]">
+    <div className="overflow-x-auto rounded-[16px] border border-[#E5E7EB] shadow-[0_4px_20px_rgba(22,163,74,0.06)]">
       <table className="w-full min-w-[980px] table-fixed border-collapse text-left">
         <thead>
           <tr className="border-b border-[#E5E7EB] bg-gradient-to-r from-[#F8FAFC] via-[#F0FDF4]/40 to-[#F8FAFC]">
@@ -285,7 +285,7 @@ export default function VolunteerMissionsTable({ rows }) {
                 </td>
                 <td className={`${COL.status} ${TD_CLASS} text-center`}>
                   <span
-                    className={`inline-block rounded-none px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${statusStyle}`}
+                    className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${statusStyle}`}
                   >
                     {statusLabel}
                   </span>

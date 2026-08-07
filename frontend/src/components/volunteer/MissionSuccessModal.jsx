@@ -17,7 +17,7 @@ export default function MissionSuccessModal({ mission, onClose }) {
       aria-modal="true"
       aria-labelledby="mission-success-title"
     >
-      <div className="w-full max-w-lg rounded-none border border-[#BBF7D0] bg-white p-[0.5cm] shadow-[0_24px_48px_rgba(22,163,74,0.2)]">
+      <div className="w-full max-w-lg rounded-[16px] border border-[#BBF7D0] bg-white p-[0.5cm] shadow-[0_24px_48px_rgba(22,163,74,0.2)]">
         <div className="flex flex-col items-center text-center">
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#F0FDF4] text-[#16A34A]">
             <FaCheckCircle className="text-4xl" aria-hidden="true" />
@@ -32,11 +32,11 @@ export default function MissionSuccessModal({ mission, onClose }) {
         </div>
 
         <ul className={`mt-[0.5cm] ${VOLUNTEER_CONTENT_STACK}`}>
-          <li className="flex items-center gap-3 rounded-none border border-[#DCFCE7] bg-[#F0FDF4] px-4 py-3 text-sm text-[#15803D]">
+          <li className="flex items-center gap-3 rounded-[16px] border border-[#DCFCE7] bg-[#F0FDF4] px-4 py-3 text-sm text-[#15803D]">
             <FaTrophy aria-hidden="true" />
             ~{mission.estimatedMeals ?? 0} meals delivered
           </li>
-          <li className="flex items-center gap-3 rounded-none border border-[#FEF3C7] bg-[#FFFBEB] px-4 py-3 text-sm text-[#B45309]">
+          <li className="flex items-center gap-3 rounded-[16px] border border-[#FEF3C7] bg-[#FFFBEB] px-4 py-3 text-sm text-[#B45309]">
             <FaStar aria-hidden="true" />
             New 5★ NGO review added to your profile
           </li>

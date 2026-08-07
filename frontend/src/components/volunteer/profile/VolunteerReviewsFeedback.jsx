@@ -35,7 +35,7 @@ export default function VolunteerReviewsFeedback() {
           icon={FaStar}
           compact
         />
-        <div className="rounded-none border border-[#FDE68A] bg-[#FFFBEB] px-5 py-3 text-center">
+        <div className="rounded-[16px] border border-[#FDE68A] bg-[#FFFBEB] px-5 py-3 text-center">
           <p className="text-xs font-bold uppercase tracking-wide text-[#B45309]">Average Rating</p>
           <p className={`${VOLUNTEER_INSET_LINE_GAP} text-2xl font-extrabold text-[#0F172A]`}>
             {avgRating.toFixed(1)} ★
@@ -52,7 +52,7 @@ export default function VolunteerReviewsFeedback() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.01, x: 4 }}
-            className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#FAFFFA]"
+            className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#FAFFFA]"
           >
             <div className="flex flex-wrap items-start justify-between gap-[0.5cm]">
               <div>
@@ -76,7 +76,7 @@ export default function VolunteerReviewsFeedback() {
               {review.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-semibold text-[#15803D]"
+                  className="rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-semibold text-[#15803D]"
                 >
                   {tag}
                 </span>

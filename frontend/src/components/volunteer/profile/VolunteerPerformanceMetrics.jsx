@@ -38,7 +38,7 @@ export default function VolunteerPerformanceMetrics() {
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.02, y: -2 }}
             className={[
-              "rounded-none border p-[0.5cm]",
+              "rounded-[16px] border p-[0.5cm]",
               ACCENT_STYLES[metric.accent] ?? ACCENT_STYLES.green,
               volunteerInteractive.card,
             ].join(" ")}

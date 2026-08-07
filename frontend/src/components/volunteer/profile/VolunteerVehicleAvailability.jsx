@@ -9,7 +9,7 @@ import {
 } from "../volunteerDashboardStyles";
 
 const inputClass =
-  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
 
 export default function VolunteerVehicleAvailability({ profile, onUpdate, onSubmit }) {
   return (
@@ -22,7 +22,7 @@ export default function VolunteerVehicleAvailability({ profile, onUpdate, onSubm
           icon={FaBicycle}
           compact
         />
-        <label className="inline-flex cursor-pointer items-center gap-2 rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-[0.5cm] py-[0.4cm]">
+        <label className="inline-flex cursor-pointer items-center gap-2 rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-[0.5cm] py-[0.4cm]">
           <FaToggleOn
             className={profile.isAvailable ? "text-[#16A34A]" : "text-[#CBD5E1]"}
             aria-hidden="true"
@@ -91,7 +91,7 @@ export default function VolunteerVehicleAvailability({ profile, onUpdate, onSubm
                 <label
                   key={slot}
                   className={[
-                    "flex cursor-pointer items-center gap-2 rounded-none border px-[0.5cm] py-[0.4cm] text-sm transition-colors",
+                    "flex cursor-pointer items-center gap-2 rounded-[10px] border px-[0.5cm] py-[0.4cm] text-sm transition-colors",
                     checked
                       ? "border-[#BBF7D0] bg-[#F0FDF4] text-[#15803D]"
                       : "border-[#E5E7EB] bg-white text-[#64748B]",

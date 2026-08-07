@@ -19,7 +19,7 @@ import {
 import { getVolunteerProfile, saveVolunteerProfile } from "../../utils/authStorage";
 
 const inputClass =
-  "w-full rounded-none border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
+  "w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
 
 export default function VolunteerProfile() {
   const [profile, setProfile] = useState(getVolunteerProfile);

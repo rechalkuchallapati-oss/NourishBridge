@@ -67,7 +67,7 @@ export default function VolunteerImpactJourneyTimeline() {
                 <Icon className="text-[10px]" aria-hidden="true" />
               </span>
 
-              <div className={["min-w-0 flex-1 rounded-none border p-[0.5cm]", styles.card].join(" ")}>
+              <div className={["min-w-0 flex-1 rounded-[16px] border p-[0.5cm]", styles.card].join(" ")}>
                 <div className="flex flex-wrap items-center justify-between gap-[0.5cm]">
                   <p className="text-sm font-bold text-[#0F172A]">{milestone.title}</p>
                   <span className="text-xs font-semibold text-[#64748B]">{milestone.date}</span>

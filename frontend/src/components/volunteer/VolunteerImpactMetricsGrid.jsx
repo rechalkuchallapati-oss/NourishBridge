@@ -55,7 +55,7 @@ export default function VolunteerImpactMetricsGrid({
             transition={{ delay: index * 0.05 }}
             whileHover={{ scale: 1.02, y: -2 }}
             className={[
-              "relative overflow-hidden rounded-none border p-[0.5cm]",
+              "relative overflow-hidden rounded-[16px] border p-[0.5cm]",
               accent.card,
               accent.glow,
               volunteerInteractive.card,

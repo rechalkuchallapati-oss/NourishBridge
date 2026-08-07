@@ -20,13 +20,13 @@ export default function VolunteerServiceAreaMap({ serviceRadiusKm = 10, city = "
           icon={FaMapMarkerAlt}
           compact
         />
-        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#16A34A]">
+        <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#16A34A]">
           <FaMapMarkerAlt aria-hidden="true" />
           {city}
         </span>
       </div>
 
-      <div className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+      <div className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC]">
         <svg viewBox="0 0 100 100" className="h-52 w-full sm:h-56" role="img" aria-label="Service area map">
           <rect width="100" height="100" fill="#F0FDF4" />
           <circle

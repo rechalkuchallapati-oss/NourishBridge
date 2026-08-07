@@ -19,7 +19,7 @@ export default function VolunteerLiveRouteMap({
         : 180 - (progress - 0.7) * 60;
 
   return (
-    <div className="relative h-full min-h-[280px] overflow-hidden rounded-none border border-[#E5E7EB] bg-[#EFF6FF] lg:min-h-[360px]">
+    <div className="relative h-full min-h-[280px] overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#EFF6FF] lg:min-h-[360px]">
       <svg viewBox="0 0 700 320" className="h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
           <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
@@ -68,7 +68,7 @@ export default function VolunteerLiveRouteMap({
         <span className="max-w-[30%] truncate text-right font-semibold text-[#2563EB]">{ngoLabel}</span>
       </div>
 
-      <div className="absolute left-3 top-3 rounded-none border border-[#FDE68A] bg-[#FFFBEB]/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#B45309] backdrop-blur-sm">
+      <div className="absolute left-3 top-3 rounded-full border border-[#FDE68A] bg-[#FFFBEB]/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[#B45309] backdrop-blur-sm">
         Live position
       </div>
     </div>

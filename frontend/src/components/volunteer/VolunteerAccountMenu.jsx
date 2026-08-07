@@ -88,7 +88,7 @@ export default function VolunteerAccountMenu() {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex max-w-[220px] items-center gap-2 rounded-none border border-[#E5E7EB] py-1 pl-1 pr-2 transition-colors hover:border-[#BBF7D0] hover:bg-[#F8FFF8]"
+        className="flex max-w-[220px] items-center gap-2 rounded-[10px] border border-[#E5E7EB] py-1 pl-1 pr-2 transition-colors hover:border-[#BBF7D0] hover:bg-[#F8FFF8]"
         aria-expanded={open}
         aria-haspopup="menu"
       >
@@ -113,7 +113,7 @@ export default function VolunteerAccountMenu() {
       </button>
 
       {open ? (
-        <div className="absolute right-0 z-50 mt-2 w-64 rounded-none border border-[#E5E7EB] bg-white p-3 shadow-[0_12px_32px_rgba(15,23,42,0.12)]">
+        <div className="absolute right-0 z-50 mt-2 w-64 rounded-[16px] border border-[#E5E7EB] bg-white p-3 shadow-[0_12px_32px_rgba(15,23,42,0.12)]">
           <p className="text-[10px] font-bold uppercase tracking-wide text-[#64748B]">
             Profile photo
           </p>

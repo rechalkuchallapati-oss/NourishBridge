@@ -26,7 +26,7 @@ export default function VolunteerCommunitiesAreasPanel() {
             <motion.li
               key={community.id}
               whileHover={{ scale: 1.01, x: 4 }}
-              className="rounded-none border border-transparent p-[0.35cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]/60"
+              className="rounded-[16px] border border-transparent p-[0.35cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]/60"
             >
               <div className="flex items-center justify-between gap-[0.5cm] text-sm">
                 <span className="min-w-0 truncate font-semibold text-[#0F172A]">{community.name}</span>
@@ -60,7 +60,7 @@ export default function VolunteerCommunitiesAreasPanel() {
           compact
         />
 
-        <div className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+        <div className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC]">
           <svg viewBox="0 0 100 80" className="h-48 w-full" role="img" aria-label="Areas impacted map">
             <rect width="100" height="80" fill="#F0FDF4" />
             <circle
@@ -122,7 +122,7 @@ export default function VolunteerCommunitiesAreasPanel() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                className="absolute bottom-[0.5cm] left-[0.5cm] right-[0.5cm] rounded-none border border-[#BBF7D0] bg-[#F0FDF4]/95 px-[0.5cm] py-[0.4cm] shadow-md"
+                className="absolute bottom-[0.5cm] left-[0.5cm] right-[0.5cm] rounded-[16px] border border-[#BBF7D0] bg-[#F0FDF4]/95 px-[0.5cm] py-[0.4cm] shadow-md"
               >
                 <p className="text-sm font-bold text-[#15803D]">{activeArea.label}</p>
                 <p className={`${VOLUNTEER_INSET_LINE_GAP} text-xs text-[#64748B]`}>
@@ -140,7 +140,7 @@ export default function VolunteerCommunitiesAreasPanel() {
               whileHover={{ scale: 1.01 }}
               onClick={() => setActiveAreaId(area.id)}
               className={[
-                "flex cursor-pointer items-center justify-between gap-[0.5cm] rounded-none border px-[0.5cm] py-[0.4cm] text-sm transition-colors",
+                "flex cursor-pointer items-center justify-between gap-[0.5cm] rounded-[16px] border px-[0.5cm] py-[0.4cm] text-sm transition-colors",
                 activeAreaId === area.id
                   ? "border-[#BBF7D0] bg-[#F0FDF4]"
                   : "border-[#F1F5F9] bg-[#FAFAFA] hover:border-[#BBF7D0]",

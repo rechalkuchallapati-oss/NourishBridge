@@ -43,7 +43,7 @@ export default function VolunteerNotifications() {
             theme="emerald"
             icon={FaBell}
           />
-          <span className="shrink-0 rounded-none bg-[#F0FDF4] px-3 py-1.5 text-xs font-bold text-[#15803D]">
+          <span className="shrink-0 rounded-full bg-[#F0FDF4] px-3 py-1.5 text-xs font-bold text-[#15803D]">
             {unread} unread
           </span>
         </div>
@@ -56,7 +56,7 @@ export default function VolunteerNotifications() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.04 }}
               whileHover={{ scale: 1.01, x: 4 }}
-              className={`rounded-none border p-[0.5cm] text-sm leading-relaxed transition-colors ${
+              className={`rounded-[16px] border p-[0.5cm] text-sm leading-relaxed transition-colors ${
                 item.unread
                   ? "border-[#DCFCE7] bg-[#F0FDF4] hover:border-[#BBF7D0]"
                   : "border-[#E5E7EB] bg-white hover:border-[#BBF7D0] hover:bg-[#FAFFFA]"
@@ -64,14 +64,14 @@ export default function VolunteerNotifications() {
             >
               <div className="flex flex-wrap items-center gap-[0.5cm]">
                 <span
-                  className={`rounded-none px-2 py-0.5 text-[10px] font-bold uppercase ${
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase ${
                     CATEGORY_COLORS[item.category] ?? CATEGORY_COLORS.system
                   }`}
                 >
                   {NOTIFICATION_CATEGORY_LABELS[item.category] ?? item.category}
                 </span>
                 {item.live ? (
-                  <span className="rounded-none bg-[#16A34A] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                  <span className="rounded-full bg-[#16A34A] px-2 py-0.5 text-[10px] font-bold uppercase text-white">
                     Live
                   </span>
                 ) : null}

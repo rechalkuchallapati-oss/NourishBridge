@@ -1,6 +1,6 @@
 export default function MissionRouteMap({ pickupLabel, ngoLabel, distanceKm = 7.8 }) {
   return (
-    <div className="relative overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+    <div className="relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC]">
       <svg viewBox="0 0 360 180" className="h-44 w-full sm:h-48" aria-hidden="true">
         <defs>
           <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">

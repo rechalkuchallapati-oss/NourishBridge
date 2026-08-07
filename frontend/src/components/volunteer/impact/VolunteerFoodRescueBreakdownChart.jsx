@@ -59,7 +59,7 @@ export default function VolunteerFoodRescueBreakdownChart() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.04 }}
               whileHover={{ scale: 1.02, x: 4 }}
-              className="flex items-center gap-[0.5cm] rounded-none border border-[#F1F5F9] bg-[#FAFAFA] px-[0.5cm] py-[0.4cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]"
+              className="flex items-center gap-[0.5cm] rounded-[16px] border border-[#F1F5F9] bg-[#FAFAFA] px-[0.5cm] py-[0.4cm] transition-colors hover:border-[#BBF7D0] hover:bg-[#F0FDF4]"
             >
               <span
                 className="h-3 w-3 shrink-0 rounded-sm"

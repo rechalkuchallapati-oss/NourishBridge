@@ -28,13 +28,13 @@ export default function VolunteerPickupRequestCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.06 }}
       className={[
-        "rounded-none border border-[#E5E7EB] bg-white shadow-sm",
+        "rounded-[16px] border border-[#E5E7EB] bg-white shadow-sm",
         VOLUNTEER_SECTION_PAD,
         volunteerInteractive.card,
       ].join(" ")}
     >
       <div className="flex gap-[0.5cm]">
-        <div className="h-[196px] w-[156px] shrink-0 overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC]">
+        <div className="h-[196px] w-[156px] shrink-0 overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC]">
           <DonationProofThumbnail record={pickup} />
         </div>
 

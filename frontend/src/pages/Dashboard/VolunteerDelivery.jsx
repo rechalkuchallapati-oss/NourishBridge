@@ -222,7 +222,7 @@ export default function VolunteerDelivery() {
             theme="emerald"
             icon={FaTruck}
           />
-          <p className="inline-flex items-center gap-1.5 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-bold uppercase text-[#15803D]">
+          <p className="inline-flex items-center gap-1.5 rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-xs font-bold uppercase text-[#15803D]">
             <FaTruck aria-hidden="true" />
             Status: {delivery.deliveryStatusLabel}
           </p>
@@ -244,7 +244,7 @@ export default function VolunteerDelivery() {
             </div>
           </div>
           {(delivery.items ?? []).length > 0 ? (
-            <div className="mt-3 rounded-none border border-[#F1F5F9] bg-[#FAFAFA] p-3">
+            <div className="mt-3 rounded-[16px] border border-[#F1F5F9] bg-[#FAFAFA] p-3">
               <DonationItemsList record={delivery} />
             </div>
           ) : null}
@@ -255,7 +255,7 @@ export default function VolunteerDelivery() {
             <div className="space-y-3">
               <DetailRow label="NGO name" value={delivery.ngoName} />
               {delivery.ngoVerified ? (
-                <span className="inline-flex items-center gap-1 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-[10px] font-semibold text-[#16A34A]">
+                <span className="inline-flex items-center gap-1 rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-[10px] font-semibold text-[#16A34A]">
                   <FaShieldAlt className="text-[9px]" aria-hidden="true" />
                   Verified NGO Partner
                 </span>
@@ -306,15 +306,15 @@ export default function VolunteerDelivery() {
 
         <SectionCard title="Handling Reminder" subtitle="Keep food safe until NGO acceptance.">
           <ul className="space-y-2 text-xs text-[#475569]">
-            <li className="flex items-start gap-2 rounded-none border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2.5">
+            <li className="flex items-start gap-2 rounded-[16px] border border-[#FDE68A] bg-[#FFFBEB] px-3 py-2.5">
               <FaExclamationCircle className="mt-0.5 shrink-0 text-[#B45309]" aria-hidden="true" />
               <span>{delivery.handlingUpright}</span>
             </li>
-            <li className="flex items-start gap-2 rounded-none border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2.5">
+            <li className="flex items-start gap-2 rounded-[16px] border border-[#BFDBFE] bg-[#EFF6FF] px-3 py-2.5">
               <FaExclamationCircle className="mt-0.5 shrink-0 text-[#2563EB]" aria-hidden="true" />
               <span>{delivery.handlingTemperature}</span>
             </li>
-            <li className="flex items-start gap-2 rounded-none border border-[#FECACA] bg-[#FEF2F2] px-3 py-2.5 font-semibold text-[#B91C1C]">
+            <li className="flex items-start gap-2 rounded-[16px] border border-[#FECACA] bg-[#FEF2F2] px-3 py-2.5 font-semibold text-[#B91C1C]">
               <FaExclamationCircle className="mt-0.5 shrink-0" aria-hidden="true" />
               <span>{delivery.deliveryDeadline}</span>
             </li>
@@ -329,7 +329,7 @@ export default function VolunteerDelivery() {
                 required
                 value={handoverQuantity}
                 onChange={(event) => setHandoverQuantity(event.target.value)}
-                className="rounded-none border border-[#E5E7EB] px-3 py-2.5 text-xs outline-none focus:border-[#2563EB]"
+                className="rounded-[10px] border border-[#E5E7EB] px-3 py-2.5 text-xs outline-none focus:border-[#2563EB]"
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -339,7 +339,7 @@ export default function VolunteerDelivery() {
                 value={receiverName}
                 onChange={(event) => setReceiverName(event.target.value)}
                 placeholder="Name of person accepting food"
-                className="rounded-none border border-[#E5E7EB] px-3 py-2.5 text-xs outline-none focus:border-[#2563EB]"
+                className="rounded-[10px] border border-[#E5E7EB] px-3 py-2.5 text-xs outline-none focus:border-[#2563EB]"
               />
             </label>
           </div>
@@ -421,7 +421,7 @@ export default function VolunteerDelivery() {
               value={issueNote}
               onChange={(event) => setIssueNote(event.target.value)}
               placeholder="Describe delay, damage, or contact issues..."
-              className="rounded-none border border-[#E5E7EB] px-3 py-2 text-xs outline-none focus:border-[#2563EB]"
+              className="rounded-[10px] border border-[#E5E7EB] px-3 py-2 text-xs outline-none focus:border-[#2563EB]"
             />
           </label>
           {Object.values(reportedIssues).some(Boolean) ? (
@@ -433,7 +433,7 @@ export default function VolunteerDelivery() {
 
         </VolunteerSectionShell>
 
-        <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
           {readyForNavigation ? (
             <button
               type="button"

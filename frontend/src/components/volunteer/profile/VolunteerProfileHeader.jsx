@@ -70,12 +70,12 @@ export default function VolunteerProfileHeader() {
         <div className={`min-w-0 flex-1 text-center sm:text-left ${VOLUNTEER_CONTENT_STACK}`}>
           <div className="flex flex-wrap items-center justify-center gap-[0.5cm] sm:justify-start">
             {VOLUNTEER_IDENTITY.verified ? (
-              <span className="inline-flex items-center gap-1.5 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#16A34A]">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-1.5 text-xs font-semibold text-[#16A34A]">
                 <FaShieldAlt aria-hidden="true" />
                 Verified Volunteer
               </span>
             ) : null}
-            <span className="inline-flex items-center gap-1.5 rounded-none border border-[#DDD6FE] bg-[#F5F3FF] px-3 py-1.5 text-xs font-semibold text-[#7C3AED]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#DDD6FE] bg-[#F5F3FF] px-3 py-1.5 text-xs font-semibold text-[#7C3AED]">
               Level {level.level} · {level.title}
             </span>
           </div>
@@ -92,7 +92,7 @@ export default function VolunteerProfileHeader() {
         </div>
 
         <div className={`flex shrink-0 flex-col items-center ${VOLUNTEER_CONTENT_STACK} sm:items-end`}>
-          <div className="rounded-none border border-[#DDD6FE] bg-white px-5 py-4 text-center shadow-sm">
+          <div className="rounded-[16px] border border-[#DDD6FE] bg-white px-5 py-4 text-center shadow-sm">
             <p className="text-xs font-bold uppercase tracking-wide text-[#64748B]">Trust Score</p>
             <p className={`${VOLUNTEER_INSET_LINE_GAP} text-3xl font-extrabold text-[#7C3AED]`}>
               {profileImpact.trustScore}

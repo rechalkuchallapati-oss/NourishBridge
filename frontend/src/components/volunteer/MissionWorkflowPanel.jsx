@@ -212,7 +212,7 @@ export default function MissionWorkflowPanel({
 
     return (
 
-      <section className="rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center">
+      <section className="rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-[0.5cm] text-center">
 
         <p className="text-sm font-semibold text-[#64748B]">No active mission</p>
 
@@ -344,7 +344,7 @@ export default function MissionWorkflowPanel({
 
           <div className="flex items-start gap-[0.5cm]">
 
-            <div className="h-24 w-24 shrink-0 overflow-hidden rounded-none border border-[#E5E7EB] bg-[#F8FAFC] sm:h-28 sm:w-28">
+            <div className="h-24 w-24 shrink-0 overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] sm:h-28 sm:w-28">
 
               <DonationProofThumbnail record={mission} />
 

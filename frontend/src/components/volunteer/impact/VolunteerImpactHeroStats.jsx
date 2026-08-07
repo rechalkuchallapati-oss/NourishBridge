@@ -20,7 +20,7 @@ export default function VolunteerImpactHeroStats() {
           transition={{ delay: index * 0.06 }}
           whileHover={{ scale: 1.03, y: -3 }}
           className={[
-            "rounded-none border p-[0.5cm]",
+            "rounded-[16px] border p-[0.5cm]",
             ACCENT_STYLES[stat.accent] ?? ACCENT_STYLES.green,
             volunteerInteractive.card,
           ].join(" ")}

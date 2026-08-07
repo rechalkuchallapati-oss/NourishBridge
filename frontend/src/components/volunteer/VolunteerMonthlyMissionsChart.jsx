@@ -4,7 +4,7 @@ export default function VolunteerMonthlyMissionsChart() {
   const maxMissions = Math.max(...MONTHLY_MISSIONS_TREND.map((item) => item.missions));
 
   return (
-    <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
+    <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-4 shadow-sm">
       <h2 className="text-sm font-bold text-[#0F172A]">Monthly Missions</h2>
       <p className="mt-1 text-[10px] text-[#64748B]">Missions completed over the last 6 months.</p>
 

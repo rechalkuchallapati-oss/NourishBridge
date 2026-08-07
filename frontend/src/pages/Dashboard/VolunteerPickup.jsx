@@ -70,7 +70,7 @@ function PickupCountdown({ deadlineAt }) {
   return (
     <div
       className={[
-        "rounded-none border px-4 py-3",
+        "rounded-[16px] border px-4 py-3",
         parts.expired
           ? "border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]"
           : "border-[#FDE68A] bg-[#FFFBEB] text-[#B45309]",
@@ -111,7 +111,7 @@ function PhotoUpload({ label, hint, preview, fileName, onSelect, onClear, inputR
           {hint}
         </button>
       ) : (
-        <div className="overflow-hidden rounded-none border border-[#E5E7EB]">
+        <div className="overflow-hidden rounded-[16px] border border-[#E5E7EB]">
           <div className="relative">
             <img src={preview} alt={label} className="max-h-40 w-full object-cover" />
             <button
@@ -238,7 +238,7 @@ export default function VolunteerPickup() {
                 <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">Urgency</p>
                 <span
                   className={[
-                    "mt-0.5 inline-flex items-center gap-1 rounded-none border px-2 py-0.5 text-[10px] font-bold uppercase",
+                    "mt-0.5 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase",
                     pickup.urgency === "High"
                       ? "border-[#FECACA] bg-[#FEF2F2] text-[#B91C1C]"
                       : "border-[#FDE68A] bg-[#FFFBEB] text-[#B45309]",
@@ -325,7 +325,7 @@ export default function VolunteerPickup() {
             </div>
           </div>
           {(pickup.items ?? []).length > 0 ? (
-            <div className="mt-3 rounded-none border border-[#F1F5F9] bg-[#FAFAFA] p-3">
+            <div className="mt-3 rounded-[16px] border border-[#F1F5F9] bg-[#FAFAFA] p-3">
               <p className="text-[10px] font-bold uppercase tracking-wide text-[#94A3B8]">Item list</p>
               <DonationItemsList record={pickup} className="mt-2" />
             </div>
@@ -338,7 +338,7 @@ export default function VolunteerPickup() {
               <label
                 key={item.id}
                 className={[
-                  "flex cursor-pointer items-center gap-3 rounded-none border px-3 py-2.5 transition-colors",
+                  "flex cursor-pointer items-center gap-3 rounded-[16px] border px-3 py-2.5 transition-colors",
                   checklist[item.id]
                     ? "border-[#BBF7D0] bg-[#F0FDF4]"
                     : "border-[#E5E7EB] bg-white hover:bg-[#F8FAFC]",
@@ -352,7 +352,7 @@ export default function VolunteerPickup() {
                 />
                 <span
                   className={[
-                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-none border",
+                    "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[10px] border",
                     checklist[item.id]
                       ? "border-[#16A34A] bg-[#16A34A] text-white"
                       : "border-[#CBD5E1] bg-white text-transparent",
@@ -403,14 +403,14 @@ export default function VolunteerPickup() {
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
               placeholder="Temperature, packaging condition, donor instructions..."
-              className="rounded-none border border-[#E5E7EB] px-3 py-2 text-xs outline-none focus:border-[#16A34A]"
+              className="rounded-[10px] border border-[#E5E7EB] px-3 py-2 text-xs outline-none focus:border-[#16A34A]"
             />
           </label>
         </SectionCard>
 
         </VolunteerSectionShell>
 
-        <div className="rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
+        <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
           <button
             type="submit"
             disabled={!canConfirm}

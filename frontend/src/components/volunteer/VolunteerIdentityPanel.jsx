@@ -61,7 +61,7 @@ export default function VolunteerIdentityPanel() {
         </p>
 
         {VOLUNTEER_IDENTITY.verified ? (
-          <span className="mt-2 inline-flex items-center gap-1 rounded-none border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-[10px] font-semibold text-[#16A34A]">
+          <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-[#BBF7D0] bg-[#F0FDF4] px-2.5 py-1 text-[10px] font-semibold text-[#16A34A]">
             <FaCheck className="text-[9px]" aria-hidden="true" />
             Verified
           </span>

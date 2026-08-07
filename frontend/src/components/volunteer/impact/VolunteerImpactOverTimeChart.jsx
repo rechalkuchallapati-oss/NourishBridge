@@ -91,7 +91,7 @@ export default function VolunteerImpactOverTimeChart() {
 
 function Stat({ label, value }) {
   return (
-    <div className="rounded-none border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
+    <div className="rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-[0.5cm]">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-[#94A3B8]">{label}</p>
       <p className={`${VOLUNTEER_INSET_LINE_GAP} text-sm font-bold text-[#0F172A]`}>{value}</p>
     </div>

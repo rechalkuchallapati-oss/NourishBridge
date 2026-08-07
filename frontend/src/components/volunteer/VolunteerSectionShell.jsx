@@ -57,7 +57,7 @@ export function VolunteerSectionTitle({
   return (
     <div
       className={[
-        "relative overflow-hidden rounded-none",
+        "relative overflow-hidden rounded-[16px]",
         compact ? "px-[0.4cm] py-[0.3cm]" : "px-[0.5cm] py-[0.4cm]",
         palette.border,
         palette.bg,
@@ -82,7 +82,7 @@ export function VolunteerSectionTitle({
         {Icon ? (
           <span
             className={[
-              "inline-flex shrink-0 items-center justify-center rounded-none border shadow-sm",
+              "inline-flex shrink-0 items-center justify-center rounded-[10px] border shadow-sm",
               compact ? "h-9 w-9" : "h-11 w-11 sm:h-12 sm:w-12",
               palette.iconBox,
             ].join(" ")}
@@ -140,7 +140,7 @@ export default function VolunteerSectionShell({
   return (
     <section
       className={[
-        "relative overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(22,163,74,0.08)]",
+        "relative overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(22,163,74,0.08)]",
         className,
       ].join(" ")}
     >

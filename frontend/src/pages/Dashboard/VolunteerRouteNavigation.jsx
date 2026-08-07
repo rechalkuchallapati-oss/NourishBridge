@@ -363,7 +363,7 @@ export default function VolunteerRouteNavigation() {
 
 
 
-        <section className="overflow-hidden rounded-none border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(22,163,74,0.08)]">
+        <section className="overflow-hidden rounded-[16px] border border-[#E5E7EB] bg-white shadow-[0_8px_32px_rgba(22,163,74,0.08)]">
 
           <div className="grid lg:grid-cols-[1fr_280px] xl:grid-cols-[1fr_300px]">
 
@@ -567,7 +567,7 @@ export default function VolunteerRouteNavigation() {
 
                   : "border-[#E5E7EB] bg-[#F8FAFC]",
 
-                "rounded-none border p-[0.5cm]",
+                "rounded-[16px] border p-[0.5cm]",
 
               ].join(" ")}
 
@@ -609,7 +609,7 @@ export default function VolunteerRouteNavigation() {
 
           <section
 
-            className={`rounded-none border border-[#FECACA] bg-[#FEF2F2] p-[0.5cm] ${VOLUNTEER_CONTENT_STACK}`}
+            className={`rounded-[16px] border border-[#FECACA] bg-[#FEF2F2] p-[0.5cm] ${VOLUNTEER_CONTENT_STACK}`}
 
           >
 
@@ -659,7 +659,7 @@ export default function VolunteerRouteNavigation() {
 
         <div
 
-          className={`flex flex-col rounded-none border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:flex-row sm:items-stretch sm:justify-between ${VOLUNTEER_CONTENT_STACK}`}
+          className={`flex flex-col rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm sm:flex-row sm:items-stretch sm:justify-between ${VOLUNTEER_CONTENT_STACK}`}
 
         >
 

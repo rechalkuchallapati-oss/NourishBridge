@@ -23,7 +23,7 @@ export default function CurrentMissionPanel({
 
   if (!mission) {
     return (
-      <section className="rounded-none border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-4 text-center">
+      <section className="rounded-[16px] border border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-4 text-center">
         <p className="text-xs font-semibold uppercase tracking-wide text-[#94A3B8]">
           Current Mission
         </p>
@@ -56,7 +56,7 @@ export default function CurrentMissionPanel({
   };
 
   return (
-    <section className="rounded-none border border-[#16A34A]/30 bg-gradient-to-br from-[#F0FDF4] to-white p-4 shadow-sm">
+    <section className="rounded-[16px] border border-[#16A34A]/30 bg-gradient-to-br from-[#F0FDF4] to-white p-4 shadow-sm">
       <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#16A34A]">
         Current Mission
       </p>
@@ -82,7 +82,7 @@ export default function CurrentMissionPanel({
           <p className="text-[#64748B]">{mission.ngoAddress}</p>
         </div>
 
-        <div className="rounded-none border border-[#BBF7D0] bg-white p-2.5">
+        <div className="rounded-[16px] border border-[#BBF7D0] bg-white p-2.5">
           <p className="text-[10px] font-semibold uppercase text-[#94A3B8]">Status</p>
           <p className="mt-0.5 text-sm font-bold text-[#15803D]">{statusLabel}</p>
           {mission.eta ? (
@@ -119,7 +119,7 @@ export default function CurrentMissionPanel({
 
 export function AvailablePickupCard({ pickup, onAccept, disabled }) {
   return (
-    <li className="rounded-none border border-[#E5E7EB] bg-white p-3 shadow-sm">
+    <li className="rounded-[16px] border border-[#E5E7EB] bg-white p-3 shadow-sm">
       <div className="flex gap-3">
         <div className="h-[132px] w-[108px] shrink-0 overflow-hidden border border-[#E5E7EB] bg-[#F8FAFC]">
           <DonationProofThumbnail record={pickup} />

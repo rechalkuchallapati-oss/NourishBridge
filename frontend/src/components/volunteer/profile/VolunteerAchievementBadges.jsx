@@ -52,7 +52,7 @@ export default function VolunteerAchievementBadges() {
             <li
               key={badge.id}
               className={[
-                "rounded-none border p-[0.5cm] transition-colors hover:shadow-sm",
+                "rounded-[16px] border p-[0.5cm] transition-colors hover:shadow-sm",
                 unlocked
                   ? "border-[#BBF7D0] bg-[#F0FDF4]"
                   : "border-[#E5E7EB] bg-[#F8FAFC]",
@@ -61,7 +61,7 @@ export default function VolunteerAchievementBadges() {
               <div className="flex items-start gap-[0.5cm]">
                 <span
                   className={[
-                    "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-none border",
+                    "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] border",
                     unlocked
                       ? "border-[#BBF7D0] bg-[#DCFCE7] text-[#16A34A]"
                       : "border-[#E2E8F0] bg-white text-[#94A3B8]",

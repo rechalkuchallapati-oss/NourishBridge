@@ -26,7 +26,7 @@ export default function VolunteerDeliveryVerification() {
   return (
     <>
       <Toaster position="top-center" />
-      <section className="rounded-none border border-[#E5E7EB] bg-white p-4 shadow-sm">
+      <section className="rounded-[16px] border border-[#E5E7EB] bg-white p-4 shadow-sm">
         <h1 className="text-lg font-bold text-[#0F172A]">Delivery Verification</h1>
         <p className="mt-1 text-xs text-[#64748B]">NGO handover confirmation and proof.</p>
 
@@ -37,15 +37,15 @@ export default function VolunteerDeliveryVerification() {
             </p>
             <label className="flex flex-col gap-1">
               <span className="font-semibold">NGO representative name</span>
-              <input required className="rounded-none border border-[#E5E7EB] px-3 py-2" />
+              <input required className="rounded-[10px] border border-[#E5E7EB] px-3 py-2" />
             </label>
             <label className="flex flex-col gap-1">
               <span className="font-semibold">Handover quantity</span>
-              <input defaultValue={activeMission.quantity} required className="rounded-none border border-[#E5E7EB] px-3 py-2" />
+              <input defaultValue={activeMission.quantity} required className="rounded-[10px] border border-[#E5E7EB] px-3 py-2" />
             </label>
             <label className="flex flex-col gap-1">
               <span className="font-semibold">Food condition at handover</span>
-              <select required className="rounded-none border border-[#E5E7EB] px-3 py-2">
+              <select required className="rounded-[10px] border border-[#E5E7EB] px-3 py-2">
                 <option>Good</option>
                 <option>Acceptable</option>
               </select>
