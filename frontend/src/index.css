@@ -1,6 +1,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
+/* ─── Design tokens ─── */
+:root {
+  --nb-green: #16a34a;
+  --nb-green-dark: #15803d;
+  --nb-green-light: #22c55e;
+  --nb-green-muted: #f0fdf4;
+  --nb-green-border: #bbf7d0;
+  --nb-slate-900: #0f172a;
+  --nb-slate-700: #334155;
+  --nb-slate-500: #64748b;
+  --nb-slate-400: #94a3b8;
+  --nb-slate-200: #e5e7eb;
+  --nb-slate-100: #f1f5f9;
+  --nb-slate-50: #f8fafc;
+  --nb-radius: 16px;
+  --nb-radius-lg: 18px;
+  --nb-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+  --nb-transition: 280ms ease-in-out;
+  --nb-space-1: 8px;
+  --nb-space-2: 16px;
+  --nb-space-3: 24px;
+  --nb-space-4: 32px;
+  --nb-space-5: 40px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,11 +37,241 @@ html {
 }
 
 body {
-  background: #fafaf9;
-  color: #0f172a;
-  font-family: Inter, system-ui, sans-serif;
+  background: var(--nb-slate-50);
+  color: var(--nb-slate-900);
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+}
+
+/* Typography hierarchy */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--nb-slate-900);
+}
+
+p {
+  line-height: 1.6;
+}
+
+/* ─── Scrollbars ─── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--nb-green) var(--nb-slate-100);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--nb-slate-100);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--nb-green-light), var(--nb-green));
+  border-radius: 999px;
+  border: 2px solid var(--nb-slate-100);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--nb-green-dark);
+}
+
+/* ─── Tables (global enterprise styling) ─── */
+.nb-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nb-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nb-table tbody tr:nth-child(even) {
+  background-color: rgba(248, 250, 252, 0.85);
+}
+
+.nb-table tbody tr:hover {
+  background-color: var(--nb-green-muted);
+}
+
+.nb-table thead th {
+  text-align: center;
+}
+
+.nb-table tbody tr {
+  min-height: 64px;
+}
+
+.nb-table tbody td {
+  text-align: center;
+}
+
+.nb-table td,
+.nb-table th {
+  vertical-align: middle;
+}
+
+.nb-table td.num,
+.nb-table th.num {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Cards & charts ─── */
+.nb-card {
+  border-radius: var(--nb-radius);
+  border: 1px solid #e8ecf0;
+  background: white;
+  box-shadow: var(--nb-shadow);
+  transition: box-shadow var(--nb-transition), transform var(--nb-transition), border-color var(--nb-transition);
+}
+
+.nb-card:hover {
+  border-color: var(--nb-green-border);
+  box-shadow: 0 12px 32px rgba(22, 163, 74, 0.1);
+}
+
+.nb-chart-card {
+  border-radius: var(--nb-radius-lg);
+  border: 1px solid #e8ecf0;
+  background: white;
+  box-shadow: var(--nb-shadow);
+  padding: 24px;
+  transition: box-shadow var(--nb-transition);
+}
+
+.nb-print-safe {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* ─── Focus visible ─── */
+:focus-visible {
+  outline: 2px solid var(--nb-green);
+  outline-offset: 2px;
+}
+
+/* ─── Animations ─── */
+@keyframes nb-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes nb-slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nb-scale-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes nb-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.nb-animate-fade-in {
+  animation: nb-fade-in var(--nb-transition) ease-out both;
+}
+
+.nb-animate-slide-up {
+  animation: nb-slide-up var(--nb-transition) ease-out both;
+}
+
+.nb-animate-scale-in {
+  animation: nb-scale-in var(--nb-transition) ease-out both;
+}
+
+.nb-skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: nb-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--nb-radius);
+}
+
+/* ─── Print / PDF optimization ─── */
+@media print {
+  @page {
+    margin: 1.2cm 1.5cm;
+    size: A4;
+  }
+
+  body {
+    background: white !important;
+    color: #0f172a !important;
+    font-size: 11pt;
+  }
+
+  nav,
+  aside,
+  .no-print,
+  button:not(.print-visible),
+  [data-no-print] {
+    display: none !important;
+  }
+
+  .nb-table-wrap,
+  .nb-card,
+  .nb-chart-card,
+  article,
+  section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .nb-table {
+    break-inside: auto;
+    page-break-inside: auto;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .nb-table thead {
+    display: table-header-group;
+  }
+
+  .nb-table tfoot {
+    display: table-footer-group;
+  }
+
+  .nb-table tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .nb-table td,
+  .nb-table th {
+    padding: 8pt 10pt !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+
+  h1, h2, h3, h4 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  .nb-chart-card,
+  [class*="recharts"] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
 }
 
 @keyframes spin {
