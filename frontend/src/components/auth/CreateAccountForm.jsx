@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   FaEnvelope,
   FaEye,
@@ -25,7 +26,8 @@ import {
 import { ROLE_ONBOARDING_ROUTES, USER_ROLES } from "../../constants/roles";
 import { setPendingSignupRole } from "../../constants/auth";
 import { addRecentEmail, getRecentEmails } from "../../utils/recentEmails";
-import { saveRegisteredUser } from "../../utils/authStorage";
+import { savePendingSignup } from "../../utils/pendingSignup";
+import { validatePassword } from "../../services/authService";
 
 function PasswordField({
   id,
@@ -34,6 +36,7 @@ function PasswordField({
   autoComplete,
   value,
   onChange,
+  disabled,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,12 +62,14 @@ function PasswordField({
           value={value}
           onChange={onChange}
           className={inputClassName}
+          disabled={disabled}
         />
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
           className="ml-auto flex shrink-0 items-center justify-center text-[#64748B] transition-colors duration-300 hover:text-[#16A34A]"
           aria-label={showPassword ? "Hide password" : "Show password"}
+          disabled={disabled}
         >
           {showPassword ? (
             <FaEyeSlash className="text-base sm:text-lg" />
@@ -89,6 +94,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
   const [role, setRole] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [recentEmails, setRecentEmails] = useState(getRecentEmails());
   const [showGoogleMenu, setShowGoogleMenu] = useState(false);
   const [googleMessage, setGoogleMessage] = useState("");
@@ -97,14 +103,14 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
     setShowGoogleMenu(false);
   }, []);
 
-  const handleGoogleContinue = ({ success, email, message }) => {
-    if (success && email) {
-      setEmail(email);
-      addRecentEmail(email);
+  const handleGoogleContinue = ({ success, email: googleEmail, message }) => {
+    if (success && googleEmail) {
+      setEmail(googleEmail);
+      addRecentEmail(googleEmail);
       setRecentEmails(getRecentEmails());
       setFormError("");
       setGoogleMessage(
-        message || `Using ${email} to continue with NourishBridge.`
+        message || `Using ${googleEmail} to continue with NourishBridge.`,
       );
       return;
     }
@@ -120,36 +126,70 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
     e.preventDefault();
     setFormError("");
 
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setFormError(passwordError);
+      toast.error(passwordError);
+      return;
+    }
+
     if (password !== confirmPassword) {
       setFormError("Passwords do not match. Please try again.");
+      toast.error("Passwords do not match.");
       return;
     }
 
     if (!role) {
       setFormError("Please choose your role to continue.");
+      toast.error("Please choose your role.");
       return;
     }
 
     if (!agreedToTerms) {
       setFormError("You must agree to the Terms & Conditions and Privacy Policy.");
+      toast.error("Please agree to the terms to continue.");
       return;
     }
 
-    addRecentEmail(email);
-    setRecentEmails(getRecentEmails());
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+      setFormError("Phone number must contain 10–15 digits.");
+      toast.error("Enter a valid phone number.");
+      return;
+    }
 
-    const trimmedEmail = email.trim();
-    saveRegisteredUser({
-      email: trimmedEmail,
-      phone: phone.trim(),
-      role,
-      fullName: name.trim(),
-    });
-    setPendingSignupRole(role);
+    setLoading(true);
 
-    navigate(ROLE_ONBOARDING_ROUTES[role], {
-      state: { email: trimmedEmail, phone: phone.trim(), role, fullName: name.trim() },
-    });
+    try {
+      addRecentEmail(email);
+      setRecentEmails(getRecentEmails());
+
+      const trimmedEmail = email.trim();
+
+      savePendingSignup({
+        fullName: name.trim(),
+        email: trimmedEmail,
+        phone: phone.trim(),
+        password,
+        confirmPassword,
+        role,
+      });
+
+      setPendingSignupRole(role);
+
+      toast.success("Continue with your profile setup.");
+
+      navigate(ROLE_ONBOARDING_ROUTES[role], {
+        state: {
+          email: trimmedEmail,
+          phone: phone.trim(),
+          role,
+          fullName: name.trim(),
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -175,6 +215,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className={inputClassName}
+            disabled={loading}
           />
         </div>
       </div>
@@ -200,6 +241,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={inputClassName}
+            disabled={loading}
           />
         </div>
       </div>
@@ -225,6 +267,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className={inputClassName}
+            disabled={loading}
           />
         </div>
       </div>
@@ -232,10 +275,11 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
       <PasswordField
         id="register-password"
         label="Password"
-        placeholder="Enter your password"
+        placeholder="Min. 8 chars, upper, lower, number"
         autoComplete="new-password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        disabled={loading}
       />
 
       <PasswordField
@@ -245,6 +289,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
         autoComplete="new-password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
+        disabled={loading}
       />
 
       <fieldset className={LINE_GAP}>
@@ -259,6 +304,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
                 type="button"
                 onClick={() => setRole(item.id)}
                 aria-pressed={isSelected}
+                disabled={loading}
                 className={[
                   "flex flex-col items-center rounded-xl border px-3 py-4 text-center transition-all duration-300",
                   isSelected
@@ -288,6 +334,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
           onChange={(e) => setAgreedToTerms(e.target.checked)}
           className="mt-1 h-4 w-4 shrink-0 cursor-pointer rounded border-[#CBD5E1] text-[#16A34A] accent-[#16A34A] focus:ring-[#16A34A]/30"
           aria-label="Agree to terms and privacy policy"
+          disabled={loading}
         />
         <span className="text-base leading-7 text-[#64748B] sm:text-lg sm:leading-8">
           I agree to the{" "}
@@ -323,6 +370,8 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
         <div className="flex justify-center">
           <Button
             type="submit"
+            loading={loading}
+            disabled={loading}
             className="h-14 min-w-[280px] px-12 text-base sm:min-w-[300px] sm:text-lg"
           >
             Create Account
@@ -350,6 +399,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
                 setRecentEmails(getRecentEmails());
                 setShowGoogleMenu((prev) => !prev);
               }}
+              disabled={loading}
             >
               <GoogleLogo className="h-5 w-5 sm:h-6 sm:w-6" />
               Continue with Google
@@ -371,6 +421,7 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
             type="button"
             onClick={onSwitchToSignIn}
             className="font-semibold text-[#16A34A] transition-colors duration-300 hover:text-[#15803D] hover:underline"
+            disabled={loading}
           >
             Sign In
           </button>

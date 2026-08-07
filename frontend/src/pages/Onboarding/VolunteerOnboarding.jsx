@@ -1,46 +1,57 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import OnboardingLayout, {
   OnboardingTextInput,
 } from "../../components/onboarding/OnboardingLayout";
-import { goToVerifyOtp } from "../../constants/auth";
 import { AVAILABILITY_OPTIONS } from "../../constants/roles";
 import { fieldLabelClass } from "../../components/auth/authStyles";
+import useCompleteOnboarding from "../../hooks/useCompleteOnboarding";
 
 export default function VolunteerOnboarding() {
-  const navigate = useNavigate();
   const { state } = useLocation();
+  const completeOnboarding = useCompleteOnboarding();
   const [city, setCity] = useState("");
   const [availability, setAvailability] = useState([]);
   const [serviceRadius, setServiceRadius] = useState("");
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const toggleAvailability = (slot) => {
     setAvailability((prev) =>
       prev.includes(slot)
         ? prev.filter((item) => item !== slot)
-        : [...prev, slot]
+        : [...prev, slot],
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
+
+    if (!city.trim()) {
+      setFormError("City is required.");
+      return;
+    }
 
     if (availability.length === 0) {
       setFormError("Select at least one availability slot.");
       return;
     }
 
-    goToVerifyOtp(navigate, {
-      email: state?.email,
-      phone: state?.phone,
-      role: "volunteer",
-      fullName: state?.fullName,
-      city: city.trim(),
-      availability,
-      serviceRadiusKm: serviceRadius.trim() ? Number(serviceRadius) : 10,
-    });
+    setLoading(true);
+
+    try {
+      await completeOnboarding({
+        city: city.trim(),
+        availability,
+        serviceRadiusKm: serviceRadius.trim() ? Number(serviceRadius) : 10,
+        vehicleType: "bike",
+      });
+    } catch (error) {
+      setFormError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,6 +61,7 @@ export default function VolunteerOnboarding() {
       subtitle="Share your availability so we can assign nearby food pickups."
       onSubmit={handleSubmit}
       formError={formError}
+      loading={loading}
     >
       <OnboardingTextInput
         id="city"
@@ -57,6 +69,7 @@ export default function VolunteerOnboarding() {
         placeholder="Enter your city"
         value={city}
         onChange={(e) => setCity(e.target.value)}
+        disabled={loading}
       />
 
       <fieldset>
@@ -71,6 +84,7 @@ export default function VolunteerOnboarding() {
                 type="button"
                 onClick={() => toggleAvailability(slot)}
                 aria-pressed={isSelected}
+                disabled={loading}
                 className={[
                   "rounded-xl border px-4 py-3 text-left text-sm font-medium transition-all duration-300 sm:text-base",
                   isSelected
@@ -92,6 +106,7 @@ export default function VolunteerOnboarding() {
         placeholder="How far can you travel?"
         value={serviceRadius}
         onChange={(e) => setServiceRadius(e.target.value)}
+        disabled={loading}
       />
     </OnboardingLayout>
   );

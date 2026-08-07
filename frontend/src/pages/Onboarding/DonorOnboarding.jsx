@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import OnboardingLayout, {
   OnboardingTextInput,
 } from "../../components/onboarding/OnboardingLayout";
-import { goToVerifyOtp } from "../../constants/auth";
 import { DONOR_TYPES } from "../../constants/roles";
 import { fieldLabelClass } from "../../components/auth/authStyles";
+import useCompleteOnboarding from "../../hooks/useCompleteOnboarding";
 
 export default function DonorOnboarding() {
-  const navigate = useNavigate();
   const { state } = useLocation();
+  const completeOnboarding = useCompleteOnboarding();
   const [donorType, setDonorType] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
 
@@ -23,14 +24,19 @@ export default function DonorOnboarding() {
       return;
     }
 
-    goToVerifyOtp(navigate, {
-      email: state?.email,
-      phone: state?.phone,
-      role: state?.role || "donor",
-      fullName: state?.fullName,
-      donorType:
-        DONOR_TYPES.find((item) => item.id === donorType)?.label ?? "Individual",
-    });
+    setLoading(true);
+
+    try {
+      await completeOnboarding({
+        donorTypeId: donorType,
+        pickupLocation: pickupLocation.trim(),
+        organizationName: state?.fullName,
+      });
+    } catch (error) {
+      setFormError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,6 +46,7 @@ export default function DonorOnboarding() {
       subtitle="Tell us about your food donations so we can match you with nearby NGOs."
       onSubmit={handleSubmit}
       formError={formError}
+      loading={loading}
     >
       <fieldset>
         <legend className={fieldLabelClass}>Donor Type</legend>
@@ -53,6 +60,7 @@ export default function DonorOnboarding() {
                 type="button"
                 onClick={() => setDonorType(item.id)}
                 aria-pressed={isSelected}
+                disabled={loading}
                 className={[
                   "rounded-xl border px-4 py-3 text-left text-base font-medium transition-all duration-300",
                   isSelected
@@ -73,6 +81,7 @@ export default function DonorOnboarding() {
         placeholder="Enter your usual pickup address"
         value={pickupLocation}
         onChange={(e) => setPickupLocation(e.target.value)}
+        disabled={loading}
       />
     </OnboardingLayout>
   );

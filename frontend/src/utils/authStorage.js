@@ -195,7 +195,9 @@ export function saveDonorSettings(settings) {
 }
 
 export function logoutDonor() {
-  clearSessionUser();
+  import("../services/authService.js").then(({ logout }) =>
+    logout({ redirect: true }),
+  );
 }
 
 function normalizeEmail(email) {

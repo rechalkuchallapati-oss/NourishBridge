@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { FaEnvelope, FaEye, FaEyeSlash, FaLock } from "react-icons/fa";
 import Button from "../common/Button";
 import EmailSuggestions from "./EmailSuggestions";
@@ -22,15 +23,14 @@ import {
   getRecentEmails,
 } from "../../utils/recentEmails";
 import { USER_ROLES } from "../../constants/roles";
-import {
-  getDashboardRouteForRole,
-  getRegisteredUser,
-  saveRegisteredUser,
-  setSessionUser,
-} from "../../utils/authStorage";
+import { getDashboardRouteForRole, getRegisteredUser } from "../../utils/authStorage";
+import { useAuth } from "../../context/AuthContext";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 export default function SignInForm({ onSwitchToCreate }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
   const emailFieldRef = useRef(null);
   const googleMenuRef = useRef(null);
 
@@ -38,8 +38,9 @@ export default function SignInForm({ onSwitchToCreate }) {
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
   const [otpMessage, setOtpMessage] = useState("");
-  const [otpError, setOtpError] = useState("");
   const [recentEmails, setRecentEmails] = useState([]);
   const [showEmailSuggestions, setShowEmailSuggestions] = useState(false);
   const [showGoogleMenu, setShowGoogleMenu] = useState(false);
@@ -84,39 +85,44 @@ export default function SignInForm({ onSwitchToCreate }) {
   const handleEmailSelect = (value) => {
     setEmail(value);
     setShowEmailSuggestions(false);
-    setOtpError("");
-    setOtpMessage("");
+    setFormError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addRecentEmail(email);
-    refreshRecentEmails();
+    setFormError("");
+    setLoading(true);
 
-    const trimmedEmail = email.trim();
-    const registered = getRegisteredUser(trimmedEmail);
-    const userRole = registered?.role || role;
+    try {
+      addRecentEmail(email);
+      refreshRecentEmails();
 
-    const sessionUser = {
-      email: trimmedEmail,
-      fullName: registered?.fullName || trimmedEmail.split("@")[0],
-      phone: registered?.phone ?? "",
-      role: userRole,
-      organization: registered?.organization ?? "",
-    };
+      const sessionUser = await login({
+        email: email.trim(),
+        password,
+        rememberMe,
+      });
 
-    setSessionUser(sessionUser);
-    saveRegisteredUser({ ...sessionUser, role: userRole });
+      toast.success(`Welcome back, ${sessionUser.fullName?.split(" ")[0] || "there"}!`);
 
-    navigate(getDashboardRouteForRole(userRole), { replace: true });
+      const redirectTo =
+        location.state?.from || getDashboardRouteForRole(sessionUser.role);
+      navigate(redirectTo, { replace: true });
+    } catch (error) {
+      const message = getApiErrorMessage(error, "Invalid email or password.");
+      setFormError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleForgotPassword = () => {
-    setOtpError("");
+    setFormError("");
     setOtpMessage("");
 
     if (!email.trim()) {
-      setOtpError("Enter your email address first to receive an OTP.");
+      setFormError("Enter your email address first to receive an OTP.");
       setShowEmailSuggestions(getRecentEmails().length > 0);
       return;
     }
@@ -125,19 +131,19 @@ export default function SignInForm({ onSwitchToCreate }) {
     refreshRecentEmails();
 
     setOtpMessage(
-      `An OTP has been sent to ${email.trim()}. Check your inbox to reset your password.`
+      `An OTP has been sent to ${email.trim()}. Check your inbox to reset your password.`,
     );
   };
 
-  const handleGoogleContinue = ({ success, email, message }) => {
-    if (success && email) {
-      setEmail(email);
-      addRecentEmail(email);
+  const handleGoogleContinue = ({ success, email: googleEmail, message }) => {
+    if (success && googleEmail) {
+      setEmail(googleEmail);
+      addRecentEmail(googleEmail);
       refreshRecentEmails();
-      setOtpError("");
+      setFormError("");
       setGoogleMessage(
         message ||
-          `Using ${email} to continue with NourishBridge. Enter your password to sign in.`
+          `Using ${googleEmail} to continue with NourishBridge. Enter your password to sign in.`,
       );
       return;
     }
@@ -172,6 +178,7 @@ export default function SignInForm({ onSwitchToCreate }) {
               onChange={(e) => {
                 setEmail(e.target.value);
                 setShowEmailSuggestions(true);
+                setFormError("");
               }}
               onFocus={handleEmailFocus}
               onClick={handleEmailFocus}
@@ -179,6 +186,7 @@ export default function SignInForm({ onSwitchToCreate }) {
               aria-expanded={showEmailSuggestions}
               aria-haspopup="listbox"
               aria-controls="signin-email-suggestions"
+              disabled={loading}
             />
           </div>
 
@@ -213,14 +221,19 @@ export default function SignInForm({ onSwitchToCreate }) {
             autoComplete="current-password"
             placeholder="Enter your password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setFormError("");
+            }}
             className={inputClassName}
+            disabled={loading}
           />
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
             className="ml-auto flex shrink-0 items-center justify-center text-[#64748B] transition-colors duration-300 hover:text-[#16A34A]"
             aria-label={showPassword ? "Hide password" : "Show password"}
+            disabled={loading}
           >
             {showPassword ? (
               <FaEyeSlash className="text-base sm:text-lg" />
@@ -243,6 +256,7 @@ export default function SignInForm({ onSwitchToCreate }) {
                 type="button"
                 onClick={() => setRole(item.id)}
                 aria-pressed={isSelected}
+                disabled={loading}
                 className={[
                   "flex flex-col items-center rounded-xl border px-2 py-3 text-center transition-all duration-300",
                   isSelected
@@ -260,6 +274,9 @@ export default function SignInForm({ onSwitchToCreate }) {
             );
           })}
         </div>
+        <p className="text-xs text-[#94A3B8] sm:text-sm">
+          Your account role is determined by your registration. This selector is for display only.
+        </p>
       </fieldset>
 
       <div className="flex items-center justify-between gap-4">
@@ -271,6 +288,7 @@ export default function SignInForm({ onSwitchToCreate }) {
             onChange={(e) => setRememberMe(e.target.checked)}
             className="h-4 w-4 shrink-0 cursor-pointer rounded border-[#CBD5E1] text-[#16A34A] accent-[#16A34A] focus:ring-[#16A34A]/30"
             aria-label="Remember me"
+            disabled={loading}
           />
         </label>
 
@@ -278,6 +296,7 @@ export default function SignInForm({ onSwitchToCreate }) {
           type="button"
           onClick={handleForgotPassword}
           className="shrink-0 text-base font-medium text-[#16A34A] transition-colors duration-300 hover:text-[#15803D] hover:underline sm:text-lg"
+          disabled={loading}
         >
           Forgot password?
         </button>
@@ -289,9 +308,9 @@ export default function SignInForm({ onSwitchToCreate }) {
         </p>
       )}
 
-      {otpError && (
+      {formError && (
         <p className="rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs leading-5 text-red-600 sm:text-sm">
-          {otpError}
+          {formError}
         </p>
       )}
 
@@ -304,6 +323,8 @@ export default function SignInForm({ onSwitchToCreate }) {
       <div className="flex justify-center">
         <Button
           type="submit"
+          loading={loading}
+          disabled={loading}
           className="h-14 min-w-[260px] px-12 text-base sm:min-w-[280px] sm:text-lg"
         >
           Sign In
@@ -332,6 +353,7 @@ export default function SignInForm({ onSwitchToCreate }) {
               setShowGoogleMenu((prev) => !prev);
               setShowEmailSuggestions(false);
             }}
+            disabled={loading}
           >
             <GoogleLogo className="h-5 w-5 sm:h-6 sm:w-6" />
             Continue with Google
@@ -353,6 +375,7 @@ export default function SignInForm({ onSwitchToCreate }) {
           type="button"
           onClick={onSwitchToCreate}
           className="font-semibold text-[#16A34A] transition-colors duration-300 hover:text-[#15803D] hover:underline"
+          disabled={loading}
         >
           Create account
         </button>

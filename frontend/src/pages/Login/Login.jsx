@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Container from "../../components/common/Container";
+import GuestRoute from "../../components/auth/GuestRoute";
 import SignInForm from "../../components/auth/SignInForm";
 import CreateAccountForm from "../../components/auth/CreateAccountForm";
 
@@ -62,11 +64,14 @@ function AuthHeader() {
 }
 
 export default function Login() {
-  const [activeTab, setActiveTab] = useState("signin");
+  const location = useLocation();
+  const initialTab = location.state?.tab === "create" ? "create" : "signin";
+  const [activeTab, setActiveTab] = useState(initialTab);
   const isSignIn = activeTab === "signin";
 
   return (
-    <section className="relative min-h-[calc(100vh-90px)] overflow-hidden bg-gradient-to-b from-[#F8FFF8] via-white to-[#F0FDF4] py-12 sm:py-16">
+    <GuestRoute>
+      <section className="relative min-h-[calc(100vh-90px)] overflow-hidden bg-gradient-to-b from-[#F8FFF8] via-white to-[#F0FDF4] py-12 sm:py-16">
       <div
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_50%_0%,#ECFDF3_0%,transparent_55%)]"
         aria-hidden="true"
@@ -126,5 +131,6 @@ export default function Login() {
         </motion.div>
       </Container>
     </section>
+    </GuestRoute>
   );
 }
