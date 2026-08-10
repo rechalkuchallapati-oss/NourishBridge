@@ -6,6 +6,7 @@ import Home from "../pages/Home/Home";
 import NGO from "../pages/NGO/NGO";
 import Contact from "../pages/Contact/Contact";
 import Login from "../pages/Login/Login";
+import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import Register from "../pages/Register/Register";
 import DonorOnboarding from "../pages/Onboarding/DonorOnboarding";
 import NGOOnboarding from "../pages/Onboarding/NGOOnboarding";
@@ -13,6 +14,7 @@ import VolunteerOnboarding from "../pages/Onboarding/VolunteerOnboarding";
 import VerifyOTP from "../pages/VerifyOTP/VerifyOTP";
 import DonorDashboard from "../pages/Dashboard/DonorDashboard";
 import CreateDonation from "../pages/Dashboard/CreateDonation";
+import DonationDetail from "../pages/Dashboard/DonationDetail";
 import MyDonations from "../pages/Dashboard/MyDonations";
 import ScheduledPickups from "../pages/Dashboard/ScheduledPickups";
 import MyImpact from "../pages/Dashboard/MyImpact";
@@ -54,7 +56,7 @@ import AdminShell from "../components/dashboard/AdminShell";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
 import AdminUsers from "../pages/Admin/AdminUsers";
 import AdminNgos from "../pages/Admin/AdminNgos";
-import AdminSectionPage from "../components/admin/AdminSectionPage";
+import AdminProfile from "../pages/Admin/AdminProfile";
 import AdminDonors from "../pages/Admin/AdminDonors";
 import AdminSupportTickets from "../pages/Admin/AdminSupportTickets";
 import AdminSystemSettings from "../pages/Admin/AdminSystemSettings";
@@ -66,6 +68,7 @@ import AdminDonations from "../pages/Admin/AdminDonations";
 import AdminVolunteers from "../pages/Admin/AdminVolunteers";
 import AdminFoodRequests from "../pages/Admin/AdminFoodRequests";
 import AdminDeliveries from "../pages/Admin/AdminDeliveries";
+import Forbidden403 from "../pages/Forbidden/Forbidden403";
 
 const AppRoutes = () => {
   return (
@@ -99,6 +102,14 @@ const AppRoutes = () => {
         element={
           <Layout>
             <Login />
+          </Layout>
+        }
+      />
+      <Route
+        path="/forgot-password"
+        element={
+          <Layout>
+            <ForgotPassword />
           </Layout>
         }
       />
@@ -148,10 +159,20 @@ const AppRoutes = () => {
           </Layout>
         }
       />
+      <Route
+        path="/403"
+        element={
+          <Layout>
+            <Forbidden403 />
+          </Layout>
+        }
+      />
       <Route element={<ProtectedRoute allowedRoles={["donor"]} />}>
         <Route path="/dashboard/donor" element={<DonorDashboard />} />
         <Route path="/dashboard/donor/create" element={<CreateDonation />} />
         <Route path="/dashboard/donor/donations" element={<MyDonations />} />
+        <Route path="/dashboard/donor/donations/:id" element={<DonationDetail />} />
+        <Route path="/dashboard/donor/donations/:id/edit" element={<CreateDonation />} />
         <Route path="/dashboard/donor/pickups" element={<ScheduledPickups />} />
         <Route path="/dashboard/donor/active" element={<ActiveDonations />} />
         <Route path="/dashboard/donor/history" element={<DonationHistory />} />
@@ -212,7 +233,7 @@ const AppRoutes = () => {
           <Route path="support-tickets" element={<AdminSupportTickets />} />
           <Route path="system-settings" element={<AdminSystemSettings />} />
           <Route path="audit-logs" element={<AdminAuditLogs />} />
-          <Route path="profile" element={<AdminSectionPage sectionId="profile" />} />
+          <Route path="profile" element={<AdminProfile />} />
         </Route>
       </Route>
     </Routes>

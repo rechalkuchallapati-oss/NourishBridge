@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaClipboardList,
@@ -31,6 +31,12 @@ import {
   computeFoodRequestStats,
   filterFoodRequests,
 } from "../../data/ngoFoodRequests";
+import {
+  fetchFoodRequests,
+  createFoodRequest,
+  cancelFoodRequest,
+} from "../../modules/foodRequests/services/foodRequestService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -169,7 +175,8 @@ export default function NGOFoodRequests() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [requests, setRequests] = useState(FOOD_REQUESTS);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [filters, setFilters] = useState({
@@ -234,36 +241,64 @@ export default function NGOFoodRequests() {
     toast("Edit form coming soon — selected " + selected.id, { icon: "✏️" });
   };
 
-  const handleCancel = () => {
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const items = await fetchFoodRequests();
+        if (!cancelled) setRequests(items);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleCancel = async () => {
     if (!selected) return;
-    setRequests((prev) =>
-      prev.map((r) => (r.id === selected.id ? { ...r, status: "expired" } : r))
-    );
-    toast.success(`${selected.id} cancelled`);
+    try {
+      const updated = await cancelFoodRequest(selected.mongoId || selected.id, "Cancelled by NGO");
+      setRequests((prev) =>
+        prev.map((r) => ((r.mongoId || r.id) === (selected.mongoId || selected.id) ? updated : r)),
+      );
+      toast.success(`${selected.id} cancelled`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
-  const handleCreateSubmit = (event) => {
+  const handleCreateSubmit = async (event) => {
     event.preventDefault();
     const form = event.target;
-    const newId = `REQ-${2048 + requests.length + 1}`;
-    const newRequest = {
-      id: newId,
-      foodNeeded: form.foodNeeded.value,
-      quantity: form.quantity.value,
-      priority: form.priority.value,
-      neededBy: form.neededBy.value,
-      location: form.location.value,
-      locationKey: form.locationKey.value,
-      status: "open",
-      category: form.category.value,
-      dateKey: "today",
-      notes: form.notes.value,
-      createdAt: "Just now",
-    };
-    setRequests((prev) => [newRequest, ...prev]);
-    setSelectedId(newId);
-    setShowCreateModal(false);
-    toast.success(`Request ${newId} created`);
+
+    try {
+      const newRequest = await createFoodRequest({
+        foodItem: form.foodNeeded.value,
+        title: form.foodNeeded.value,
+        quantity: form.quantity.value,
+        priority: form.priority.value,
+        requiredDate: form.neededBy.value,
+        location: form.location.value,
+        category: form.category.value,
+        beneficiaries: Number(form.beneficiaries?.value) || 0,
+        specialRequirements: form.notes?.value || "",
+      });
+
+      setRequests((prev) => [newRequest, ...prev]);
+      setSelectedId(newRequest.id);
+      setShowCreateModal(false);
+      toast.success(`Request ${newRequest.id} created`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { FaUser } from "react-icons/fa";
@@ -15,6 +15,14 @@ import {
   getSessionUser,
   saveNgoProfile,
 } from "../../utils/authStorage";
+import {
+  fetchProfile,
+  saveProfile,
+  profileToNgoForm,
+  ngoFormToPayload,
+} from "../../modules/profile/services/profileService";
+import ProfileImageUpload from "../../components/profile/ProfileImageUpload";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const inputClass =
@@ -24,6 +32,30 @@ export default function NGOProfileCapacity() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
   const [profile, setProfile] = useState(() => ({ ...DEFAULT_NGO_PROFILE, ...getNgoProfile() }));
+  const [profileImage, setProfileImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const apiProfile = await fetchProfile();
+        if (!mounted) return;
+        setProfile({ ...DEFAULT_NGO_PROFILE, ...profileToNgoForm(apiProfile) });
+        setProfileImage(apiProfile.common?.profileImage || "");
+      } catch (error) {
+        toast.error(getApiErrorMessage(error));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const update = (field, value) => setProfile((prev) => ({ ...prev, [field]: value }));
 
@@ -36,10 +68,21 @@ export default function NGOProfileCapacity() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    saveNgoProfile(profile);
-    toast.success("Profile & capacity settings saved.");
+    setSaving(true);
+
+    try {
+      const updated = await saveProfile(ngoFormToPayload(profile));
+      const form = { ...DEFAULT_NGO_PROFILE, ...profileToNgoForm(updated) };
+      setProfile(form);
+      saveNgoProfile(form);
+      toast.success("Profile & capacity settings saved.");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -59,6 +102,17 @@ export default function NGOProfileCapacity() {
             icon={FaUser}
             title="Profile & Capacity"
             description="Operational information used for donation matching — service areas, capacity, storage, and availability."
+          />
+
+          <ProfileImageUpload
+            profileImage={profileImage}
+            displayName={profile.organizationName || orgName}
+            accent="blue"
+            onUploaded={(url) => {
+              setProfileImage(url);
+              toast.success("Profile photo updated.");
+            }}
+            onError={(message) => toast.error(message)}
           />
 
           <div className="rounded-[16px] border border-[#DBEAFE] bg-[#EFF6FF] p-[0.5cm] text-sm text-[#1D4ED8]">
@@ -249,11 +303,16 @@ export default function NGOProfileCapacity() {
             </div>
           </fieldset>
 
+          {loading ? (
+            <p className="text-sm text-[#64748B]">Loading profile…</p>
+          ) : null}
+
           <button
             type="submit"
-            className="self-start rounded-[16px] bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+            disabled={loading || saving}
+            className="self-start rounded-[16px] bg-[#2563EB] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1D4ED8] disabled:opacity-60"
           >
-            Save profile & capacity
+            {saving ? "Saving…" : "Save profile & capacity"}
           </button>
         </form>
       </motion.section>

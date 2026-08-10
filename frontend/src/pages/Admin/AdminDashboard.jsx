@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -31,7 +31,25 @@ import {
   RECENT_DONATIONS,
   TOP_PERFORMING_NGOS,
 } from "../../data/adminDashboard";
+import { fetchAdminDashboard } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
+import toast, { Toaster } from "react-hot-toast";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+
+function formatRelativeTime(dateStr) {
+  if (!dateStr) return "—";
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins || 1} mins ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs} hour${hrs > 1 ? "s" : ""} ago`;
+  return new Date(dateStr).toLocaleDateString();
+}
+
+function formatStatusLabel(status) {
+  if (!status) return "Unknown";
+  return status.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -89,12 +107,71 @@ export default function AdminDashboard() {
   const [activityExpanded, setActivityExpanded] = useState(false);
   const [donationsExpanded, setDonationsExpanded] = useState(false);
   const [ngosExpanded, setNgosExpanded] = useState(false);
+  const [dashboard, setDashboard] = useState(null);
 
-  const visibleActivity = activityExpanded ? REALTIME_ACTIVITY : REALTIME_ACTIVITY.slice(0, 5);
-  const visibleDonations = donationsExpanded ? RECENT_DONATIONS : RECENT_DONATIONS.slice(0, 4);
-  const visibleNgos = ngosExpanded ? TOP_PERFORMING_NGOS : TOP_PERFORMING_NGOS.slice(0, 3);
+  useEffect(() => {
+    let cancelled = false;
+    fetchAdminDashboard()
+      .then((data) => {
+        if (!cancelled) setDashboard(data);
+      })
+      .catch((err) => {
+        if (!cancelled) toast.error(getApiErrorMessage(err));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const trend = dashboard?.trend || [];
+  const byCategory = dashboard?.byCategory || [];
+  const weekTotal = trend.reduce((s, t) => s + (t.donations || 0), 0);
+
+  const activity = (dashboard?.activity || REALTIME_ACTIVITY).map((item, i) => ({
+    id: item.id || i,
+    icon: "📋",
+    message: item.message,
+    ref: item.ref || "",
+    time: item.time ? formatRelativeTime(item.time) : item.time,
+  }));
+
+  const recentDonations = dashboard?.summary
+    ? (dashboard.recentDonations || []).map((d) => ({
+        id: d.donationCode || d.id,
+        donor: d.donorName,
+        food: d.foodName,
+        ngo: d.ngoName || "—",
+        status: formatStatusLabel(d.status),
+        time: formatRelativeTime(d.createdAt),
+      }))
+    : RECENT_DONATIONS;
+
+  const topNgos = (dashboard?.topNgos || TOP_PERFORMING_NGOS).map((n) => ({
+    id: n.id,
+    name: n.name,
+    donations: n.donations,
+    mealsDelivered: n.meals,
+    rating: n.rating || "—",
+  }));
+
+  const analytics = dashboard?.analytics || {};
+  const footerStats = [
+    { id: "donations", value: analytics.totalDonations ?? FOOTER_MONITORING[0]?.value, label: "Total Donations", trend: 0, trendLabel: "live", icon: "truck", accent: "green" },
+    { id: "meals", value: analytics.mealsGenerated ?? FOOTER_MONITORING[1]?.value, label: "Meals Generated", trend: 0, trendLabel: "live", icon: "leaf", accent: "green" },
+    { id: "deliveries", value: analytics.deliveriesCompleted ?? FOOTER_MONITORING[2]?.value, label: "Deliveries Completed", trend: 0, trendLabel: "live", icon: "route", accent: "blue" },
+    { id: "ontime", value: analytics.onTimeDeliveryRate != null ? `${analytics.onTimeDeliveryRate}%` : FOOTER_MONITORING[3]?.value, label: "On-time Rate", trend: 0, trendLabel: "live", icon: "clock", accent: "amber" },
+    { id: "volunteers", value: analytics.activeVolunteers ?? FOOTER_MONITORING[4]?.value, label: "Active Volunteers", trend: 0, trendLabel: "live", icon: "alert", accent: "slate" },
+    { id: "impact", value: analytics.livesImpacted ?? FOOTER_MONITORING[5]?.value, label: "Lives Impacted", trend: 0, trendLabel: "live", icon: "ticket", accent: "slate" },
+  ];
+
+  const visibleActivity = activityExpanded ? activity : activity.slice(0, 5);
+  const visibleDonations = donationsExpanded ? recentDonations : recentDonations.slice(0, 4);
+  const visibleNgos = ngosExpanded ? topNgos : topNgos.slice(0, 3);
+  const pendingCount = dashboard?.summary?.pendingVerifications ?? PENDING_VERIFICATIONS.ngos;
 
   return (
+    <>
+    <Toaster position="top-center" />
     <motion.section
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
@@ -110,18 +187,15 @@ export default function AdminDashboard() {
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           <AdminInteractivePanel className="min-h-[280px]">
             <PanelHeader icon={FaChartLine} title="Donations Overview" subtitle="Daily donations — last 7 days" />
-            <AdminDonationsOverviewChart />
+            <AdminDonationsOverviewChart data={trend.length ? trend : undefined} />
             <p className="mt-3 text-sm text-[#64748B]">
-              <span className="font-bold text-[#16A34A]">443</span> donations this week
-              <span className="ml-2 inline-flex items-center gap-0.5 text-xs font-semibold text-[#16A34A]">
-                <FaArrowUp aria-hidden="true" /> 16%
-              </span>
+              <span className="font-bold text-[#16A34A]">{weekTotal || "—"}</span> donations this week
             </p>
           </AdminInteractivePanel>
 
           <AdminInteractivePanel className="min-h-[280px]">
             <PanelHeader icon={FaChartPie} title="Donations by Category" subtitle="Food type distribution" />
-            <AdminDonationsCategoryPie />
+            <AdminDonationsCategoryPie data={byCategory.length ? byCategory : undefined} />
           </AdminInteractivePanel>
 
           <AdminInteractivePanel className="min-h-[280px] lg:col-span-2 xl:col-span-1">
@@ -231,9 +305,9 @@ export default function AdminDashboard() {
           <PanelHeader icon={FaUsers} title="Pending Verifications" subtitle="Applications awaiting admin review" />
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              { label: "NGOs", count: PENDING_VERIFICATIONS.ngos, icon: FaBuilding, to: `${DASHBOARD_ROUTES.admin}/ngos` },
-              { label: "Volunteers", count: PENDING_VERIFICATIONS.volunteers, icon: FaUserFriends, to: `${DASHBOARD_ROUTES.admin}/volunteers` },
-              { label: "Donors", count: PENDING_VERIFICATIONS.donors, icon: FaUsers, to: `${DASHBOARD_ROUTES.admin}/donors` },
+              { label: "NGOs", count: pendingCount, icon: FaBuilding, to: `${DASHBOARD_ROUTES.admin}/ngos` },
+              { label: "Volunteers", count: dashboard?.summary?.totalVolunteers ?? PENDING_VERIFICATIONS.volunteers, icon: FaUserFriends, to: `${DASHBOARD_ROUTES.admin}/volunteers` },
+              { label: "Donors", count: dashboard?.summary?.totalDonors ?? PENDING_VERIFICATIONS.donors, icon: FaUsers, to: `${DASHBOARD_ROUTES.admin}/donors` },
             ].map((item) => {
               const Icon = item.icon;
               return (
@@ -256,7 +330,7 @@ export default function AdminDashboard() {
         </AdminInteractivePanel>
 
         <footer className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-          {FOOTER_MONITORING.map((card) => {
+          {footerStats.map((card) => {
             const Icon = FOOTER_ICONS[card.icon];
             const accent = FOOTER_ACCENTS[card.accent] ?? FOOTER_ACCENTS.slate;
             const isUp = card.trend > 0;
@@ -292,5 +366,6 @@ export default function AdminDashboard() {
         </footer>
       </div>
     </motion.section>
+    </>
   );
 }

@@ -35,6 +35,13 @@ export const ALLERGEN_OPTIONS = [
   "Multiple allergens — see notes",
 ];
 
+export const FRESHNESS_OPTIONS = [
+  { id: "fresh", label: "Fresh" },
+  { id: "good", label: "Good" },
+  { id: "consume_soon", label: "Consume soon" },
+  { id: "unknown", label: "Unknown" },
+];
+
 export const DATE_FILTER_OPTIONS = [
   { id: "all", label: "All dates" },
   { id: "7", label: "Last 7 days" },
@@ -45,11 +52,16 @@ export const DATE_FILTER_OPTIONS = [
 export const STATUS_FILTER_OPTIONS = [
   { id: "all", label: "All statuses" },
   { id: "active", label: "Active" },
-  { id: "posted", label: "Posted" },
-  { id: "ngo_matched", label: "NGO Matched" },
+  { id: "pending", label: "Pending" },
+  { id: "verified", label: "Verified" },
+  { id: "ngo_accepted", label: "NGO Accepted" },
   { id: "volunteer_assigned", label: "Volunteer Assigned" },
+  { id: "pickup_scheduled", label: "Pickup Scheduled" },
   { id: "picked_up", label: "Picked Up" },
   { id: "in_transit", label: "In Transit" },
   { id: "delivered", label: "Delivered" },
-  { id: "ngo_confirmed", label: "NGO Confirmed" },
+  { id: "completed", label: "Completed" },
+  { id: "rejected", label: "Rejected" },
+  { id: "cancelled", label: "Cancelled" },
+  { id: "expired", label: "Expired" },
 ];

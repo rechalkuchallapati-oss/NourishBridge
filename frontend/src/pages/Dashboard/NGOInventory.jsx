@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -32,6 +32,8 @@ import {
   INVENTORY_DATE_OPTIONS,
   filterInventoryBatches,
 } from "../../data/ngoInventory";
+import { fetchNgoInventory, fetchInventoryAlerts } from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -178,7 +180,50 @@ export default function NGOInventory() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [batches, setBatches] = useState(INVENTORY_BATCHES);
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(INVENTORY_OVERVIEW_STATS);
+  const [expiryAlerts, setExpiryAlerts] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const [items, alerts] = await Promise.all([
+          fetchNgoInventory(),
+          fetchInventoryAlerts(3),
+        ]);
+        if (!cancelled) {
+          setBatches(items);
+          const alertItems = [
+            ...(alerts.alerts?.expiring || []),
+            ...(alerts.alerts?.upcomingExpiry || []),
+            ...(alerts.alerts?.expired || []),
+          ];
+          setExpiryAlerts(alertItems);
+          setStats((prev) => ({
+            ...prev,
+            foodBatches: items.length,
+            nearExpiry: alerts.summary?.expiringCount ?? prev.nearExpiry,
+            expiredItems: alerts.summary?.expiredCount ?? prev.expiredItems,
+            availableFoodStock: items.reduce((sum, b) => sum + (b.availableQuantity || 0), 0),
+          }));
+        }
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const [selectedId, setSelectedId] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filters, setFilters] = useState({
@@ -189,8 +234,6 @@ export default function NGOInventory() {
     date: "all",
     batchId: "",
   });
-
-  const stats = INVENTORY_OVERVIEW_STATS;
 
   const filtered = useMemo(
     () => filterInventoryBatches(batches, filters),
@@ -300,6 +343,21 @@ export default function NGOInventory() {
               ))}
             </div>
           </div>
+
+          {expiryAlerts.length > 0 ? (
+            <div className="rounded-[16px] border border-amber-200 bg-amber-50 p-[0.5cm]">
+              <p className="text-sm font-bold text-amber-800">Expiry Alerts</p>
+              <ul className="mt-2 space-y-1">
+                {expiryAlerts.slice(0, 5).map((alert) => (
+                  <li key={alert.id || alert.batchCode} className="text-sm text-amber-900">
+                    {alert.itemName || alert.foodItem} — {alert.quantity} {alert.quantityUnit || "units"} expires{" "}
+                    {alert.expiryDate ? new Date(alert.expiryDate).toLocaleDateString() : "soon"}
+                    {alert.alertLevel ? ` (${alert.alertLevel})` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div className="grid gap-[0.5cm] lg:grid-cols-[minmax(0,1fr)_260px] xl:grid-cols-[minmax(0,1fr)_280px]">
             <div className="flex min-w-0 flex-col gap-[0.5cm]">

@@ -22,13 +22,15 @@ export default function DonationDetailsDrawer({
   onClose,
   onAccept,
   onReject,
+  onComplete,
   canAccept,
   canReject,
+  canComplete,
 }) {
   if (!donation) return null;
 
   const foodImage = getDonationFoodImage(donation);
-  const showActions = canAccept || canReject;
+  const showActions = canAccept || canReject || canComplete;
 
   return (
     <NGODetailsDrawer
@@ -64,6 +66,15 @@ export default function DonationDetailsDrawer({
                   className="flex-1 rounded-[10px] border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
                 >
                   Reject Donation
+                </button>
+              ) : null}
+              {canComplete ? (
+                <button
+                  type="button"
+                  onClick={() => onComplete(donation)}
+                  className="flex-1 rounded-[10px] bg-[#2563EB] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+                >
+                  Confirm Receipt
                 </button>
               ) : null}
             </div>

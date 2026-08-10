@@ -29,6 +29,8 @@ import {
   ADMIN_TR,
   DEFAULT_PAGE_SIZE_OPTIONS,
 } from "../../components/admin/adminStyles";
+import { fetchAdminAuditLogs } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import {
   ADMIN_AUDIT_LOGS,
   AUDIT_ACTION_COLORS,
@@ -111,6 +113,7 @@ export default function AdminAuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [search, setSearch] = useState("");
+  const [auditLogs, setAuditLogs] = useState(ADMIN_AUDIT_LOGS);
   const [filters, setFilters] = useState({
     action: "all",
     userType: "all",
@@ -119,9 +122,33 @@ export default function AdminAuditLogs() {
     dateTo: "2024-05-31",
   });
 
+  useEffect(() => {
+    let cancelled = false;
+    fetchAdminAuditLogs({ limit: 200 })
+      .then((data) => {
+        if (cancelled || !data.logs?.length) return;
+        setAuditLogs(
+          data.logs.map((log) => ({
+            id: log.id,
+            timestamp: log.createdAt,
+            user: log.actorName || "System",
+            userType: log.actorRole || "system",
+            action: log.action,
+            module: log.module,
+            description: log.description,
+            ip: "—",
+          })),
+        );
+      })
+      .catch((err) => toast.error(getApiErrorMessage(err)));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const filtered = useMemo(
-    () => filterAuditLogs(ADMIN_AUDIT_LOGS, { search, ...filters }),
-    [search, filters],
+    () => filterAuditLogs(auditLogs, { search, ...filters }),
+    [auditLogs, search, filters],
   );
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));

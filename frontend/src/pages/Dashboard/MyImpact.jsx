@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaChartBar,
@@ -15,6 +16,7 @@ import {
   IMPACT_METHODOLOGY_NOTE,
   IMPACT_SUMMARY,
 } from "../../data/donorImpact";
+import { fetchProfileImpact } from "../../modules/profile/services/profileService";
 import { getDonorDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -60,10 +62,67 @@ function ImpactMetricCard({
   );
 }
 
+function buildSummaryFromApi(stats = {}) {
+  const fallback = IMPACT_SUMMARY;
+  const mealsContributed = stats.mealsContributed ?? fallback.mealsContributed.value;
+  const foodRescuedKg =
+    stats.avgQuantityKg != null && stats.totalDonations != null
+      ? Math.round(stats.avgQuantityKg * stats.totalDonations)
+      : fallback.foodRescuedKg.value;
+
+  return {
+    mealsContributed: {
+      value: mealsContributed,
+      label: fallback.mealsContributed.label,
+      note: "Live total from your donor profile.",
+    },
+    foodRescuedKg: {
+      value: foodRescuedKg,
+      label: fallback.foodRescuedKg.label,
+      note: stats.avgQuantityKg != null
+        ? "Calculated from average donation weight."
+        : fallback.foodRescuedKg.note,
+    },
+    ngosSupported: {
+      value: stats.completedDonations ?? fallback.ngosSupported.value,
+      label: "Completed donations",
+      note: "Donations successfully delivered through the network.",
+    },
+    wasteReduction: fallback.wasteReduction,
+    communitiesReached: fallback.communitiesReached,
+    emissionsAvoided: fallback.emissionsAvoided,
+  };
+}
+
 export default function MyImpact() {
   const user = getSessionUser();
   const donorName = getDonorDisplayName(user);
-  const summary = IMPACT_SUMMARY;
+  const [loading, setLoading] = useState(true);
+  const [apiStats, setApiStats] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const impact = await fetchProfileImpact();
+        if (mounted) setApiStats(impact.statistics || null);
+      } catch {
+        /* keep fallback summary */
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const summary = useMemo(
+    () => (apiStats ? buildSummaryFromApi(apiStats) : IMPACT_SUMMARY),
+    [apiStats],
+  );
 
   return (
     <DashboardLayout
@@ -96,7 +155,7 @@ export default function MyImpact() {
               </h1>
               <p className="max-w-3xl text-base leading-7 text-[#64748B] sm:text-lg">
                 See how your donations help reduce waste and support communities.
-                Figures marked as estimates use simplified assumptions.
+                {loading ? " Loading live statistics…" : apiStats ? " Core metrics are synced from your profile." : " Figures marked as estimates use simplified assumptions."}
               </p>
             </div>
           </div>
@@ -143,6 +202,7 @@ export default function MyImpact() {
             label={summary.communitiesReached.label}
             hint={summary.communitiesReached.note}
             accent="slate"
+            estimate
           />
           <ImpactMetricCard
             icon={FaCloud}

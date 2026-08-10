@@ -1,6 +1,4 @@
-import { DONATIONS_BY_CATEGORY } from "../../data/adminDashboard";
-
-function polarToCartesian(cx, cy, radius, angleDeg) {
+import { DONATIONS_BY_CATEGORY } from "../../data/adminDashboard";(cx, cy, radius, angleDeg) {
   const angleRad = ((angleDeg - 90) * Math.PI) / 180;
   return { x: cx + radius * Math.cos(angleRad), y: cy + radius * Math.sin(angleRad) };
 }
@@ -17,14 +15,16 @@ function describeArc(cx, cy, radius, startAngle, endAngle) {
   ].join(" ");
 }
 
-export default function AdminDonationsCategoryPie() {
+export default function AdminDonationsCategoryPie({ data = DONATIONS_BY_CATEGORY }) {
+  const categories = data?.length ? data : DONATIONS_BY_CATEGORY;
+  const totalCount = categories.reduce((s, c) => s + (c.count || 0), 0) || categories.length;
   const size = 140;
   const cx = size / 2;
   const cy = size / 2;
   const radius = size / 2 - 6;
   let cursor = 0;
 
-  const slices = DONATIONS_BY_CATEGORY.map((segment) => {
+  const slices = categories.map((segment) => {
     const sweep = (segment.share / 100) * 360;
     const startAngle = cursor;
     const endAngle = cursor + sweep;
@@ -47,14 +47,14 @@ export default function AdminDonationsCategoryPie() {
         ))}
         <circle cx={cx} cy={cy} r={radius * 0.42} fill="#fff" />
         <text x={cx} y={cy - 2} textAnchor="middle" fontSize="11" fontWeight="700" fill="#0F172A">
-          186
+          {totalCount}
         </text>
         <text x={cx} y={cy + 12} textAnchor="middle" fontSize="8" fill="#64748B">
           active
         </text>
       </svg>
       <ul className="grid flex-1 gap-1.5 text-xs">
-        {DONATIONS_BY_CATEGORY.map((item) => (
+        {categories.map((item) => (
           <li key={item.id} className="flex items-center gap-2">
             <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: item.color }} />
             <span className="flex-1 font-medium text-[#0F172A]">{item.label}</span>

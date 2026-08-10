@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
@@ -50,6 +50,8 @@ import {
   TOP_NGOS,
   VOLUNTEER_KPIS,
 } from "../../data/adminReports";
+import { fetchAdminReports } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -87,6 +89,32 @@ function KpiCard({ item }) {
 export default function AdminReports() {
   const [dateRange, setDateRange] = useState("last_30");
   const [exportOpen, setExportOpen] = useState(false);
+  const [reports, setReports] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const days = dateRange === "last_7" ? 7 : dateRange === "last_90" ? 90 : 30;
+    fetchAdminReports(days)
+      .then((data) => {
+        if (!cancelled) setReports(data);
+      })
+      .catch((err) => toast.error(getApiErrorMessage(err)));
+    return () => {
+      cancelled = true;
+    };
+  }, [dateRange]);
+
+  const a = reports?.analytics;
+  const kpis = a
+    ? [
+        { id: "donations", label: "Total Donations", value: a.totalDonations, change: `${a.completedDonations} completed` },
+        { id: "food_saved", label: "Food Rescued (kg)", value: a.foodRescuedKg, change: "from MongoDB" },
+        { id: "meals", label: "Meals Generated", value: a.mealsGenerated, change: `${a.foodRequestsFulfilled} requests fulfilled` },
+        { id: "ngos", label: "NGOs Served", value: a.ngosServed, change: `${a.activeVolunteers} active volunteers` },
+        { id: "deliveries", label: "Deliveries Completed", value: a.deliveriesCompleted, change: a.onTimeDeliveryRate != null ? `${a.onTimeDeliveryRate}% on-time` : "—" },
+        { id: "impact", label: "Lives Impacted", value: a.livesImpacted, change: a.averageDeliveryTimeMinutes != null ? `Avg ${a.averageDeliveryTimeMinutes} min delivery` : "—" },
+      ]
+    : REPORTS_KPI;
 
   return (
     <>
@@ -141,7 +169,7 @@ export default function AdminReports() {
 
           {/* KPI row */}
           <div className="flex gap-3 overflow-x-auto pb-1">
-            {REPORTS_KPI.map((item) => (
+            {kpis.map((item) => (
               <KpiCard key={item.id} item={item} />
             ))}
           </div>

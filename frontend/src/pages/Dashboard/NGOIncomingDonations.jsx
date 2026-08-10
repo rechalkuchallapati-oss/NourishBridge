@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -16,7 +16,6 @@ import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOWorkflowStrip from "../../components/ngo/NGOWorkflowStrip";
 import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
 import {
-  LIVE_INCOMING_DONATIONS,
   INCOMING_QUICK_FILTERS,
   INCOMING_CATEGORY_OPTIONS,
   INCOMING_STATUS_OPTIONS,
@@ -28,6 +27,13 @@ import {
   computeIncomingDonationStats,
   filterIncomingDonations,
 } from "../../data/ngoIncomingDonations";
+import {
+  fetchIncomingDonations,
+  acceptDonation,
+  rejectDonation,
+  completeDonation,
+} from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -147,7 +153,8 @@ export default function NGOIncomingDonations() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [donations, setDonations] = useState(LIVE_INCOMING_DONATIONS);
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [actions, setActions] = useState(loadPersistedActions);
   const [selectedId, setSelectedId] = useState(null);
   const [declineTarget, setDeclineTarget] = useState(null);
@@ -184,54 +191,89 @@ export default function NGOIncomingDonations() {
   );
 
   const canAccept = selected?.status === "pending_ngo_acceptance";
+  const canComplete = selected?.status === "delivered";
   const canReject =
     selected &&
     !["delivered", "verified", "completed", "rejected"].includes(selected.status);
 
-  const handleAccept = (donation) => {
-    const next = {
-      ...actions,
-      accepted: [...actions.accepted, donation.id],
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const items = await fetchIncomingDonations();
+        if (!cancelled) setDonations(items);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
     };
-    setActions(next);
-    savePersistedActions(next);
-    setDonations((prev) =>
-      prev.map((d) =>
-        d.id === donation.id
-          ? {
-              ...d,
-              status: "accepted",
-              timeline: [
-                ...d.timeline,
-                { step: "accepted", time: "Just now" },
-              ],
-            }
-          : d,
-      ),
-    );
-    setSelectedId(null);
-    toast.success(`${donation.id} accepted — volunteer coordination started.`);
+  }, []);
+
+  const handleAccept = async (donation) => {
+    try {
+      const updated = await acceptDonation(donation.mongoId || donation.id);
+      setDonations((prev) =>
+        prev.map((d) =>
+          (d.mongoId || d.id) === (donation.mongoId || donation.id)
+            ? { ...d, ...updated, status: "accepted" }
+            : d,
+        ),
+      );
+      toast.success(`${donation.foodName || donation.food} accepted`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
-  const handleDeclineConfirm = (donationId, payload) => {
-    const next = {
-      ...actions,
-      rejected: [...actions.rejected, { id: donationId, ...payload }],
-    };
-    setActions(next);
-    savePersistedActions(next);
-    setDonations((prev) =>
-      prev.map((d) =>
-        d.id === donationId ? { ...d, status: "rejected", rejectReason: payload.reason } : d,
-      ),
-    );
-    setDeclineTarget(null);
-    setSelectedId(null);
+  const handleDeclineConfirm = async (donationId, payload) => {
+    const target = declineTarget || donations.find((d) => d.id === donationId || d.mongoId === donationId);
+    if (!target) return;
+
+    try {
+      await rejectDonation(target.mongoId || target.id, payload.reason || payload.notes);
+      setDonations((prev) =>
+        prev.map((d) =>
+          (d.mongoId || d.id) === (target.mongoId || target.id)
+            ? { ...d, status: "rejected", rejectReason: payload.reason }
+            : d,
+        ),
+      );
+      toast.success("Donation declined");
+      setDeclineTarget(null);
+      setSelectedId(null);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
   const handleReject = (donation) => {
     setDeclineTarget(donation);
     setSelectedId(null);
+  };
+
+  const handleComplete = async (donation) => {
+    try {
+      const updated = await completeDonation(donation.mongoId || donation.id);
+      setDonations((prev) =>
+        prev.map((d) =>
+          (d.mongoId || d.id) === (donation.mongoId || donation.id)
+            ? { ...d, ...updated, status: "completed" }
+            : d,
+        ),
+      );
+      toast.success("Delivery confirmed — inventory updated");
+      setSelectedId(null);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
   return (
@@ -427,8 +469,10 @@ export default function NGOIncomingDonations() {
         onClose={() => setSelectedId(null)}
         onAccept={handleAccept}
         onReject={handleReject}
+        onComplete={handleComplete}
         canAccept={canAccept}
         canReject={canReject}
+        canComplete={canComplete}
       />
 
       {declineTarget ? (

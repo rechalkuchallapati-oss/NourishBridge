@@ -1,11 +1,16 @@
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import AuthBootstrap from "./components/auth/AuthBootstrap.jsx";
+import AccessDeniedListener from "./components/auth/AccessDeniedListener.jsx";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
     <AuthProvider>
-      <AppRoutes />
+      <AuthBootstrap>
+        <AccessDeniedListener />
+        <AppRoutes />
+      </AuthBootstrap>
       <Toaster
         position="top-center"
         toastOptions={{

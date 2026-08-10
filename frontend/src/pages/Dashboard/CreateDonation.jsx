@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   FaArrowLeft,
@@ -31,10 +31,18 @@ import {
   ALLERGEN_OPTIONS,
   DIET_TYPES,
   FOOD_CATEGORIES,
+  FRESHNESS_OPTIONS,
   PACKAGING_OPTIONS,
 } from "../../constants/donationForm";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import { getDonorDisplayName, getSessionUser } from "../../utils/authStorage";
+import {
+  createDonation,
+  donationToForm,
+  fetchDonationById,
+  updateDonation,
+} from "../../modules/donations/services/donationService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -155,6 +163,8 @@ function DateTimeField({ dateId, timeId, dateLabel, timeLabel, dateValue, timeVa
 
 export default function CreateDonation() {
   const navigate = useNavigate();
+  const { id: editId } = useParams();
+  const isEditMode = Boolean(editId);
   const user = getSessionUser();
   const donorName = getDonorDisplayName(user);
 
@@ -164,6 +174,7 @@ export default function CreateDonation() {
     dietType: "vegetarian",
     quantity: "",
     estimatedServings: "",
+    freshness: "good",
     preparationDate: "",
     preparationTime: "",
     consumptionDate: "",
@@ -178,6 +189,36 @@ export default function CreateDonation() {
   });
   const [photos, setPhotos] = useState([]);
   const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [loading, setLoading] = useState(isEditMode);
+
+  useEffect(() => {
+    if (!editId) return undefined;
+
+    let mounted = true;
+
+    (async () => {
+      try {
+        const donation = await fetchDonationById(editId);
+        if (!mounted) return;
+
+        if (!donation.canEdit) {
+          setFormError("Only pending donations can be edited.");
+          return;
+        }
+
+        setForm(donationToForm(donation));
+      } catch (error) {
+        if (mounted) setFormError(getApiErrorMessage(error));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, [editId]);
 
   const updateField = (field) => (e) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -209,7 +250,7 @@ export default function CreateDonation() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
 
@@ -228,18 +269,49 @@ export default function CreateDonation() {
       return;
     }
 
-    navigate(DASHBOARD_ROUTES.donorDonations, {
-      state: {
-        message: `"${form.foodName}" was posted successfully. NGOs will be notified shortly.`,
-      },
-    });
+    if (!form.consumptionDate || !form.consumptionTime) {
+      setFormError("Please set safe consumption deadline (DD MM YYYY and HH MM).");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const photoFiles = photos.map((p) => p.file);
+
+      if (isEditMode) {
+        await updateDonation(editId, form, photoFiles);
+        navigate(`${DASHBOARD_ROUTES.donorDonations}/${editId}`, {
+          state: { message: `"${form.foodName}" was updated successfully.` },
+        });
+      } else {
+        await createDonation(form, photoFiles);
+        navigate(DASHBOARD_ROUTES.donorDonations, {
+          state: {
+            message: `"${form.foodName}" was posted successfully. NGOs will be notified shortly.`,
+          },
+        });
+      }
+    } catch (error) {
+      setFormError(getApiErrorMessage(error));
+    } finally {
+      setSubmitting(false);
+    }
   };
+
+  if (loading) {
+    return (
+      <DashboardLayout emoji="🍱" title="Donor Dashboard" subtitle="Loading donation…" userName={donorName}>
+        <p className="text-sm text-[#64748B]">Loading donation…</p>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout
       emoji="🍱"
       title="Donor Dashboard"
-      subtitle="Create a new food donation"
+      subtitle={isEditMode ? "Edit pending donation" : "Create a new food donation"}
       userName={donorName}
     >
       <div className="relative">
@@ -633,9 +705,16 @@ export default function CreateDonation() {
               <Button
                 type="submit"
                 icon={FaPlus}
+                disabled={submitting}
                 className={`w-full sm:w-auto ${CREATE_ACTION_BUTTON_CLASS}`}
               >
-                Post Donation
+                {submitting
+                  ? isEditMode
+                    ? "Saving…"
+                    : "Posting…"
+                  : isEditMode
+                    ? "Save Changes"
+                    : "Post Donation"}
               </Button>
             </div>
           </form>

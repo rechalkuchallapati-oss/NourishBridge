@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaEye, FaFilter } from "react-icons/fa";
@@ -6,11 +6,16 @@ import {
   DATE_FILTER_OPTIONS,
   STATUS_FILTER_OPTIONS,
 } from "../../constants/donationForm";
-import { ALL_DONATIONS, filterDonations } from "../../data/donorDonations";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import {
+  fetchMyDonations,
+  filterDonationsLocal,
+} from "../../modules/donations/services/donationService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import DonationItemsList from "../common/DonationItemsList";
 import EventTypeBadge from "../common/EventTypeBadge";
 import {
+  dashboardAlertErrorClass,
   dashboardAlertSuccessClass,
   dashboardBadgeClass,
   dashboardBoxClass,
@@ -35,13 +40,18 @@ const MY_DONATIONS_ACTION_CLASS = [
 ].join(" ");
 
 const statusColors = {
-  posted: "bg-[#F1F5F9] text-[#475569]",
-  ngo_matched: "bg-[#DBEAFE] text-[#1D4ED8]",
+  pending: "bg-[#F1F5F9] text-[#475569]",
+  verified: "bg-[#E0F2FE] text-[#0369A1]",
+  ngo_accepted: "bg-[#DBEAFE] text-[#1D4ED8]",
   volunteer_assigned: "bg-[#E0E7FF] text-[#4338CA]",
+  pickup_scheduled: "bg-[#EDE9FE] text-[#6D28D9]",
   picked_up: "bg-[#FEF3C7] text-[#B45309]",
   in_transit: "bg-[#FFEDD5] text-[#C2410C]",
   delivered: "bg-[#DCFCE7] text-[#15803D]",
-  ngo_confirmed: "bg-[#F0FDF4] text-[#166534]",
+  completed: "bg-[#F0FDF4] text-[#166534]",
+  rejected: "bg-[#FEE2E2] text-[#B91C1C]",
+  cancelled: "bg-[#F1F5F9] text-[#64748B]",
+  expired: "bg-[#FEF3C7] text-[#92400E]",
 };
 
 function StatusBadge({ status, label }) {
@@ -49,7 +59,7 @@ function StatusBadge({ status, label }) {
     <motion.span
       whileHover={{ scale: 1.03 }}
       transition={{ duration: 0.2 }}
-      className={`${dashboardBadgeClass} inline-flex min-h-[52px] min-w-[132px] items-center justify-center px-4 py-3 text-center text-sm leading-tight transition-shadow duration-300 hover:shadow-sm sm:text-base ${statusColors[status] ?? statusColors.posted}`}
+      className={`${dashboardBadgeClass} inline-flex min-h-[52px] min-w-[132px] items-center justify-center px-4 py-3 text-center text-sm leading-tight transition-shadow duration-300 hover:shadow-sm sm:text-base ${statusColors[status] ?? statusColors.pending}`}
     >
       {label}
     </motion.span>
@@ -60,22 +70,56 @@ export default function MyDonationsTable({ view = "all" }) {
   const location = useLocation();
   const [dateFilter, setDateFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState(
-    view === "active" ? "active" : view === "history" ? "ngo_confirmed" : "all"
+    view === "active" ? "active" : "all"
   );
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const scopedDonations = useMemo(() => {
-    if (view === "active") return ALL_DONATIONS.filter((item) => item.isActive);
-    if (view === "history") return ALL_DONATIONS.filter((item) => !item.isActive);
-    return ALL_DONATIONS;
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const params =
+          view === "active"
+            ? { active: "true" }
+            : view === "history"
+              ? { active: "false" }
+              : {};
+
+        const result = await fetchMyDonations(params);
+        if (!cancelled) {
+          setDonations(result.donations);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(getApiErrorMessage(err, "Unable to load donations."));
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, [view]);
 
   const filteredDonations = useMemo(
     () =>
-      filterDonations(scopedDonations, {
+      filterDonationsLocal(donations, {
         dateFilter,
         statusFilter: view === "history" ? "all" : statusFilter,
+        view,
       }),
-    [scopedDonations, dateFilter, statusFilter, view]
+    [donations, dateFilter, statusFilter, view]
   );
 
   const successMessage = location.state?.message;
@@ -89,6 +133,16 @@ export default function MyDonationsTable({ view = "all" }) {
           className={dashboardAlertSuccessClass}
         >
           {successMessage}
+        </motion.div>
+      ) : null}
+
+      {error ? (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={dashboardAlertErrorClass}
+        >
+          {error}
         </motion.div>
       ) : null}
 
@@ -174,7 +228,13 @@ export default function MyDonationsTable({ view = "all" }) {
               </tr>
             </thead>
             <tbody>
-              {filteredDonations.length === 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="px-5 py-12 text-center text-sm text-[#64748B] sm:text-base">
+                    Loading donations…
+                  </td>
+                </tr>
+              ) : filteredDonations.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-5 py-12 text-center text-sm text-[#64748B] sm:text-base">
                     No donations match your filters.
@@ -183,7 +243,7 @@ export default function MyDonationsTable({ view = "all" }) {
               ) : (
                 filteredDonations.map((donation, index) => (
                   <motion.tr
-                    key={donation.id}
+                    key={donation.mongoId || donation.id}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.35, delay: 0.04 * index, ease: EASE }}
@@ -247,17 +307,11 @@ export default function MyDonationsTable({ view = "all" }) {
                     </td>
                     <td className="px-4 py-5 sm:px-5 sm:py-6">
                       <Link
-                        to={
-                          donation.isActive
-                            ? DASHBOARD_ROUTES.donorActive
-                            : DASHBOARD_ROUTES.donorHistory
-                        }
+                        to={`${DASHBOARD_ROUTES.donorDonations}/${donation.mongoId || donation.id}`}
                         className={MY_DONATIONS_ACTION_CLASS}
                       >
                         <FaEye aria-hidden="true" />
-                        <span className="text-center leading-none">
-                          {donation.isActive ? "Track" : "View"}
-                        </span>
+                        <span className="text-center leading-none">View</span>
                       </Link>
                     </td>
                   </motion.tr>
@@ -274,7 +328,7 @@ export default function MyDonationsTable({ view = "all" }) {
         transition={{ delay: 0.2 }}
         className="text-sm text-[#64748B]"
       >
-        Showing {filteredDonations.length} of {scopedDonations.length} donations
+        Showing {filteredDonations.length} of {donations.length} donations
       </motion.p>
     </div>
   );

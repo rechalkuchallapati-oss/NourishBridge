@@ -1,13 +1,14 @@
 import { DONATIONS_OVERVIEW_TREND } from "../../data/adminDashboard";
 
-export default function AdminDonationsOverviewChart() {
-  const maxVal = Math.max(...DONATIONS_OVERVIEW_TREND.map((p) => p.donations));
+export default function AdminDonationsOverviewChart({ data = DONATIONS_OVERVIEW_TREND }) {
+  const trend = data?.length ? data : DONATIONS_OVERVIEW_TREND;
+  const maxVal = Math.max(...trend.map((p) => p.donations), 1);
   const chartHeight = 160;
   const chartWidth = 320;
   const paddingBottom = 24;
 
-  const points = DONATIONS_OVERVIEW_TREND.map((point, index) => {
-    const x = (index / (DONATIONS_OVERVIEW_TREND.length - 1)) * (chartWidth - 32) + 16;
+  const points = trend.map((point, index) => {
+    const x = (index / Math.max(trend.length - 1, 1)) * (chartWidth - 32) + 16;
     const y = chartHeight - paddingBottom - (point.donations / maxVal) * (chartHeight - 36);
     return { x, y, ...point };
   });

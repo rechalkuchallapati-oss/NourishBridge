@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -15,8 +16,11 @@ import DashboardLayout, { StatCard } from "../../components/dashboard/DashboardL
 import ActiveDonationTracking from "../../components/dashboard/ActiveDonationTracking";
 import DonatedFoodGallery from "../../components/dashboard/DonatedFoodGallery";
 import { dashboardButtonClass } from "../../components/dashboard/dashboardFormStyles";
-import { ACTIVE_DONATIONS, ALL_DONATIONS } from "../../data/donorDonations";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
+import {
+  fetchMyDonations,
+  getActiveDonations,
+} from "../../modules/donations/services/donationService";
 import { getDonorDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -26,7 +30,14 @@ const DASHBOARD_BTN_CLASS = [
   "!h-16 !min-h-[64px] !w-full !px-6 !py-4 !text-base !gap-3 !justify-center sm:!text-lg",
 ].join(" ");
 
-import { DONOR_OVERVIEW_STATS } from "../../data/donorImpact";
+const DEFAULT_STATS = {
+  totalDonations: 0,
+  mealsContributed: 0,
+  foodRescuedKg: 0,
+  ngosHelped: 0,
+  activeDonations: 0,
+  completedDonations: 0,
+};
 
 function DashboardNavBox({ to, icon: Icon, title, description, accent = "green", index = 0 }) {
   const accents = {
@@ -73,6 +84,39 @@ function DashboardNavBox({ to, icon: Icon, title, description, accent = "green",
 export default function DonorDashboard() {
   const user = getSessionUser();
   const donorName = getDonorDisplayName(user);
+  const [donations, setDonations] = useState([]);
+  const [stats, setStats] = useState(DEFAULT_STATS);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const result = await fetchMyDonations();
+        if (!cancelled) {
+          setDonations(result.donations);
+          setStats({ ...DEFAULT_STATS, ...result.statistics });
+        }
+      } catch {
+        if (!cancelled) {
+          setDonations([]);
+          setStats(DEFAULT_STATS);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const activeDonations = getActiveDonations(donations);
 
   const addDonationCta = (
     <Link to={DASHBOARD_ROUTES.donorCreate} className="inline-flex w-full sm:w-auto">
@@ -116,42 +160,42 @@ export default function DonorDashboard() {
           <div className="grid gap-[0.5cm] p-[0.5cm] sm:grid-cols-2 xl:grid-cols-3">
             <StatCard
               label="Total Donations"
-              value={DONOR_OVERVIEW_STATS.totalDonations}
+              value={loading ? "…" : stats.totalDonations}
               caption="All donations listed"
               icon={FaBoxOpen}
               accent="green"
             />
             <StatCard
               label="Meals Contributed"
-              value={DONOR_OVERVIEW_STATS.mealsContributed.toLocaleString()}
+              value={loading ? "…" : stats.mealsContributed.toLocaleString()}
               caption="Estimated meals delivered"
               icon={FaUtensils}
               accent="purple"
             />
             <StatCard
               label="Food Rescued"
-              value={`${DONOR_OVERVIEW_STATS.foodRescuedKg} kg`}
+              value={loading ? "…" : `${stats.foodRescuedKg} kg`}
               caption="Kept out of landfills"
               icon={FaLeaf}
               accent="green"
             />
             <StatCard
               label="NGOs Helped"
-              value={DONOR_OVERVIEW_STATS.ngosHelped}
+              value={loading ? "…" : stats.ngosHelped}
               caption="Verified partners supported"
               icon={FaHandsHelping}
               accent="blue"
             />
             <StatCard
               label="Active Donations"
-              value={DONOR_OVERVIEW_STATS.activeDonations}
+              value={loading ? "…" : stats.activeDonations}
               caption="Pickups in progress"
               icon={FaBoxOpen}
               accent="amber"
             />
             <StatCard
               label="Completed Donations"
-              value={DONOR_OVERVIEW_STATS.completedDonations}
+              value={loading ? "…" : stats.completedDonations}
               caption="Successfully delivered"
               icon={FaCheckCircle}
               accent="slate"
@@ -159,20 +203,26 @@ export default function DonorDashboard() {
           </div>
         </motion.section>
 
-        <motion.section
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: EASE }}
-        >
-          <DonatedFoodGallery donations={ALL_DONATIONS} />
-        </motion.section>
+        {!loading && donations.length > 0 ? (
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.06, ease: EASE }}
+          >
+            <DonatedFoodGallery donations={donations} />
+          </motion.section>
+        ) : null}
 
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, delay: 0.08, ease: EASE }}
         >
-          <ActiveDonationTracking donations={ACTIVE_DONATIONS} />
+          {loading ? (
+            <p className="py-8 text-center text-[#64748B]">Loading active donations…</p>
+          ) : (
+            <ActiveDonationTracking donations={activeDonations} />
+          )}
         </motion.section>
 
         <motion.section
