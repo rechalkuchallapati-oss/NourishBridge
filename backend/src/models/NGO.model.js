@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 import {
   NGO_STATUS,
   VERIFICATION_STATUS,
+  NGO_AVAILABILITY_STATUS,
   enumValues,
 } from "../constants/enums.js";
-import { addressSchema, geoPointSchema } from "./shared/schemas.js";
+import { addressSchema, geoPointSchema, verificationDocumentSchema } from "./shared/schemas.js";
 import { nonNegative, percentValidator, ratingValidator } from "../utils/validators.js";
 
 /**
@@ -143,6 +144,71 @@ const ngoSchema = new mongoose.Schema(
     verifiedAt: {
       type: Date,
       default: null,
+    },
+
+    /** Uploaded verification documents */
+    verificationDocuments: {
+      type: [verificationDocumentSchema],
+      default: [],
+    },
+
+    /** Food types the NGO can accept */
+    foodTypesAccepted: {
+      type: [String],
+      default: [],
+    },
+
+    /** Additional food requirement notes */
+    foodRequirements: {
+      type: String,
+      trim: true,
+      maxlength: 1000,
+    },
+
+    maxDailyCapacityKg: {
+      type: Number,
+      default: 0,
+      validate: nonNegative,
+    },
+
+    maxDailyMeals: {
+      type: Number,
+      default: 0,
+      validate: nonNegative,
+    },
+
+    preferredPickupRadiusKm: {
+      type: Number,
+      default: 0,
+      validate: nonNegative,
+    },
+
+    operatingHours: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
+
+    emergencyContactName: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
+
+    emergencyContact: {
+      type: String,
+      trim: true,
+    },
+
+    availabilityStatus: {
+      type: String,
+      enum: enumValues(NGO_AVAILABILITY_STATUS),
+      default: NGO_AVAILABILITY_STATUS.AVAILABLE,
+    },
+
+    storageFacilities: {
+      type: [String],
+      default: [],
     },
   },
   {

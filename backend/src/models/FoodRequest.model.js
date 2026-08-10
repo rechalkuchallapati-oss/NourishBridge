@@ -89,7 +89,35 @@ const foodRequestSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: enumValues(FOOD_REQUEST_STATUS),
-      default: FOOD_REQUEST_STATUS.OPEN,
+      default: FOOD_REQUEST_STATUS.REQUESTED,
+    },
+
+    /** Specific food item name */
+    foodItem: {
+      type: String,
+      trim: true,
+      maxlength: 200,
+    },
+
+    /** Estimated meals this request will serve */
+    estimatedMeals: {
+      type: Number,
+      default: 0,
+      validate: nonNegative,
+    },
+
+    /** Delivery / service location label */
+    location: {
+      type: String,
+      trim: true,
+      maxlength: 300,
+    },
+
+    /** Assigned volunteer once matched */
+    volunteerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Volunteer",
+      default: null,
     },
 
     /** Deadline by which food is needed */

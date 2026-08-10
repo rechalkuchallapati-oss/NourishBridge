@@ -4,6 +4,7 @@ import {
   DONATION_PRIORITY,
   FOOD_CATEGORIES,
   QUANTITY_UNITS,
+  FOOD_FRESHNESS,
   enumValues,
 } from "../constants/enums.js";
 import { addressSchema, foodItemSchema, geoPointSchema } from "./shared/schemas.js";
@@ -145,6 +146,46 @@ const donationSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       validate: nonNegative,
+    },
+
+    /** Food freshness indicator */
+    freshness: {
+      type: String,
+      enum: enumValues(FOOD_FRESHNESS),
+      default: FOOD_FRESHNESS.GOOD,
+    },
+
+    /** When food was prepared */
+    preparationTime: {
+      type: Date,
+      default: null,
+    },
+
+    /** Pickup window end */
+    pickupEndAt: {
+      type: Date,
+      default: null,
+    },
+
+    /** Diet classification for safety matching */
+    dietType: {
+      type: String,
+      trim: true,
+      maxlength: 50,
+    },
+
+    /** Packaging description */
+    packagingStatus: {
+      type: String,
+      trim: true,
+      maxlength: 200,
+    },
+
+    /** Allergen declaration */
+    allergenInfo: {
+      type: String,
+      trim: true,
+      maxlength: 500,
     },
 
     /** Scheduled pickup window start */

@@ -91,15 +91,23 @@ export const QUANTITY_UNITS = Object.freeze({
 export const DONATION_STATUS = Object.freeze({
   PENDING: "pending",
   VERIFIED: "verified",
-  ASSIGNED: "assigned",
+  NGO_ACCEPTED: "ngo_accepted",
+  VOLUNTEER_ASSIGNED: "volunteer_assigned",
   PICKUP_SCHEDULED: "pickup_scheduled",
   PICKED_UP: "picked_up",
   IN_TRANSIT: "in_transit",
   DELIVERED: "delivered",
   COMPLETED: "completed",
   REJECTED: "rejected",
-  EXPIRED: "expired",
   CANCELLED: "cancelled",
+  EXPIRED: "expired",
+});
+
+export const FOOD_FRESHNESS = Object.freeze({
+  FRESH: "fresh",
+  GOOD: "good",
+  CONSUME_SOON: "consume_soon",
+  UNKNOWN: "unknown",
 });
 
 export const DONATION_PRIORITY = Object.freeze({
@@ -110,9 +118,12 @@ export const DONATION_PRIORITY = Object.freeze({
 });
 
 export const FOOD_REQUEST_STATUS = Object.freeze({
-  OPEN: "open",
-  MATCHED: "matched",
-  PARTIALLY_FULFILLED: "partially_fulfilled",
+  REQUESTED: "requested",
+  UNDER_REVIEW: "under_review",
+  APPROVED: "approved",
+  DONATION_MATCHED: "donation_matched",
+  VOLUNTEER_ASSIGNED: "volunteer_assigned",
+  DELIVERY_SCHEDULED: "delivery_scheduled",
   FULFILLED: "fulfilled",
   CANCELLED: "cancelled",
   EXPIRED: "expired",
@@ -136,11 +147,14 @@ export const STORAGE_TYPES = Object.freeze({
 export const DELIVERY_STATUS = Object.freeze({
   PENDING: "pending",
   ASSIGNED: "assigned",
+  PICKUP_SCHEDULED: "pickup_scheduled",
   EN_ROUTE_PICKUP: "en_route_pickup",
   AT_PICKUP: "at_pickup",
+  PICKUP_VERIFIED: "pickup_verified",
   PICKED_UP: "picked_up",
   IN_TRANSIT: "in_transit",
   AT_DROPOFF: "at_dropoff",
+  DELIVERY_VERIFIED: "delivery_verified",
   DELIVERED: "delivered",
   COMPLETED: "completed",
   FAILED: "failed",
@@ -199,6 +213,7 @@ export const AUDIT_ACTIONS = Object.freeze({
   SUSPEND: "suspend",
   ACTIVATE: "activate",
   ASSIGN: "assign",
+  STATUS_CHANGE: "status_change",
   LOGIN: "login",
   LOGOUT: "logout",
   EXPORT: "export",
@@ -225,6 +240,29 @@ export const AUDIT_SEVERITY = Object.freeze({
   WARNING: "warning",
   ERROR: "error",
   CRITICAL: "critical",
+});
+
+export const ADMIN_LEVELS = Object.freeze({
+  SUPER_ADMIN: "super_admin",
+  ADMIN: "admin",
+  MODERATOR: "moderator",
+});
+
+export const ADMIN_PERMISSIONS = Object.freeze({
+  USERS: "users",
+  DONORS: "donors",
+  NGOS: "ngos",
+  VOLUNTEERS: "volunteers",
+  DONATIONS: "donations",
+  REPORTS: "reports",
+  SYSTEM: "system",
+  VERIFICATION: "verification",
+});
+
+export const NGO_AVAILABILITY_STATUS = Object.freeze({
+  AVAILABLE: "available",
+  LIMITED: "limited",
+  UNAVAILABLE: "unavailable",
 });
 
 /** Helper — returns enum values as array for Mongoose `enum` option */

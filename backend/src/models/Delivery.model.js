@@ -3,39 +3,19 @@ import { DELIVERY_STATUS, enumValues } from "../constants/enums.js";
 import { geoPointSchema } from "./shared/schemas.js";
 import { nonNegative } from "../utils/validators.js";
 
-/**
- * Delivery timeline event — embedded subdocument for audit trail of a delivery.
- */
 const deliveryEventSchema = new mongoose.Schema(
   {
-    status: {
-      type: String,
-      enum: enumValues(DELIVERY_STATUS),
-      required: true,
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-    },
-    location: {
-      type: geoPointSchema,
-      default: null,
-    },
-    note: {
-      type: String,
-      trim: true,
-      maxlength: 500,
-    },
+    status: { type: String, enum: enumValues(DELIVERY_STATUS), required: true },
+    timestamp: { type: Date, default: Date.now },
+    location: { type: geoPointSchema, default: null },
+    note: { type: String, trim: true, maxlength: 500 },
+    quantity: { type: Number, default: null },
   },
   { _id: true },
 );
 
-/**
- * Delivery — tracks volunteer movement from donor pickup to NGO drop-off.
- */
 const deliverySchema = new mongoose.Schema(
   {
-    /** Human-readable reference e.g. DEL-8821 */
     deliveryCode: {
       type: String,
       unique: true,
@@ -44,135 +24,76 @@ const deliverySchema = new mongoose.Schema(
       uppercase: true,
     },
 
-    /** Associated donation */
     donationId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Donation",
-      required: [true, "Donation is required"],
+      required: true,
     },
 
-    /** Assigned volunteer */
     volunteerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Volunteer",
-      required: [true, "Volunteer is required"],
+      required: true,
     },
 
-    /** Destination NGO */
     ngoId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "NGO",
-      required: [true, "NGO is required"],
+      required: true,
     },
 
-    /** Current delivery state */
     status: {
       type: String,
       enum: enumValues(DELIVERY_STATUS),
       default: DELIVERY_STATUS.PENDING,
     },
 
-    /** Pickup geo point (copied from donation for route calc) */
-    pickupLocation: {
-      type: geoPointSchema,
-      default: null,
-    },
+    pickupLocation: { type: geoPointSchema, default: null },
+    deliveryLocation: { type: geoPointSchema, default: null },
+    currentLocation: { type: geoPointSchema, default: null },
 
-    /** Drop-off geo point */
-    deliveryLocation: {
-      type: geoPointSchema,
-      default: null,
-    },
+    pickupScheduledAt: { type: Date, default: null },
+    arrivedAtPickupAt: { type: Date, default: null },
+    pickupVerifiedAt: { type: Date, default: null },
+    pickedUpAt: { type: Date, default: null },
+    deliveryStartedAt: { type: Date, default: null },
+    arrivedAtNgoAt: { type: Date, default: null },
+    deliveryVerifiedAt: { type: Date, default: null },
+    deliveredAt: { type: Date, default: null },
+    completedAt: { type: Date, default: null },
+    assignedAt: { type: Date, default: null },
 
-    /** Live volunteer position during transit */
-    currentLocation: {
-      type: geoPointSchema,
-      default: null,
-    },
+    expectedQuantity: { type: Number, default: null },
+    pickupQuantity: { type: Number, default: null },
+    deliveryQuantity: { type: Number, default: null },
+    quantityUnit: { type: String, trim: true, default: "kg" },
 
-    /** Estimated time of arrival */
-    eta: {
-      type: Date,
-      default: null,
-    },
+    pickupProofImages: { type: [String], default: [] },
+    deliveryProofImages: { type: [String], default: [] },
+    /** @deprecated use deliveryProofImages */
+    proofImages: { type: [String], default: [] },
 
-    /** Route distance in kilometres */
-    distanceKm: {
-      type: Number,
-      default: 0,
-      validate: nonNegative,
-    },
+    pickupVerificationCode: { type: String, trim: true },
+    deliveryVerificationCode: { type: String, trim: true },
+    pickupQrVerifiedAt: { type: Date, default: null },
+    deliveryQrVerifiedAt: { type: Date, default: null },
 
-    /** Ordered status history for timeline UI */
-    timeline: {
-      type: [deliveryEventSchema],
-      default: [],
-    },
+    eta: { type: Date, default: null },
+    distanceKm: { type: Number, default: 0, validate: nonNegative },
 
-    /** When volunteer was assigned */
-    assignedAt: {
-      type: Date,
-      default: null,
-    },
+    timeline: { type: [deliveryEventSchema], default: [] },
 
-    /** When food was collected from donor */
-    pickedUpAt: {
-      type: Date,
-      default: null,
-    },
-
-    /** When food arrived at NGO */
-    deliveredAt: {
-      type: Date,
-      default: null,
-    },
-
-    /** When delivery was confirmed complete */
-    completedAt: {
-      type: Date,
-      default: null,
-    },
-
-    /** Proof-of-delivery photo URLs */
-    proofImages: {
-      type: [String],
-      default: [],
-    },
-
-    /** Failure / cancellation reason */
-    failureReason: {
-      type: String,
-      trim: true,
-      maxlength: 500,
-    },
-
-    /** Recipient signature or OTP verification code */
-    verificationCode: {
-      type: String,
-      trim: true,
-    },
-
-    /** Admin or system notes */
-    notes: {
-      type: String,
-      trim: true,
-      maxlength: 1000,
-    },
+    failureReason: { type: String, trim: true, maxlength: 500 },
+    notes: { type: String, trim: true, maxlength: 1000 },
   },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
 
-// ─── Indexes ───
 deliverySchema.index({ donationId: 1 }, { unique: true });
 deliverySchema.index({ volunteerId: 1, status: 1 });
 deliverySchema.index({ ngoId: 1, status: 1, createdAt: -1 });
 deliverySchema.index({ status: 1, eta: 1 });
 deliverySchema.index({ currentLocation: "2dsphere" });
-deliverySchema.index({ createdAt: -1 });
 
 deliverySchema.pre("save", async function generateCode(next) {
   if (this.deliveryCode) return next();
@@ -181,11 +102,15 @@ deliverySchema.pre("save", async function generateCode(next) {
   next();
 });
 
-deliverySchema.methods.addTimelineEvent = function addTimelineEvent(status, note = null, location = null) {
-  this.timeline.push({ status, note, location, timestamp: new Date() });
+deliverySchema.methods.addTimelineEvent = function addTimelineEvent(
+  status,
+  note = null,
+  location = null,
+  quantity = null,
+) {
+  this.timeline.push({ status, note, location, quantity, timestamp: new Date() });
   this.status = status;
 };
 
 const Delivery = mongoose.model("Delivery", deliverySchema);
-
 export default Delivery;

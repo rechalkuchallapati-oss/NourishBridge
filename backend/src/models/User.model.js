@@ -134,6 +134,13 @@ userSchema.virtual("ngoProfile", {
   justOne: true,
 });
 
+userSchema.virtual("adminProfile", {
+  ref: "Admin",
+  localField: "_id",
+  foreignField: "userId",
+  justOne: true,
+});
+
 const User = mongoose.model("User", userSchema);
 
 export default User;

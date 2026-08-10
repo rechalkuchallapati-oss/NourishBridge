@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "lint": "echo \"Add ESLint when ready\""
+    "lint": "echo \"Add ESLint when ready\"",
+    "test": "node scripts/test-phases-12-16.js",
+    "test:all": "node scripts/test-auth.js && node scripts/test-donations.js && node scripts/test-workflow.js && node scripts/test-delivery.js && node scripts/test-phases-9-11.js && node scripts/test-phases-12-16.js"
   },
   "keywords": [
     "nourishbridge",
@@ -25,11 +27,15 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.6.2",
     "express-validator": "^7.3.2",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.9.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^2.2.0",
+    "nodemailer": "^9.0.5",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

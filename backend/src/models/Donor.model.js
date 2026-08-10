@@ -6,6 +6,7 @@ import {
   enumValues,
 } from "../constants/enums.js";
 import { nonNegative } from "../utils/validators.js";
+import { pickupLocationSchema } from "./shared/schemas.js";
 
 /**
  * Donor — role-specific profile linked 1:1 to a User with role=donor.
@@ -110,6 +111,12 @@ const donorSchema = new mongoose.Schema(
     lastDonationAt: {
       type: Date,
       default: null,
+    },
+
+    /** Saved pickup locations for donation collection */
+    pickupLocations: {
+      type: [pickupLocationSchema],
+      default: [],
     },
 
     isActive: {

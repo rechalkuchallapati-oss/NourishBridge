@@ -5,7 +5,7 @@ import {
   VERIFICATION_STATUS,
   enumValues,
 } from "../constants/enums.js";
-import { geoPointSchema } from "./shared/schemas.js";
+import { geoPointSchema, verificationDocumentSchema } from "./shared/schemas.js";
 import { nonNegative, percentValidator, ratingValidator } from "../utils/validators.js";
 
 /**
@@ -93,6 +93,38 @@ const volunteerSchema = new mongoose.Schema(
     licenseNumber: {
       type: String,
       trim: true,
+    },
+
+    /** Display vehicle description e.g. "Bike — KA 05 VL 4521" */
+    vehicleDetails: {
+      type: String,
+      trim: true,
+      maxlength: 150,
+    },
+
+    /** Weekly availability time slots chosen by volunteer */
+    availabilitySchedule: {
+      type: [String],
+      default: [],
+    },
+
+    /** Willingness radius in km */
+    serviceRadiusKm: {
+      type: Number,
+      default: 10,
+      validate: nonNegative,
+    },
+
+    /** Quick toggle for dispatch UI */
+    isAvailable: {
+      type: Boolean,
+      default: true,
+    },
+
+    /** Uploaded ID / license documents */
+    verificationDocuments: {
+      type: [verificationDocumentSchema],
+      default: [],
     },
 
     lastActiveAt: {

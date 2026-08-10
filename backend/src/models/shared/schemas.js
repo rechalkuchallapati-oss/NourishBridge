@@ -81,3 +81,29 @@ export const entityRefSchema = new Schema(
   },
   { _id: false },
 );
+
+/**
+ * Uploaded verification document metadata.
+ */
+export const verificationDocumentSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true, maxlength: 200 },
+    url: { type: String, required: true, trim: true },
+    mimeType: { type: String, trim: true, maxlength: 100 },
+    uploadedAt: { type: Date, default: Date.now },
+  },
+  { _id: true },
+);
+
+/**
+ * Donor pickup location — supports free-text or structured address.
+ */
+export const pickupLocationSchema = new Schema(
+  {
+    label: { type: String, trim: true, maxlength: 100, default: "Pickup" },
+    addressLine: { type: String, required: true, trim: true, maxlength: 300 },
+    address: { type: addressSchema, default: null },
+    isDefault: { type: Boolean, default: false },
+  },
+  { _id: true },
+);
