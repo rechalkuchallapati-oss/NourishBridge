@@ -5,11 +5,58 @@ import NGO from "../models/NGO.model.js";
 import Donation from "../models/Donation.model.js";
 import Delivery from "../models/Delivery.model.js";
 import { USER_ROLES } from "../constants/enums.js";
+import analyticsService from "./analytics.service.js";
 
 /**
  * Platform-wide dashboard summary — admin only.
  */
 const getDashboard = async () => {
+  const [summary, analytics, trend, byCategory, activity, topNgos, pendingVerifications, recentDonations] =
+    await Promise.all([
+      getBasicCounts(),
+      analyticsService.getPlatformAnalytics(),
+      analyticsService.getDonationTrend(7),
+      analyticsService.getDonationsByCategory(),
+      analyticsService.getRecentActivity(8),
+      analyticsService.getTopNgos(5),
+      Donation.countDocuments({ status: "pending" }),
+      Donation.find()
+        .sort({ createdAt: -1 })
+        .limit(8)
+        .populate("ngoId", "ngoName")
+        .populate({ path: "donorId", populate: { path: "userId", select: "fullName" } })
+        .lean(),
+    ]);
+
+  return {
+    summary: {
+      ...summary,
+      pendingVerifications,
+      mealsGenerated: analytics.mealsGenerated,
+      foodRescuedKg: analytics.foodRescuedKg,
+      onTimeDeliveryRate: analytics.onTimeDeliveryRate,
+      livesImpacted: analytics.livesImpacted,
+    },
+    analytics,
+    trend,
+    byCategory,
+    activity,
+    topNgos,
+    recentDonations: recentDonations.map((d) => ({
+      id: d._id,
+      donationCode: d.donationCode,
+      foodName: d.foodType,
+      status: d.status,
+      donorName: d.donorId?.userId?.fullName || "Donor",
+      ngoName: d.ngoId?.ngoName,
+      createdAt: d.createdAt,
+    })),
+    roleBreakdown: summary.roleBreakdown,
+    generatedAt: new Date().toISOString(),
+  };
+};
+
+async function getBasicCounts() {
   const [
     totalUsers,
     totalDonors,
@@ -37,17 +84,14 @@ const getDashboard = async () => {
   }, {});
 
   return {
-    summary: {
-      totalUsers,
-      totalDonors,
-      totalVolunteers,
-      totalNgos,
-      totalDonations,
-      activeDeliveries,
-    },
+    totalUsers,
+    totalDonors,
+    totalVolunteers,
+    totalNgos,
+    totalDonations,
+    activeDeliveries,
     roleBreakdown,
-    generatedAt: new Date().toISOString(),
   };
-};
+}
 
 export default { getDashboard };
