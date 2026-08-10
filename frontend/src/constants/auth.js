@@ -1,4 +1,5 @@
 export const VERIFY_OTP_PATH = "/verify-otp";
+export const FORGOT_PASSWORD_PATH = "/forgot-password";
 export const VERIFY_CONTACT_KEY = "verifyContact";
 export const PENDING_SIGNUP_ROLE_KEY = "nb_pending_signup_role";
 

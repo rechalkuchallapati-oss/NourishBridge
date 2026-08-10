@@ -117,22 +117,17 @@ export default function SignInForm({ onSwitchToCreate }) {
     }
   };
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
     setFormError("");
     setOtpMessage("");
 
     if (!email.trim()) {
-      setFormError("Enter your email address first to receive an OTP.");
+      setFormError("Enter your email address first to receive a reset code.");
       setShowEmailSuggestions(getRecentEmails().length > 0);
       return;
     }
 
-    addRecentEmail(email);
-    refreshRecentEmails();
-
-    setOtpMessage(
-      `An OTP has been sent to ${email.trim()}. Check your inbox to reset your password.`,
-    );
+    navigate("/forgot-password", { state: { email: email.trim() } });
   };
 
   const handleGoogleContinue = ({ success, email: googleEmail, message }) => {

@@ -2,6 +2,7 @@ import { ROLE_DASHBOARD_ROUTES } from "../constants/routes";
 import { VOLUNTEER_IDENTITY } from "../data/volunteerAssets";
 
 const USER_KEY = "nb_user";
+const PERSISTED_USER_KEY = "nb_persisted_user";
 const PROFILE_KEY = "nb_donor_profile";
 const NGO_PROFILE_KEY = "nb_ngo_profile";
 const VOLUNTEER_PROFILE_KEY = "nb_volunteer_profile";
@@ -26,6 +27,14 @@ const DEFAULT_SETTINGS = {
 
 export function setSessionUser(user) {
   sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+
+  const rememberMe =
+    sessionStorage.getItem("nb_remember_me") === "1" ||
+    localStorage.getItem("nb_remember_me") === "1";
+
+  if (rememberMe) {
+    localStorage.setItem(PERSISTED_USER_KEY, JSON.stringify(user));
+  }
 }
 
 export function getSessionUser() {
@@ -37,8 +46,21 @@ export function getSessionUser() {
   }
 }
 
+/**
+ * User snapshot persisted when "Remember me" is enabled — survives tab close.
+ */
+export function getPersistedUser() {
+  try {
+    const stored = localStorage.getItem(PERSISTED_USER_KEY);
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function clearSessionUser() {
   sessionStorage.removeItem(USER_KEY);
+  localStorage.removeItem(PERSISTED_USER_KEY);
 }
 
 export function getDonorDisplayName(user) {

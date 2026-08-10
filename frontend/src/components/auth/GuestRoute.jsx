@@ -1,23 +1,16 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { getDashboardRouteForRole } from "../../utils/authStorage.js";
+import AuthLoadingScreen from "./AuthLoadingScreen.jsx";
 
 /**
  * Redirect authenticated users away from login/register pages.
  */
 export default function GuestRoute({ children }) {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isInitializing, user } = useAuth();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div
-          className="h-10 w-10 animate-spin rounded-full border-4 border-[#DCFCE7] border-t-[#16A34A]"
-          role="status"
-          aria-label="Loading"
-        />
-      </div>
-    );
+  if (isInitializing) {
+    return <AuthLoadingScreen />;
   }
 
   if (isAuthenticated && user?.role) {

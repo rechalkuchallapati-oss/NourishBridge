@@ -1,43 +1,116 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { getAccessToken, getRefreshToken } from "../utils/tokenStorage.js";
-import { getSessionUser } from "../utils/authStorage.js";
-import * as authService from "../services/authService.js";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import * as authService from "../modules/auth/services/authService.js";
+import {
+  restoreSession,
+  validateAndRefreshSession,
+  getCachedUser,
+} from "../modules/auth/services/sessionManager.js";
+import {
+  SESSION_EXPIRED_EVENT,
+  SESSION_RESTORED_EVENT,
+} from "../utils/sessionEvents.js";
+import {
+  SESSION_CHECK_INTERVAL_MS,
+  MIN_REFRESH_INTERVAL_MS,
+} from "../constants/session.js";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => getSessionUser());
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(() => getCachedUser());
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const lastRefreshAttempt = useRef(0);
 
-  const bootstrap = useCallback(async () => {
-    const accessToken = getAccessToken();
-    const refreshToken = getRefreshToken();
+  const handleSessionExpired = useCallback(async (reason = "expired") => {
+    await authService.logout({ redirect: false });
+    setUser(null);
 
-    if (!accessToken && !refreshToken) {
-      setUser(null);
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      if (accessToken) {
-        const currentUser = await authService.fetchCurrentUser();
-        setUser(currentUser);
-      } else if (refreshToken) {
-        const sessionUser = await authService.refreshSession();
-        setUser(sessionUser);
-      }
-    } catch {
-      await authService.logout();
-      setUser(null);
-    } finally {
-      setIsLoading(false);
+    if (reason !== "silent") {
+      toast.error("Your session has expired. Please sign in again.");
     }
   }, []);
+
+  const bootstrap = useCallback(async () => {
+    setIsInitializing(true);
+
+    try {
+      const result = await restoreSession();
+      setUser(result.user);
+    } catch {
+      await handleSessionExpired("silent");
+    } finally {
+      setIsInitializing(false);
+    }
+  }, [handleSessionExpired]);
 
   useEffect(() => {
     bootstrap();
   }, [bootstrap]);
+
+  /** Listen for session expiry emitted by Axios interceptor */
+  useEffect(() => {
+    const onExpired = () => {
+      handleSessionExpired();
+    };
+
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
+  }, [handleSessionExpired]);
+
+  /** Sync user state when session is silently restored elsewhere */
+  useEffect(() => {
+    const onRestored = (event) => {
+      if (event.detail?.user) {
+        setUser(event.detail.user);
+      }
+    };
+
+    window.addEventListener(SESSION_RESTORED_EVENT, onRestored);
+    return () => window.removeEventListener(SESSION_RESTORED_EVENT, onRestored);
+  }, []);
+
+  /** Periodic token validity check + proactive refresh */
+  useEffect(() => {
+    if (!user || isInitializing) return;
+
+    const runCheck = async () => {
+      const now = Date.now();
+      if (now - lastRefreshAttempt.current < MIN_REFRESH_INTERVAL_MS) return;
+
+      lastRefreshAttempt.current = now;
+      setIsRefreshing(true);
+
+      try {
+        const validatedUser = await validateAndRefreshSession();
+        if (validatedUser) {
+          setUser(validatedUser);
+        } else {
+          await handleSessionExpired();
+        }
+      } catch {
+        await handleSessionExpired();
+      } finally {
+        setIsRefreshing(false);
+      }
+    };
+
+    const intervalId = setInterval(runCheck, SESSION_CHECK_INTERVAL_MS);
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        runCheck();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+    };
+  }, [user, isInitializing, handleSessionExpired]);
 
   const login = useCallback(async (credentials) => {
     const sessionUser = await authService.login(credentials);
@@ -52,7 +125,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    await authService.logout();
+    await authService.logout({ redirect: true });
     setUser(null);
   }, []);
 
@@ -60,13 +133,15 @@ export function AuthProvider({ children }) {
     () => ({
       user,
       isAuthenticated: Boolean(user?.email),
-      isLoading,
+      isInitializing,
+      isLoading: isInitializing,
+      isRefreshing,
       login,
       registerFromOnboarding,
       logout,
       refreshSession: authService.refreshSession,
     }),
-    [user, isLoading, login, registerFromOnboarding, logout],
+    [user, isInitializing, isRefreshing, login, registerFromOnboarding, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
