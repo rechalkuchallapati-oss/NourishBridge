@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -7,6 +9,10 @@ import corsOptions from "./config/cors.js";
 import v1Routes from "./routes/v1/index.js";
 import notFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
+import { globalApiLimiter } from "./middlewares/globalRateLimit.middleware.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Creates and configures the Express application.
@@ -14,6 +20,10 @@ import errorHandler from "./middlewares/errorHandler.js";
  */
 const createApp = () => {
   const app = express();
+
+  if (config.security.trustProxy) {
+    app.set("trust proxy", 1);
+  }
 
   // Security headers
   app.use(helmet());
@@ -31,6 +41,15 @@ const createApp = () => {
   // Body parsers
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+
+  // Global API rate limit
+  app.use(config.api.prefix, globalApiLimiter);
+
+  // Uploaded files (profile images, etc.)
+  app.use(
+    `/${config.uploads.rootDir}`,
+    express.static(path.resolve(__dirname, "..", config.uploads.rootDir)),
+  );
 
   // Root welcome route (non-versioned)
   app.get("/", (_req, res) => {

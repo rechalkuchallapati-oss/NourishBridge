@@ -22,10 +22,30 @@ npm start              # production
 | POST | `/api/v1/auth/login` | Public | Login with email + password |
 | POST | `/api/v1/auth/refresh` | Public | Exchange refresh token for new pair |
 | POST | `/api/v1/auth/logout` | Public | Revoke refresh token |
+| POST | `/api/v1/auth/forgot-password` | Public | Send password reset OTP to email |
+| POST | `/api/v1/auth/reset-password` | Public | Verify OTP and set new password |
 | GET | `/api/v1/auth/me` | Bearer JWT | Current user profile |
 | GET | `/api/v1/admin/dashboard` | Admin JWT | Platform admin dashboard |
 | GET | `/api/v1/ngo/dashboard` | NGO JWT | NGO-scoped dashboard |
 | GET | `/api/v1/volunteer/dashboard` | Volunteer JWT | Volunteer-scoped dashboard |
+| GET | `/api/v1/donor/dashboard` | Donor JWT | Donor-scoped dashboard |
+
+### Role-Based Access Control (RBAC)
+
+Each role-scoped API router applies JWT + role middleware at the router level:
+
+| Prefix | Allowed role |
+|--------|----------------|
+| `/api/v1/admin/*` | `admin` |
+| `/api/v1/donor/*` | `donor` |
+| `/api/v1/ngo/*` | `ngo` |
+| `/api/v1/volunteer/*` | `volunteer` |
+
+Cross-role requests return **403 Forbidden**. Missing/invalid token returns **401**.
+
+```bash
+node scripts/test-rbac.js
+```
 
 ### Auth smoke test
 

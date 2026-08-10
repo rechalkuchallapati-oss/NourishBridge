@@ -44,6 +44,12 @@ const errorHandler = (err, req, res, _next) => {
     statusCode = HTTP_STATUS.FORBIDDEN;
   }
 
+  // Multer upload errors
+  if (err.name === "MulterError") {
+    statusCode = HTTP_STATUS.BAD_REQUEST;
+    message = err.code === "LIMIT_FILE_SIZE" ? "File too large" : err.message;
+  }
+
   if (config.isDevelopment) {
     logger.error(`${req.method} ${req.originalUrl} → ${statusCode}: ${message}`);
     if (err.stack) logger.debug(err.stack);

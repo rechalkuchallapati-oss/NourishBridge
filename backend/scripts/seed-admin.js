@@ -9,8 +9,9 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import User from "../src/models/User.model.js";
+import Admin from "../src/models/Admin.model.js";
 import { hashPassword } from "../src/utils/password.js";
-import { USER_ROLES, USER_STATUS } from "../src/constants/enums.js";
+import { USER_ROLES, USER_STATUS, ADMIN_LEVELS, ADMIN_PERMISSIONS } from "../src/constants/enums.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
@@ -25,6 +26,16 @@ const seedAdmin = async () => {
   const existing = await User.findOne({ email: ADMIN_EMAIL.toLowerCase() });
 
   if (existing) {
+    const adminProfile = await Admin.findOne({ userId: existing._id });
+    if (!adminProfile) {
+      await Admin.create({
+        userId: existing._id,
+        adminLevel: ADMIN_LEVELS.SUPER_ADMIN,
+        permissions: Object.values(ADMIN_PERMISSIONS),
+        department: "Platform Operations",
+      });
+      console.log("Admin profile created for existing user");
+    }
     console.log(`Admin already exists: ${ADMIN_EMAIL}`);
     await mongoose.disconnect();
     return existing;
@@ -44,6 +55,13 @@ const seedAdmin = async () => {
       country: "India",
     },
     status: USER_STATUS.ACTIVE,
+  });
+
+  await Admin.create({
+    userId: admin._id,
+    adminLevel: ADMIN_LEVELS.SUPER_ADMIN,
+    permissions: Object.values(ADMIN_PERMISSIONS),
+    department: "Platform Operations",
   });
 
   console.log(`Admin created: ${admin.email}`);
