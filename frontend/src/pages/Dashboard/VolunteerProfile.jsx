@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { FaAddressCard } from "react-icons/fa";
 import VolunteerAchievementBadges from "../../components/volunteer/profile/VolunteerAchievementBadges";
@@ -17,31 +17,94 @@ import {
   VOLUNTEER_PAGE_SECTION_GAP,
 } from "../../components/volunteer/volunteerDashboardStyles";
 import { getVolunteerProfile, saveVolunteerProfile } from "../../utils/authStorage";
+import {
+  fetchProfile,
+  saveProfile,
+  profileToVolunteerForm,
+  volunteerFormToPayload,
+} from "../../modules/profile/services/profileService";
+import ProfileImageUpload from "../../components/profile/ProfileImageUpload";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const inputClass =
   "w-full rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] px-3 py-3 text-sm outline-none focus:border-[#16A34A] focus:bg-white";
 
 export default function VolunteerProfile() {
   const [profile, setProfile] = useState(getVolunteerProfile);
+  const [profileImage, setProfileImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [savingContact, setSavingContact] = useState(false);
+  const [savingVehicle, setSavingVehicle] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const apiProfile = await fetchProfile();
+        if (!mounted) return;
+        const form = profileToVolunteerForm(apiProfile);
+        setProfile(form);
+        setProfileImage(apiProfile.common?.profileImage || "");
+        saveVolunteerProfile(form);
+      } catch (error) {
+        toast.error(getApiErrorMessage(error));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const update = (field, value) => setProfile((prev) => ({ ...prev, [field]: value }));
 
+  const persistProfile = async (successMessage, setSaving) => {
+    setSaving(true);
+    try {
+      const updated = await saveProfile(volunteerFormToPayload(profile));
+      const form = profileToVolunteerForm(updated);
+      setProfile(form);
+      saveVolunteerProfile(form);
+      toast.success(successMessage);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const handleContactSubmit = (event) => {
     event.preventDefault();
-    saveVolunteerProfile(profile);
-    toast.success("Contact details saved.");
+    persistProfile("Contact details saved.", setSavingContact);
   };
 
   const handleVehicleSubmit = (event) => {
     event.preventDefault();
-    saveVolunteerProfile(profile);
-    toast.success("Vehicle & availability saved.");
+    persistProfile("Vehicle & availability saved.", setSavingVehicle);
   };
+
+  if (loading) {
+    return <p className="text-sm text-[#64748B]">Loading profile…</p>;
+  }
 
   return (
     <>
       <Toaster position="top-center" />
       <div className={VOLUNTEER_PAGE_SECTION_GAP}>
+        <ProfileImageUpload
+          profileImage={profileImage}
+          displayName={profile.fullName}
+          accent="green"
+          onUploaded={(url) => {
+            setProfileImage(url);
+            toast.success("Profile photo updated.");
+          }}
+          onError={(message) => toast.error(message)}
+        />
+
         <VolunteerProfileHeader />
 
         <VolunteerImpactOverview />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaMapMarkerAlt, FaPlus, FaTrash, FaUser } from "react-icons/fa";
 import Button from "../../components/common/Button";
@@ -23,6 +23,15 @@ import {
   saveDonorProfile,
   saveSavedAddresses,
 } from "../../utils/authStorage";
+import {
+  fetchProfile,
+  saveProfile,
+  profileToDonorForm,
+  donorFormToPayload,
+  pickupLocationsToAddresses,
+} from "../../modules/profile/services/profileService";
+import ProfileImageUpload from "../../components/profile/ProfileImageUpload";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const BOX_INSET = "pl-[0.5cm] pr-[0.5cm] pt-[0.5cm] pb-[0.5cm]";
@@ -43,16 +52,55 @@ export default function Profile() {
   const [addresses, setAddresses] = useState(getSavedAddresses());
   const [newAddress, setNewAddress] = useState("");
   const [savedMessage, setSavedMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const apiProfile = await fetchProfile();
+        if (!mounted) return;
+        setProfile(profileToDonorForm(apiProfile));
+        setProfileImage(apiProfile.common?.profileImage || "");
+        setAddresses(pickupLocationsToAddresses(apiProfile.roleProfile?.pickupLocations));
+      } catch (error) {
+        if (mounted) setErrorMessage(getApiErrorMessage(error));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const updateProfile = (field) => (e) => {
     setProfile((prev) => ({ ...prev, [field]: e.target.value }));
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    saveDonorProfile(profile);
-    saveSavedAddresses(addresses);
-    setSavedMessage("Profile updated successfully.");
+    setSaving(true);
+    setSavedMessage("");
+    setErrorMessage("");
+
+    try {
+      const updated = await saveProfile(donorFormToPayload(profile, addresses));
+      const form = profileToDonorForm(updated);
+      setProfile(form);
+      saveDonorProfile(form);
+      saveSavedAddresses(addresses);
+      setSavedMessage("Profile updated successfully.");
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error));
+    } finally {
+      setSaving(false);
+    }
   };
 
   const addAddress = () => {
@@ -118,6 +166,17 @@ export default function Profile() {
           </div>
         </motion.header>
 
+        <ProfileImageUpload
+          profileImage={profileImage}
+          displayName={profile.fullName || donorName}
+          accent="green"
+          onUploaded={(url) => {
+            setProfileImage(url);
+            setSavedMessage("Profile photo updated.");
+          }}
+          onError={(message) => setErrorMessage(message)}
+        />
+
         {savedMessage ? (
           <motion.p
             initial={{ opacity: 0, y: -8 }}
@@ -128,6 +187,19 @@ export default function Profile() {
           </motion.p>
         ) : null}
 
+        {errorMessage ? (
+          <motion.p
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-[10px] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+          >
+            {errorMessage}
+          </motion.p>
+        ) : null}
+
+        {loading ? (
+          <p className="text-sm text-[#64748B]">Loading profile…</p>
+        ) : (
         <form onSubmit={handleSave} className="relative flex flex-col gap-[0.5cm]">
           <motion.section
             initial={{ opacity: 0, y: 12 }}
@@ -285,11 +357,12 @@ export default function Profile() {
           </motion.section>
 
           <div className="flex justify-end">
-            <Button type="submit" className={`min-w-[200px] ${PROFILE_BUTTON_CLASS}`}>
-              Save profile
+            <Button type="submit" disabled={saving} className={`min-w-[200px] ${PROFILE_BUTTON_CLASS}`}>
+              {saving ? "Saving…" : "Save profile"}
             </Button>
           </div>
         </form>
+        )}
       </motion.section>
     </DashboardLayout>
   );
