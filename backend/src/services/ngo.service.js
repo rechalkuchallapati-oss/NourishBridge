@@ -14,7 +14,7 @@ const getDashboard = async (userId) => {
   }
 
   const [openRequests, inventoryItems, lowStockItems] = await Promise.all([
-    FoodRequest.countDocuments({ ngoId: ngo._id, status: "open" }),
+    FoodRequest.countDocuments({ ngoId: ngo._id, status: { $in: ["requested", "under_review", "approved"] } }),
     Inventory.countDocuments({ ngoId: ngo._id }),
     Inventory.countDocuments({ ngoId: ngo._id, status: "low_stock" }),
   ]);
