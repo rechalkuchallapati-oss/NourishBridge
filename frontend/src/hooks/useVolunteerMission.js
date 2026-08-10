@@ -7,6 +7,15 @@ import {
   VOLUNTEER_IMPACT,
   getMissionEta,
 } from "../data/volunteerMission";
+import {
+  fetchAvailableMissions,
+  fetchAssignedMissions,
+  fetchMissionHistory,
+  acceptMission as acceptMissionApi,
+  advanceMission as advanceMissionApi,
+  fetchVolunteerPerformance,
+  MISSION_ACTIONS,
+} from "../modules/volunteer/services/volunteerMissionService";
 import { VOLUNTEER_REVIEWS } from "../data/volunteerProfileData";
 import {
   buildAcceptNotifications,
@@ -18,6 +27,15 @@ import {
 } from "../utils/missionWorkflow";
 
 const ACTIVE_MISSION_KEY = "nb_volunteer_active_mission";
+const STATE_TO_DELIVERY_ACTION = {
+  [MISSION_STATES.EN_ROUTE_TO_DONOR]: MISSION_ACTIONS.schedulePickup,
+  [MISSION_STATES.ARRIVED_AT_DONOR]: MISSION_ACTIONS.arriveAtPickup,
+  [MISSION_STATES.PICKUP_VERIFIED]: MISSION_ACTIONS.verifyPickup,
+  [MISSION_STATES.FOOD_COLLECTED]: MISSION_ACTIONS.markPickedUp,
+  [MISSION_STATES.EN_ROUTE_TO_NGO]: MISSION_ACTIONS.startDelivery,
+  [MISSION_STATES.ARRIVED_AT_NGO]: MISSION_ACTIONS.arriveAtNgo,
+  [MISSION_STATES.HANDOVER_CONFIRMED]: MISSION_ACTIONS.markDelivered,
+};
 const AVAILABILITY_KEY = "nb_volunteer_available";
 const COMPLETED_TODAY_KEY = "nb_volunteer_completed_today";
 const PICKUPS_KEY = "nb_volunteer_available_pickups_v2";
@@ -116,33 +134,93 @@ export function useVolunteerMission() {
     saveJson(COMPLETION_CELEBRATION_KEY, completionCelebration);
   }, [completionCelebration]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadFromApi() {
+      try {
+        const [available, assigned, performance, history] = await Promise.all([
+          fetchAvailableMissions(),
+          fetchAssignedMissions(),
+          fetchVolunteerPerformance(),
+          fetchMissionHistory({ limit: 10 }),
+        ]);
+
+        if (cancelled) return;
+
+        if (available.length) {
+          setAvailablePickups(available);
+        }
+
+        if (assigned.length && !activeMission) {
+          const mission = assigned[0];
+          setActiveMission({
+            ...mission,
+            missionId: mission.id,
+            status: MISSION_STATES.ASSIGNED,
+            eta: getMissionEta(MISSION_STATES.ASSIGNED),
+          });
+        }
+
+        if (history.missions?.length) {
+          setRecentMissions(history.missions);
+        }
+
+        if (performance) {
+          setProfileImpact((prev) => ({
+            ...prev,
+            missionsCompleted: performance.missionsCompleted,
+            mealsDelivered: performance.mealsDelivered,
+            rating: performance.rating || prev.rating,
+          }));
+          setCompletedToday(performance.missionsCompleted);
+        }
+      } catch {
+        /* keep session/mock fallback */
+      }
+    }
+
+    loadFromApi();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const pushNotifications = useCallback((items) => {
     if (!items?.length) return;
     setLiveNotifications((prev) => [...items, ...prev]);
   }, []);
 
   const acceptMission = useCallback(
-    (pickup) => {
+    async (pickup) => {
       if (activeMission) return false;
 
-      const mission = {
-        ...pickup,
-        missionId: `MIS-${Date.now().toString().slice(-4)}`,
-        status: MISSION_STATES.ASSIGNED,
-        eta: getMissionEta(MISSION_STATES.ASSIGNED),
-        acceptedAt: new Date().toISOString(),
-      };
+      try {
+        const mission = await acceptMissionApi(pickup.mongoId || pickup.id);
+        const uiMission = {
+          ...pickup,
+          ...mission,
+          missionId: mission.id,
+          status: MISSION_STATES.ASSIGNED,
+          eta: getMissionEta(MISSION_STATES.ASSIGNED),
+          acceptedAt: new Date().toISOString(),
+        };
 
-      setActiveMission(mission);
-      setAvailablePickups((prev) => prev.filter((item) => item.id !== pickup.id));
-      pushNotifications(buildAcceptNotifications(mission));
-      return true;
+        setActiveMission(uiMission);
+        setAvailablePickups((prev) =>
+          prev.filter((item) => (item.mongoId || item.id) !== (pickup.mongoId || pickup.id)),
+        );
+        pushNotifications(buildAcceptNotifications(uiMission));
+        return true;
+      } catch {
+        return false;
+      }
     },
     [activeMission, pushNotifications],
   );
 
   const transitionMissionStatus = useCallback(
-    (nextStatus) => {
+    async (nextStatus, payload = {}) => {
       let navigateTo = getRouteAfterStatusChange(nextStatus);
 
       setActiveMission((prev) => {
@@ -155,9 +233,19 @@ export function useVolunteerMission() {
         };
       });
 
+      const action = STATE_TO_DELIVERY_ACTION[nextStatus];
+      const missionId = activeMission?.mongoId || activeMission?.id;
+      if (action && missionId) {
+        try {
+          await advanceMissionApi(missionId, action, payload);
+        } catch {
+          /* UI state already updated; backend sync best-effort */
+        }
+      }
+
       return navigateTo;
     },
-    [pushNotifications],
+    [pushNotifications, activeMission],
   );
 
   const setMissionStatus = useCallback((status) => {
