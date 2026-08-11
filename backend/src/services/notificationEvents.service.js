@@ -4,6 +4,14 @@ import {
   USER_ROLES,
 } from "../constants/enums.js";
 import notificationService from "./notification.service.js";
+import {
+  emitNewDonation,
+  emitNgoAccepted,
+  emitVolunteerAssigned,
+  emitPickupStatus,
+  emitDeliveryStatus,
+  emitCriticalAlert,
+} from "./realtimeEvents.service.js";
 
 const { notifyUsers, notifyRole, getDonationParticipantUserIds, createNotification } =
   notificationService;
@@ -22,10 +30,11 @@ export async function notifyDonationCreated(donation, donorName) {
     actionUrl: `/admin/donations`,
     metadata: { event: "donation_created", donationCode: donation.donationCode },
   });
+  emitNewDonation(donation, donorName);
 }
 
 export async function notifyDonationAccepted(donation) {
-  const { donorUserId } = await getDonationParticipantUserIds(donation);
+  const { donorUserId, ngoUserId } = await getDonationParticipantUserIds(donation);
   await notifyUsers([donorUserId], {
     type: NOTIFICATION_TYPES.DONATION,
     title: "Donation accepted by NGO",
@@ -35,6 +44,7 @@ export async function notifyDonationAccepted(donation) {
     actionUrl: `/dashboard/donor/donations`,
     metadata: { event: "donation_accepted" },
   });
+  emitNgoAccepted(donation, [donorUserId, ngoUserId]);
 }
 
 export async function notifyVolunteerAssigned(donation) {
@@ -50,6 +60,7 @@ export async function notifyVolunteerAssigned(donation) {
     actionUrl: `/dashboard/volunteer/active`,
     metadata: { event: "volunteer_assigned" },
   });
+  emitVolunteerAssigned(donation, [donorUserId, ngoUserId, volunteerUserId]);
 }
 
 export async function notifyPickupScheduled(donation) {
@@ -63,6 +74,7 @@ export async function notifyPickupScheduled(donation) {
     relatedEntity: { entityType: "Donation", entityId: donation._id },
     metadata: { event: "pickup_scheduled" },
   });
+  emitPickupStatus(donation, "pickup_scheduled", [donorUserId, volunteerUserId]);
 }
 
 export async function notifyPickupCompleted(donation) {
@@ -77,6 +89,7 @@ export async function notifyPickupCompleted(donation) {
     relatedEntity: { entityType: "Donation", entityId: donation._id },
     metadata: { event: "pickup_completed" },
   });
+  emitPickupStatus(donation, "pickup_completed", [donorUserId, ngoUserId, volunteerUserId]);
 }
 
 export async function notifyDeliveryStarted(donation) {
@@ -90,6 +103,7 @@ export async function notifyDeliveryStarted(donation) {
     relatedEntity: { entityType: "Donation", entityId: donation._id },
     metadata: { event: "delivery_started" },
   });
+  emitDeliveryStatus(donation, "delivery_started", [donorUserId, ngoUserId]);
 }
 
 export async function notifyDeliveryCompleted(donation) {
@@ -113,6 +127,11 @@ export async function notifyDeliveryCompleted(donation) {
     relatedEntity: { entityType: "Donation", entityId: donation._id },
     metadata: { event: "delivery_completed_admin" },
   });
+  emitDeliveryStatus(
+    donation,
+    "delivery_completed",
+    [donorUserId, ngoUserId, volunteerUserId],
+  );
 }
 
 export async function notifyFoodRequestCreated(foodRequest, ngoName) {
@@ -159,6 +178,11 @@ export async function notifyInventoryNearExpiry(ngoUserId, items) {
     actionUrl: `/dashboard/ngo/inventory`,
     metadata: { event: "inventory_near_expiry", count: items.length },
   });
+  emitCriticalAlert(
+    "Inventory expiry alert",
+    `${items.length} batch(es) nearing expiry`,
+    [ngoUserId],
+  );
 }
 
 export default {

@@ -1,8 +1,11 @@
 import config from "./src/config/index.js";
 import connectDatabase, { disconnectDatabase } from "./src/config/database.js";
 import createApp from "./src/app.js";
+import { initSocket, closeSocket } from "./src/services/socket.service.js";
 import logger from "./src/utils/logger.js";
 import "./src/models/index.js";
+
+const SHUTDOWN_TIMEOUT_MS = 15000;
 
 /**
  * Application entry point — connects DB, starts HTTP server, handles graceful shutdown.
@@ -18,11 +21,31 @@ const startServer = async () => {
       logger.info(`API base: http://localhost:${config.port}${config.api.prefix}`);
     });
 
+    initSocket(server);
+
+    let shuttingDown = false;
+
     const shutdown = async (signal) => {
+      if (shuttingDown) return;
+      shuttingDown = true;
       logger.info(`${signal} received — shutting down gracefully`);
+
+      const forceExit = setTimeout(() => {
+        logger.error("Graceful shutdown timed out — forcing exit");
+        process.exit(1);
+      }, SHUTDOWN_TIMEOUT_MS);
+      forceExit.unref();
+
       server.close(async () => {
-        await disconnectDatabase();
-        process.exit(0);
+        try {
+          await closeSocket();
+          await disconnectDatabase();
+          clearTimeout(forceExit);
+          process.exit(0);
+        } catch (error) {
+          logger.error("Shutdown error:", error.message);
+          process.exit(1);
+        }
       });
     };
 

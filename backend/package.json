@@ -8,8 +8,9 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint": "echo \"Add ESLint when ready\"",
-    "test": "node scripts/test-phases-12-16.js",
-    "test:all": "node scripts/test-auth.js && node scripts/test-donations.js && node scripts/test-workflow.js && node scripts/test-delivery.js && node scripts/test-phases-9-11.js && node scripts/test-phases-12-16.js"
+    "test": "node scripts/test-e2e-complete.js",
+    "test:security": "node scripts/test-rbac.js && node scripts/test-protected-routes.js",
+    "test:all": "node scripts/test-auth-complete.js && node scripts/test-workflow.js && node scripts/test-delivery.js && node scripts/test-phases-11-20.js && node scripts/test-e2e-complete.js"
   },
   "keywords": [
     "nourishbridge",
@@ -24,20 +25,25 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.6.2",
     "express-validator": "^7.3.2",
     "helmet": "^8.0.0",
+    "hpp": "^0.2.3",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.9.3",
     "morgan": "^1.10.0",
     "multer": "^2.2.0",
     "nodemailer": "^9.0.5",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "socket.io-client": "^4.8.3"
   }
 }

@@ -1,3 +1,4 @@
+import compression from "compression";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -10,6 +11,11 @@ import v1Routes from "./routes/v1/index.js";
 import notFound from "./middlewares/notFound.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import { globalApiLimiter } from "./middlewares/globalRateLimit.middleware.js";
+import {
+  sanitizeInput,
+  preventPollution,
+  secureUploadAccess,
+} from "./middlewares/security.middleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +32,15 @@ const createApp = () => {
   }
 
   // Security headers
-  app.use(helmet());
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: "cross-origin" },
+      contentSecurityPolicy: config.isProduction ? undefined : false,
+    }),
+  );
+
+  // Response compression (production + large JSON payloads)
+  app.use(compression());
 
   // CORS — allows configured frontend origins
   app.use(cors(corsOptions));
@@ -42,13 +56,21 @@ const createApp = () => {
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+  // NoSQL injection protection + HTTP parameter pollution
+  app.use(sanitizeInput);
+  app.use(preventPollution);
+
   // Global API rate limit
   app.use(config.api.prefix, globalApiLimiter);
 
-  // Uploaded files (profile images, etc.)
+  // Uploaded files — image extensions only, safe cache headers
   app.use(
     `/${config.uploads.rootDir}`,
-    express.static(path.resolve(__dirname, "..", config.uploads.rootDir)),
+    secureUploadAccess,
+    express.static(path.resolve(__dirname, "..", config.uploads.rootDir), {
+      dotfiles: "deny",
+      index: false,
+    }),
   );
 
   // Root welcome route (non-versioned)
