@@ -233,6 +233,7 @@ export const AUDIT_MODULES = Object.freeze({
   REPORTS: "reports",
   SYSTEM: "system",
   AUTH: "auth",
+  SUPPORT: "support",
 });
 
 export const AUDIT_SEVERITY = Object.freeze({

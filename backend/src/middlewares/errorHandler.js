@@ -55,6 +55,9 @@ const errorHandler = (err, req, res, _next) => {
     if (err.stack) logger.debug(err.stack);
   } else if (!err.isOperational) {
     logger.error("Unexpected error:", err.message);
+    if (statusCode === HTTP_STATUS.INTERNAL_SERVER_ERROR) {
+      message = "Internal server error";
+    }
   }
 
   res.status(statusCode).json({

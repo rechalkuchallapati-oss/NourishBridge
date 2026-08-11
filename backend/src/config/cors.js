@@ -6,13 +6,25 @@ import logger from "../utils/logger.js";
  */
 const corsOptions = {
   origin(origin, callback) {
-    // Allow non-browser clients (Postman, mobile apps, server-to-server)
+    // Browsers send Origin; allow non-browser clients (health checks, scripts, mobile)
     if (!origin) {
       return callback(null, true);
     }
 
     if (config.cors.origins.includes(origin)) {
       return callback(null, true);
+    }
+
+    // Dev convenience: allow localhost / 127.0.0.1 on any port
+    if (config.isDevelopment) {
+      try {
+        const { hostname } = new URL(origin);
+        if (hostname === "localhost" || hostname === "127.0.0.1") {
+          return callback(null, true);
+        }
+      } catch {
+        /* invalid origin URL */
+      }
     }
 
     logger.warn(`CORS blocked origin: ${origin}`);

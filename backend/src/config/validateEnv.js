@@ -45,6 +45,10 @@ export function validateEnv(config) {
     errors.push("SMTP_HOST is required in production for password reset emails");
   }
 
+  if (isProduction && config.rateLimit.skipInDevelopment) {
+    errors.push("RATE_LIMIT_SKIP_IN_DEV must be false in production");
+  }
+
   if (errors.length > 0) {
     throw new Error(`Environment validation failed:\n- ${errors.join("\n- ")}`);
   }

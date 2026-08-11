@@ -1,8 +1,14 @@
 # Node Modules
 node_modules/
 
-# Environment Variables
+# Environment Variables — never commit secrets
 .env
+.env.*
+!.env.example
+!.env.*.example
+
+# Uploads & local storage
+uploads/
 
 # Build Files
 dist/
@@ -10,13 +16,18 @@ build/
 
 # Logs
 *.log
+npm-debug.log*
 
 # OS Files
 .DS_Store
 Thumbs.db
 
-# VS Code
+# IDE
 .vscode/
+.idea/
 
 # Coverage
 coverage/
+
+# Local overrides
+*.local

@@ -11,6 +11,8 @@ services:
         value: production
       - key: TRUST_PROXY
         value: true
+      - key: RATE_LIMIT_SKIP_IN_DEV
+        value: false
       - key: MONGODB_URI
         sync: false
       - key: JWT_ACCESS_SECRET
@@ -20,4 +22,18 @@ services:
       - key: CORS_ORIGIN
         sync: false
       - key: OTP_SECRET
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
         sync: false
