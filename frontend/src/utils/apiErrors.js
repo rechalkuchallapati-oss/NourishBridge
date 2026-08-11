@@ -12,8 +12,14 @@ export function getApiErrorMessage(error, fallback = "Something went wrong. Plea
     return data.message;
   }
 
-  if (error?.message === "Network Error") {
-    return "Unable to reach the server. Check your connection and try again.";
+  const code = error?.code;
+  if (
+    error?.message === "Network Error" ||
+    code === "ERR_NETWORK" ||
+    code === "ECONNABORTED" ||
+    code === "ERR_CONNECTION_REFUSED"
+  ) {
+    return "Cannot connect to the server. Make sure the backend is running (npm run dev in the backend folder) and try again.";
   }
 
   return fallback;
