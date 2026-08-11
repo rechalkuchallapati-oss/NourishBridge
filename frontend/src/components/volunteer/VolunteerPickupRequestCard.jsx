@@ -19,6 +19,7 @@ import EventTypeBadge from "../common/EventTypeBadge";
 export default function VolunteerPickupRequestCard({
   pickup,
   onAccept,
+  onReject,
   disabled,
   index = 0,
 }) {
@@ -117,6 +118,20 @@ export default function VolunteerPickupRequestCard({
           <FaLocationArrow aria-hidden="true" />
           Accept Mission
         </button>
+        {onReject ? (
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => onReject(pickup)}
+            className={[
+              VOLUNTEER_BTN,
+              "flex-1 border border-red-200 bg-white text-red-600 disabled:cursor-not-allowed disabled:opacity-50 sm:flex-none sm:min-w-[140px]",
+              volunteerInteractive.buttonOutline,
+            ].join(" ")}
+          >
+            Decline
+          </button>
+        ) : null}
       </div>
     </motion.li>
   );

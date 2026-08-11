@@ -79,12 +79,18 @@ export const MISSION_ACTIONS = {
 
 export { DELIVERY_ACTIONS };
 
+export async function rejectMission(id, reason) {
+  const { data } = await volunteerApi.rejectMission(id, reason);
+  return mapMissionToUi(data.data.mission);
+}
+
 export default {
   fetchAvailableMissions,
   fetchAssignedMissions,
   fetchMissionHistory,
   fetchMissionDetail,
   acceptMission,
+  rejectMission,
   advanceMission,
   advanceDelivery,
   uploadDeliveryProof,

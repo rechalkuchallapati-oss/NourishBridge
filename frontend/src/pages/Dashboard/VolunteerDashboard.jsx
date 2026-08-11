@@ -39,14 +39,17 @@ export default function VolunteerDashboard() {
     toggleAvailability,
   } = useVolunteerMissionContext();
 
-  const handleAccept = (pickup) => {
+  const handleAccept = async (pickup) => {
     if (activeMission) {
       toast.error("Complete your current mission first.");
       return;
     }
-    if (acceptMission(pickup)) {
+    const ok = await acceptMission(pickup);
+    if (ok) {
       toast.success("Mission assigned — opening Active Mission.");
       navigate(DASHBOARD_ROUTES.volunteerActive);
+    } else {
+      toast.error("Could not accept mission — check availability.");
     }
   };
 

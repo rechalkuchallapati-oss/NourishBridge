@@ -12,10 +12,15 @@ import {
   fetchAssignedMissions,
   fetchMissionHistory,
   acceptMission as acceptMissionApi,
+  rejectMission as rejectMissionApi,
   advanceMission as advanceMissionApi,
   fetchVolunteerPerformance,
   MISSION_ACTIONS,
 } from "../modules/volunteer/services/volunteerMissionService";
+import {
+  loadDeliveryForMission,
+  advanceDeliveryStep,
+} from "../modules/deliveries/services/deliveryWorkflowService";
 import { VOLUNTEER_REVIEWS } from "../data/volunteerProfileData";
 import {
   buildAcceptNotifications,
@@ -197,10 +202,13 @@ export function useVolunteerMission() {
 
       try {
         const mission = await acceptMissionApi(pickup.mongoId || pickup.id);
+        const delivery = mission.delivery || (await loadDeliveryForMission(mission));
         const uiMission = {
           ...pickup,
           ...mission,
           missionId: mission.id,
+          deliveryId: delivery?.id || mission.deliveryId,
+          delivery,
           status: MISSION_STATES.ASSIGNED,
           eta: getMissionEta(MISSION_STATES.ASSIGNED),
           acceptedAt: new Date().toISOString(),
@@ -221,7 +229,31 @@ export function useVolunteerMission() {
 
   const transitionMissionStatus = useCallback(
     async (nextStatus, payload = {}) => {
-      let navigateTo = getRouteAfterStatusChange(nextStatus);
+      const navigateTo = getRouteAfterStatusChange(nextStatus);
+      const action = STATE_TO_DELIVERY_ACTION[nextStatus];
+      const missionId = activeMission?.mongoId || activeMission?.id;
+
+      if (action && missionId) {
+        try {
+          const delivery = await advanceDeliveryStep(activeMission, action, payload);
+          if (delivery) {
+            setActiveMission((prev) => {
+              if (!prev) return prev;
+              pushNotifications(buildWorkflowNotifications(prev, nextStatus));
+              return {
+                ...prev,
+                delivery,
+                deliveryId: delivery.id,
+                status: nextStatus,
+                eta: getMissionEta(nextStatus) ?? prev.eta,
+              };
+            });
+            return navigateTo;
+          }
+        } catch {
+          /* fall through to local update */
+        }
+      }
 
       setActiveMission((prev) => {
         if (!prev) return prev;
@@ -233,13 +265,11 @@ export function useVolunteerMission() {
         };
       });
 
-      const action = STATE_TO_DELIVERY_ACTION[nextStatus];
-      const missionId = activeMission?.mongoId || activeMission?.id;
       if (action && missionId) {
         try {
           await advanceMissionApi(missionId, action, payload);
         } catch {
-          /* UI state already updated; backend sync best-effort */
+          /* UI state already updated */
         }
       }
 
@@ -323,6 +353,21 @@ export function useVolunteerMission() {
     setIsAvailable((prev) => !prev);
   }, []);
 
+  const rejectMission = useCallback(
+    async (pickup, reason = "Declined by volunteer") => {
+      try {
+        await rejectMissionApi(pickup.mongoId || pickup.id, reason);
+        setAvailablePickups((prev) =>
+          prev.filter((item) => (item.mongoId || item.id) !== (pickup.mongoId || pickup.id)),
+        );
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    [],
+  );
+
   const allReviews = [...liveReviews, ...VOLUNTEER_REVIEWS];
 
   return {
@@ -337,6 +382,7 @@ export function useVolunteerMission() {
     allReviews,
     completionCelebration,
     acceptMission,
+    rejectMission,
     setMissionStatus,
     transitionMissionStatus,
     completeMission,

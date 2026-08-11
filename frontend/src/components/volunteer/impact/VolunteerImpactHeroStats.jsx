@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { IMPACT_HERO_STATS } from "../../../data/volunteerImpactPageData";
+import { useVolunteerMissionContext } from "../../../context/VolunteerMissionContext";
 import { volunteerInteractive, VOLUNTEER_CONTENT_STACK } from "../volunteerDashboardStyles";
 
 const ACCENT_STYLES = {
@@ -10,9 +10,42 @@ const ACCENT_STYLES = {
 };
 
 export default function VolunteerImpactHeroStats() {
+  const { profileImpact } = useVolunteerMissionContext();
+
+  const stats = [
+    {
+      id: "missions",
+      label: "Missions Completed",
+      displayValue: String(profileImpact.missionsCompleted ?? 0),
+      description: "Total completed rescue missions",
+      accent: "green",
+    },
+    {
+      id: "meals",
+      label: "Meals Delivered",
+      displayValue: (profileImpact.mealsDelivered ?? 0).toLocaleString(),
+      description: "Estimated meals delivered to NGOs",
+      accent: "blue",
+    },
+    {
+      id: "rating",
+      label: "Volunteer Rating",
+      displayValue: (profileImpact.rating ?? 0).toFixed(1),
+      description: `${profileImpact.reviewCount ?? 0} reviews`,
+      accent: "amber",
+    },
+    {
+      id: "trust",
+      label: "Trust Score",
+      displayValue: String(profileImpact.trustScore ?? 0),
+      description: "Platform trust score out of 100",
+      accent: "purple",
+    },
+  ];
+
   return (
     <div className={`grid ${VOLUNTEER_CONTENT_STACK} sm:grid-cols-2 xl:grid-cols-4`}>
-      {IMPACT_HERO_STATS.map((stat, index) => (
+      {stats.map((stat, index) => (
         <motion.div
           key={stat.id}
           initial={{ opacity: 0, y: 10 }}

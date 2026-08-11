@@ -71,26 +71,15 @@ export default function VolunteerMyMissions() {
     useVolunteerMissionContext();
 
   const tableRows = useMemo(() => {
-    const historyIds = new Set(COMPLETED_MISSIONS_HISTORY.map((m) => m.id));
-    const sessionOnly = recentMissions
-      .map(mapRecentMission)
-      .filter((m) => !historyIds.has(m.id));
+    const missions = recentMissions.length
+      ? recentMissions.map(mapRecentMission)
+      : COMPLETED_MISSIONS_HISTORY.map(mapRecentMission);
 
-    const allMissions = dedupeMissions([
-      ...UPCOMING_MISSIONS_EXTENDED,
-      ...sessionOnly,
-      ...COMPLETED_MISSIONS_HISTORY,
-    ]);
-
-    return getMissionTableRows(allMissions);
+    return getMissionTableRows(dedupeMissions(missions));
   }, [recentMissions]);
 
-  const upcomingCount = UPCOMING_MISSIONS_EXTENDED.length;
-  const completedCount =
-    COMPLETED_MISSIONS_HISTORY.length +
-    recentMissions.filter(
-      (m) => !COMPLETED_MISSIONS_HISTORY.some((h) => h.id === (m.id ?? m.missionId)),
-    ).length;
+  const upcomingCount = recentMissions.filter((m) => m.status !== "completed").length;
+  const completedCount = recentMissions.filter((m) => m.status === "completed").length;
 
   return (
     <div className={VOLUNTEER_PAGE_SECTION_GAP}>

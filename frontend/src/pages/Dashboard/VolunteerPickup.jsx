@@ -17,6 +17,11 @@ import EventTypeBadge from "../../components/common/EventTypeBadge";
 import DonationItemsList from "../../components/common/DonationItemsList";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
 import {
+  uploadProofForMission,
+  advanceDeliveryStep,
+  DELIVERY_ACTIONS,
+} from "../../modules/deliveries/services/deliveryWorkflowService";
+import {
   MISSION_STATES,
   PICKUP_VERIFICATION_CHECKLIST,
 } from "../../data/volunteerMission";
@@ -145,6 +150,8 @@ export default function VolunteerPickup() {
   const [notes, setNotes] = useState("");
   const [foodPhoto, setFoodPhoto] = useState({ preview: null, name: "" });
   const [proofPhoto, setProofPhoto] = useState({ preview: null, name: "" });
+  const [foodPhotoFile, setFoodPhotoFile] = useState(null);
+  const [proofPhotoFile, setProofPhotoFile] = useState(null);
 
   useEffect(
     () => () => {
@@ -154,7 +161,7 @@ export default function VolunteerPickup() {
     [foodPhoto.preview, proofPhoto.preview],
   );
 
-  const handlePhoto = (setter, prev) => (event) => {
+  const handlePhoto = (setter, fileSetter, prev) => (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
@@ -162,13 +169,14 @@ export default function VolunteerPickup() {
       return;
     }
     if (prev.preview) URL.revokeObjectURL(prev.preview);
+    fileSetter(file);
     setter({ preview: URL.createObjectURL(file), name: file.name });
   };
 
   const allChecked = PICKUP_VERIFICATION_CHECKLIST.every((item) => checklist[item.id]);
   const canConfirm = allChecked && pickup;
 
-  const handleConfirmPickup = (event) => {
+  const handleConfirmPickup = async (event) => {
     event.preventDefault();
     if (!pickup) {
       toast.error("No active pickup mission.");
@@ -178,7 +186,20 @@ export default function VolunteerPickup() {
       toast.error("Complete all safety verification checks first.");
       return;
     }
-    const navTo = transitionMissionStatus(MISSION_STATES.FOOD_COLLECTED);
+
+    try {
+      const files = [foodPhotoFile, proofPhotoFile].filter(Boolean);
+      if (files.length) {
+        await uploadProofForMission(activeMission, "pickup", files);
+      }
+      await advanceDeliveryStep(activeMission, DELIVERY_ACTIONS.arriveAtPickup, { notes });
+      await advanceDeliveryStep(activeMission, DELIVERY_ACTIONS.verifyPickup, { notes });
+      await advanceDeliveryStep(activeMission, DELIVERY_ACTIONS.collectFood, { notes });
+    } catch {
+      /* best-effort backend sync */
+    }
+
+    const navTo = await transitionMissionStatus(MISSION_STATES.FOOD_COLLECTED);
     toast.success("Pickup confirmed — opening Delivery page.");
     navigate(navTo ?? DASHBOARD_ROUTES.volunteerDelivery);
   };
@@ -375,7 +396,7 @@ export default function VolunteerPickup() {
               preview={foodPhoto.preview}
               fileName={foodPhoto.name}
               inputRef={foodPhotoRef}
-              onSelect={handlePhoto(setFoodPhoto, foodPhoto)}
+              onSelect={handlePhoto(setFoodPhoto, setFoodPhotoFile, foodPhoto)}
               onClear={() => {
                 if (foodPhoto.preview) URL.revokeObjectURL(foodPhoto.preview);
                 setFoodPhoto({ preview: null, name: "" });
@@ -388,7 +409,7 @@ export default function VolunteerPickup() {
               preview={proofPhoto.preview}
               fileName={proofPhoto.name}
               inputRef={proofPhotoRef}
-              onSelect={handlePhoto(setProofPhoto, proofPhoto)}
+              onSelect={handlePhoto(setProofPhoto, setProofPhotoFile, proofPhoto)}
               onClear={() => {
                 if (proofPhoto.preview) URL.revokeObjectURL(proofPhoto.preview);
                 setProofPhoto({ preview: null, name: "" });

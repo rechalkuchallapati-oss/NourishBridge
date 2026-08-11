@@ -10,7 +10,7 @@ import { VOLUNTEER_CONTENT_STACK, VOLUNTEER_PAGE_SECTION_GAP } from "../../compo
 
 export default function VolunteerAvailablePickups() {
   const navigate = useNavigate();
-  const { activeMission, availablePickups, isAvailable, acceptMission } =
+  const { activeMission, availablePickups, isAvailable, acceptMission, rejectMission } =
     useVolunteerMissionContext();
 
   return (
@@ -60,13 +60,19 @@ export default function VolunteerAvailablePickups() {
               pickup={pickup}
               disabled={!!activeMission || !isAvailable}
               index={index}
-              onAccept={(item) => {
-                if (acceptMission(item)) {
+              onAccept={async (item) => {
+                const ok = await acceptMission(item);
+                if (ok) {
                   toast.success("Mission accepted — opening Active Mission.");
                   navigate(DASHBOARD_ROUTES.volunteerActive);
                 } else {
                   toast.error("Cannot accept — check availability or active mission.");
                 }
+              }}
+              onReject={async (item) => {
+                const ok = await rejectMission(item);
+                if (ok) toast.success("Pickup declined.");
+                else toast.error("Could not decline pickup.");
               }}
             />
           ))}

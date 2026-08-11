@@ -8,10 +8,8 @@ import {
   PICKUP_VERIFICATION_CHECKLIST,
 } from "../../data/volunteerMission";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
-import {
-  volunteerInteractive,
-  VOLUNTEER_BTN,
-} from "../../components/volunteer/volunteerDashboardStyles";
+import { fetchDeliveryQr, scanDeliveryQr } from "../../modules/maps/services/mapService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 function parseQuantityKg(quantityLabel) {
   const match = String(quantityLabel ?? "").match(/([\d.]+)/);
@@ -32,6 +30,10 @@ export default function VolunteerPickupVerification() {
   const [notes, setNotes] = useState("");
   const [photoPreview, setPhotoPreview] = useState(null);
   const [photoName, setPhotoName] = useState("");
+  const [qrPayload, setQrPayload] = useState("");
+  const [qrLoading, setQrLoading] = useState(false);
+
+  const deliveryId = activeMission?.deliveryId || activeMission?.delivery?.id;
 
   useEffect(() => {
     if (activeMission?.quantity) {
@@ -82,7 +84,24 @@ export default function VolunteerPickupVerification() {
   const allChecked = PICKUP_VERIFICATION_CHECKLIST.every((item) => checklist[item.id]);
   const quantityValid = actualQuantity.trim() !== "" && !Number.isNaN(Number(actualQuantity));
 
-  const handleSubmit = (event) => {
+  const handleLoadQr = async () => {
+    if (!deliveryId) {
+      toast.error("No delivery linked to this mission.");
+      return;
+    }
+    setQrLoading(true);
+    try {
+      const qr = await fetchDeliveryQr(deliveryId);
+      setQrPayload(qr.pickup?.payload || "");
+      toast.success("Pickup QR loaded");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    } finally {
+      setQrLoading(false);
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (!activeMission) {
@@ -98,6 +117,16 @@ export default function VolunteerPickupVerification() {
     if (!quantityValid) {
       toast.error("Enter a valid actual quantity.");
       return;
+    }
+
+    if (deliveryId && qrPayload.trim()) {
+      try {
+        await scanDeliveryQr(deliveryId, qrPayload.trim());
+        toast.success("QR pickup verified");
+      } catch (error) {
+        toast.error(getApiErrorMessage(error));
+        return;
+      }
     }
 
     setMissionStatus(MISSION_STATES.FOOD_COLLECTED);
@@ -244,6 +273,34 @@ export default function VolunteerPickupVerification() {
               )}
               <p className="text-[10px] text-[#64748B]">
                 Stored locally for preview only. Cloud upload will be added later.
+              </p>
+            </div>
+
+            <div className="space-y-2 rounded-[16px] border border-[#E5E7EB] bg-[#F8FAFC] p-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-semibold text-[#0F172A]">QR Pickup Verification</span>
+                <button
+                  type="button"
+                  onClick={handleLoadQr}
+                  disabled={qrLoading || !deliveryId}
+                  className={[
+                    VOLUNTEER_BTN,
+                    "border border-[#BBF7D0] bg-white px-3 py-1.5 text-[#15803D] disabled:opacity-50",
+                    volunteerInteractive.buttonOutline,
+                  ].join(" ")}
+                >
+                  {qrLoading ? "Loading…" : "Load QR"}
+                </button>
+              </div>
+              <input
+                type="text"
+                value={qrPayload}
+                onChange={(e) => setQrPayload(e.target.value)}
+                placeholder="Scan or paste QR payload to verify pickup"
+                className="w-full rounded-[10px] border border-[#E5E7EB] px-3 py-2"
+              />
+              <p className="text-[10px] text-[#64748B]">
+                Optional but recommended — verifies donation traceability at pickup.
               </p>
             </div>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -28,6 +28,8 @@ import VolunteerLiveRouteMap from "../../components/volunteer/VolunteerLiveRoute
 import MissionSuccessModal from "../../components/volunteer/MissionSuccessModal";
 import VolunteerSectionShell, { VolunteerSectionTitle } from "../../components/volunteer/VolunteerSectionShell";
 import { useVolunteerMissionContext } from "../../context/VolunteerMissionContext";
+import { fetchDeliveryRoute, updateVolunteerLocation } from "../../modules/maps/services/mapService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 import {
 
@@ -183,6 +185,37 @@ export default function VolunteerRouteNavigation() {
 
   const route = getRouteContext(activeMission);
 
+  const [liveDistanceKm, setLiveDistanceKm] = useState(null);
+  const [liveEta, setLiveEta] = useState(null);
+
+  const deliveryId = activeMission?.deliveryId || activeMission?.delivery?.id;
+
+  useEffect(() => {
+    if (!deliveryId) return;
+    let cancelled = false;
+    fetchDeliveryRoute(deliveryId)
+      .then((routeData) => {
+        if (cancelled) return;
+        const routes = routeData?.routes;
+        if (routes?.distanceKm != null) setLiveDistanceKm(String(routes.distanceKm));
+        if (routes?.etaMinutes != null) setLiveEta(`${routes.etaMinutes} min`);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [deliveryId]);
+
+  useEffect(() => {
+    if (!deliveryId || !navigator.geolocation) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        updateVolunteerLocation(pos.coords.latitude, pos.coords.longitude).catch(() => {});
+      },
+      () => {},
+      { enableHighAccuracy: true, maximumAge: 20000, timeout: 15000 },
+    );
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [deliveryId]);
+
   const [reportedIssues, setReportedIssues] = useState({});
 
   const [showIssuePanel, setShowIssuePanel] = useState(false);
@@ -330,6 +363,8 @@ export default function VolunteerRouteNavigation() {
 
 
   const dest = route.nextDestination;
+  const displayDistance = liveDistanceKm ?? dest.distanceKm;
+  const displayEta = liveEta ?? dest.eta;
 
   const headingToNgo = isDeliveryPhase(route.status) || dest.type === "ngo";
 
@@ -427,7 +462,7 @@ export default function VolunteerRouteNavigation() {
 
                   <dd className={`${VOLUNTEER_INSET_LINE_GAP} text-2xl font-extrabold text-[#0F172A]`}>
 
-                    {dest.distanceKm} km
+                    {displayDistance} km
 
                   </dd>
 
@@ -439,7 +474,7 @@ export default function VolunteerRouteNavigation() {
 
                   <dd className={`${VOLUNTEER_INSET_LINE_GAP} text-2xl font-extrabold text-[#16A34A]`}>
 
-                    {dest.eta}
+                    {displayEta}
 
                   </dd>
 

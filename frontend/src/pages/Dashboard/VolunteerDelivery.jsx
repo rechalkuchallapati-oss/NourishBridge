@@ -151,15 +151,15 @@ export default function VolunteerDelivery() {
     toast.success(`Handover request sent to ${delivery?.ngoName ?? "NGO"}.`);
   };
 
-  const handleContinueToNavigation = (event) => {
+  const handleContinueToNavigation = async (event) => {
     event.preventDefault();
     if (!delivery) return;
-    const navTo = transitionMissionStatus(MISSION_STATES.EN_ROUTE_TO_NGO);
+    const navTo = await transitionMissionStatus(MISSION_STATES.EN_ROUTE_TO_NGO);
     toast.success("Opening Route & Navigation to NGO.");
     navigate(navTo ?? DASHBOARD_ROUTES.volunteerRoute);
   };
 
-  const handleConfirmDelivery = (event) => {
+  const handleConfirmDelivery = async (event) => {
     event.preventDefault();
     if (!delivery) {
       toast.error("No active delivery.");
@@ -174,7 +174,7 @@ export default function VolunteerDelivery() {
       return;
     }
 
-    const navTo = transitionMissionStatus(MISSION_STATES.ARRIVED_AT_NGO);
+    const navTo = await transitionMissionStatus(MISSION_STATES.ARRIVED_AT_NGO);
     toast.success("Handover details saved — confirm delivery on Route page.");
     navigate(navTo ?? DASHBOARD_ROUTES.volunteerRoute);
   };
