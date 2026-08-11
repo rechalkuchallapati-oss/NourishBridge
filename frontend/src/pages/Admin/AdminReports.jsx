@@ -50,7 +50,7 @@ import {
   TOP_NGOS,
   VOLUNTEER_KPIS,
 } from "../../data/adminReports";
-import { fetchAdminReports } from "../../modules/admin/services/adminService";
+import { fetchAdminReports, exportAdminReport } from "../../modules/admin/services/adminService";
 import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -116,6 +116,23 @@ export default function AdminReports() {
       ]
     : REPORTS_KPI;
 
+  const handleExport = async (format) => {
+    try {
+      const type = format === "pdf" ? "impact" : "donations";
+      const { blob, filename } = await exportAdminReport(type, format === "pdf" ? "pdf" : "csv");
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Report exported");
+      setExportOpen(false);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
+
   return (
     <>
       <Toaster position="top-center" />
@@ -156,9 +173,13 @@ export default function AdminReports() {
                 </button>
                 {exportOpen ? (
                   <div className="absolute right-0 z-20 mt-1 min-w-[180px] rounded-[12px] border border-[#E5E7EB] bg-white py-1 shadow-lg">
-                    {["PDF Summary", "Excel Data", "CSV Export"].map((opt) => (
-                      <button key={opt} type="button" onClick={() => { toast.success(`${opt} started`); setExportOpen(false); }} className="block w-full px-4 py-2.5 text-left text-sm font-medium text-[#0F172A] hover:bg-[#F8FAFC]">
-                        {opt}
+                    {[
+                      { label: "PDF Summary", format: "pdf" },
+                      { label: "Excel Data", format: "csv" },
+                      { label: "CSV Export", format: "csv" },
+                    ].map((opt) => (
+                      <button key={opt.label} type="button" onClick={() => handleExport(opt.format)} className="block w-full px-4 py-2.5 text-left text-sm font-medium text-[#0F172A] hover:bg-[#F8FAFC]">
+                        {opt.label}
                       </button>
                     ))}
                   </div>

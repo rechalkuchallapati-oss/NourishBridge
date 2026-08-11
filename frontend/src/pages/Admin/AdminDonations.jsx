@@ -66,6 +66,8 @@ import {
   filterDonations,
   sortDonations,
 } from "../../data/adminDonations";
+import { exportAdminReport, fetchAdminDonations } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 15;
@@ -93,7 +95,8 @@ function KpiCard({ item }) {
 }
 
 export default function AdminDonations() {
-  const [donations] = useState(ADMIN_DONATIONS);
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -138,6 +141,38 @@ export default function AdminDonations() {
   useEffect(() => setCurrentPage(1), [filters, pageSize]);
   useEffect(() => { if (currentPage > totalPages) setCurrentPage(totalPages); }, [currentPage, totalPages]);
 
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminDonations({ limit: 100, status: filters.status !== "all" ? filters.status : undefined });
+        if (!cancelled) setDonations(result.donations);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [filters.status]);
+
+  const handleExport = async () => {
+    try {
+      const { blob, filename } = await exportAdminReport("donations", "csv");
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success("Donations exported");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
+
   const openDrawer = (donation) => {
     setSelected(donation);
     setDrawerOpen(true);
@@ -178,9 +213,9 @@ export default function AdminDonations() {
                 </select>
               </label>
               <button type="button" onClick={() => toast("Advanced filters")} className={`${ADMIN_SECONDARY_BTN} h-[42px]`}><Filter size={16} /> Advanced Filters</button>
-              <button type="button" onClick={() => toast.success("Exported CSV/PDF")} className={`${ADMIN_SECONDARY_BTN} h-[42px]`}><Download size={16} /> Export</button>
+              <button type="button" onClick={handleExport} className={`${ADMIN_SECONDARY_BTN} h-[42px]`}><Download size={16} /> Export</button>
               <button type="button" onClick={() => toast("Add donation form")} className={`${ADMIN_PRIMARY_BTN} h-[42px]`}><Plus size={16} /> Add Donation</button>
-              <button type="button" onClick={() => toast.success("Refreshed")} className={`${ADMIN_SECONDARY_BTN} h-[42px] px-3`}><RefreshCw size={16} /></button>
+              <button type="button" onClick={() => { setLoading(true); fetchAdminDonations({ limit: 100 }).then((r) => setDonations(r.donations)).catch((e) => toast.error(getApiErrorMessage(e))).finally(() => setLoading(false)); }} className={`${ADMIN_SECONDARY_BTN} h-[42px] px-3`}><RefreshCw size={16} /></button>
             </div>
           </div>
 
@@ -233,6 +268,7 @@ export default function AdminDonations() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No donations match these filters."
               currentPage={currentPage}

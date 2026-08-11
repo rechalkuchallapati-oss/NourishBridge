@@ -34,6 +34,8 @@ import {
   filterDeliveries,
   sortDeliveries,
 } from "../../data/adminDeliveries";
+import { fetchAdminDeliveries } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 14;
@@ -56,8 +58,9 @@ function KpiCard({ item }) {
 }
 
 export default function AdminDeliveries() {
-  const [deliveries] = useState(ADMIN_DELIVERIES);
-  const [selected, setSelected] = useState(ADMIN_DELIVERIES[0]);
+  const [deliveries, setDeliveries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,6 +69,26 @@ export default function AdminDeliveries() {
   const [sortDir, setSortDir] = useState("desc");
   const [dateRange, setDateRange] = useState("last_30");
   const [filters, setFilters] = useState({ search: "", status: "all", volunteer: "all", ngo: "all", donor: "all", city: "all", priority: "all", pickupFrom: "", deliveryFrom: "" });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminDeliveries();
+        if (!cancelled) {
+          setDeliveries(result.deliveries);
+          if (result.deliveries.length) setSelected(result.deliveries[0]);
+        }
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(() => sortDeliveries(filterDeliveries(deliveries, filters), sortKey, sortDir), [deliveries, filters, sortKey, sortDir]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -129,6 +152,7 @@ export default function AdminDeliveries() {
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
             <AdminInteractivePanel className="!p-0">
               <AdminTableShell
+                isLoading={loading}
                 isEmpty={filtered.length === 0}
                 emptyMessage="No deliveries match these filters."
                 currentPage={currentPage}

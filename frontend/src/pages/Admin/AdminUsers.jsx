@@ -54,6 +54,8 @@ import {
   USER_VERIFICATION_LABELS,
   filterAdminUsers,
 } from "../../data/adminUsers";
+import { fetchAdminUsers } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 10;
@@ -75,11 +77,29 @@ function StatusBadge({ status, labels, colors }) {
 }
 
 export default function AdminUsers() {
-  const [users, setUsers] = useState(ADMIN_USERS);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [filters, setFilters] = useState({ role: "all", status: "all", search: "" });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminUsers({ limit: 100, search: filters.search || undefined });
+        if (!cancelled) setUsers(result.users);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [filters.search]);
 
   const filtered = useMemo(() => filterAdminUsers(users, filters), [users, filters]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -219,6 +239,7 @@ export default function AdminUsers() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No users match these filters."
               currentPage={currentPage}

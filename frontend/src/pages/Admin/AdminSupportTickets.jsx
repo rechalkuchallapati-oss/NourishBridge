@@ -50,6 +50,8 @@ import {
   getTicketTabCounts,
   sortAdminTickets,
 } from "../../data/adminSupportTickets";
+import { fetchAdminSupportTickets } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 9;
@@ -95,7 +97,8 @@ function UserAvatar({ name, id, role }) {
 }
 
 export default function AdminSupportTickets() {
-  const [tickets, setTickets] = useState(ADMIN_TICKETS);
+  const [tickets, setTickets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -110,6 +113,23 @@ export default function AdminSupportTickets() {
     userType: "all",
     dateRange: "all",
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminSupportTickets({ limit: 100 });
+        if (!cancelled) setTickets(result.tickets);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const tabCounts = useMemo(() => getTicketTabCounts(tickets), [tickets]);
 
@@ -451,6 +471,7 @@ export default function AdminSupportTickets() {
           <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_320px]">
             <AdminInteractivePanel className="!p-0">
               <AdminTableShell
+                isLoading={loading}
                 isEmpty={filtered.length === 0}
                 emptyMessage="No tickets match these filters."
                 currentPage={currentPage}

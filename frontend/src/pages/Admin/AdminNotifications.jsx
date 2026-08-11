@@ -25,6 +25,11 @@ import {
   filterNotifications,
   getUnreadCount,
 } from "../../data/adminNotifications";
+import { fetchAdminNotifications } from "../../modules/admin/services/adminService";
+import { apiNotificationToUi } from "../../modules/notifications/notificationHelpers";
+import { getApiErrorMessage } from "../../utils/apiErrors";
+import useSocket from "../../hooks/useSocket";
+import { REALTIME_EVENTS } from "../../modules/socket/socketClient.js";
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -42,12 +47,65 @@ const TYPE_ICONS = {
 const PERIOD_ORDER = ["today", "yesterday", "week_ago", "older"];
 
 export default function AdminNotifications() {
-  const [items, setItems] = useState(ADMIN_NOTIFICATIONS);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({ status: "all", type: "all", period: "all" });
+
+  const reloadNotifications = () => {
+    fetchAdminNotifications({ limit: 100 })
+      .then((result) => {
+        setItems(
+          (result.notifications || []).map((n) => ({
+            ...apiNotificationToUi(n),
+            type: n.type || "system",
+            period: "today",
+            status: n.isRead ? "read" : "unread",
+            reference: n.relatedEntity?.entityId || "—",
+            extra: n.message,
+            recipient: n.recipient?.fullName || "User",
+          })),
+        );
+      })
+      .catch((error) => toast.error(getApiErrorMessage(error)));
+  };
+
+  useSocket({
+    [REALTIME_EVENTS.NOTIFICATION]: reloadNotifications,
+    [REALTIME_EVENTS.ADMIN_UPDATE]: reloadNotifications,
+    [REALTIME_EVENTS.CRITICAL_ALERT]: reloadNotifications,
+  });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const result = await fetchAdminNotifications({ limit: 100 });
+        if (!cancelled) {
+          setItems(
+            (result.notifications || []).map((n) => ({
+              ...apiNotificationToUi(n),
+              type: n.type || "system",
+              period: "today",
+              status: n.isRead ? "read" : "unread",
+              reference: n.relatedEntity?.entityId || "—",
+              extra: n.message,
+              recipient: n.recipient?.fullName || "User",
+            })),
+          );
+        }
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(
     () => filterNotifications(items, { search, ...filters }),

@@ -36,6 +36,8 @@ import {
   filterFoodRequests,
   sortFoodRequests,
 } from "../../data/adminFoodRequests";
+import { fetchAdminFoodRequests } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 16;
@@ -58,7 +60,8 @@ function KpiCard({ item }) {
 }
 
 export default function AdminFoodRequests() {
-  const [requests] = useState(ADMIN_FOOD_REQUESTS);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -68,6 +71,23 @@ export default function AdminFoodRequests() {
   const [sortDir, setSortDir] = useState("desc");
   const [dateRange, setDateRange] = useState("last_30");
   const [filters, setFilters] = useState({ search: "", status: "all", ngo: "all", category: "all", city: "all", urgency: "all", quantity: "all", requestedFrom: "", deliveryFrom: "" });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminFoodRequests({ limit: 100, status: filters.status !== "all" ? filters.status : undefined });
+        if (!cancelled) setRequests(result.requests);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [filters.status]);
 
   const filtered = useMemo(() => sortFoodRequests(filterFoodRequests(requests, filters), sortKey, sortDir), [requests, filters, sortKey, sortDir]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -130,6 +150,7 @@ export default function AdminFoodRequests() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No food requests match these filters."
               currentPage={currentPage}

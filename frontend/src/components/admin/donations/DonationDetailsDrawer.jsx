@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { X, QrCode, MapPin, Clock, Download, Check, UserPlus, Truck, Route, Image, FileText, Ban } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import AdminAvatar from "../AdminAvatar";
@@ -5,6 +6,7 @@ import DonationWorkflowTimeline from "./DonationWorkflowTimeline";
 import { DonationRouteMap } from "./DonationCharts";
 import { ADMIN_PRIMARY_BTN, ADMIN_SECONDARY_BTN } from "../adminStyles";
 import { CATEGORY_LABELS, DONOR_TYPE_LABELS, STATUS_COLORS, STATUS_LABELS } from "../../../data/adminDonations";
+import { fetchNgoMatches, fetchVolunteerMatches } from "../../../modules/matching/services/matchingService";
 
 function DetailRow({ label, value }) {
   return (
@@ -20,6 +22,29 @@ function SectionTitle({ children }) {
 }
 
 export default function DonationDetailsDrawer({ donation, isOpen, onClose, onAction }) {
+  const [ngoMatches, setNgoMatches] = useState([]);
+  const [volunteerMatches, setVolunteerMatches] = useState([]);
+
+  useEffect(() => {
+    const donationId = donation?.mongoId;
+    if (!isOpen || !donationId) {
+      setNgoMatches([]);
+      setVolunteerMatches([]);
+      return;
+    }
+    let cancelled = false;
+    Promise.all([
+      fetchNgoMatches(donationId).catch(() => []),
+      fetchVolunteerMatches(donationId).catch(() => []),
+    ]).then(([ngos, volunteers]) => {
+      if (!cancelled) {
+        setNgoMatches(ngos.slice(0, 3));
+        setVolunteerMatches(volunteers.slice(0, 3));
+      }
+    });
+    return () => { cancelled = true; };
+  }, [donation?.mongoId, isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen && donation ? (
@@ -150,6 +175,40 @@ export default function DonationDetailsDrawer({ donation, isOpen, onClose, onAct
                 <>
                   <SectionTitle>Notes</SectionTitle>
                   <p className="rounded-[10px] border border-[#E5E7EB] bg-[#FFFBEB] p-3 text-xs text-[#92400E]">{donation.notes}</p>
+                </>
+              ) : null}
+
+              {(ngoMatches.length > 0 || volunteerMatches.length > 0) ? (
+                <>
+                  <SectionTitle>Smart Matching</SectionTitle>
+                  {ngoMatches.length > 0 ? (
+                    <ul className="mb-3 space-y-2">
+                      {ngoMatches.map((m) => (
+                        <li key={m.id} className="rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] p-3 text-xs">
+                          <p className="font-bold text-[#15803D]">{m.matchLabel} — {m.name || m.ngoName}</p>
+                          {m.reasons?.length ? (
+                            <ul className="mt-1 list-disc pl-4 text-[#64748B]">
+                              {m.reasons.slice(0, 3).map((r) => <li key={r}>{r}</li>)}
+                            </ul>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {volunteerMatches.length > 0 ? (
+                    <ul className="space-y-2">
+                      {volunteerMatches.map((m) => (
+                        <li key={m.id} className="rounded-[10px] border border-[#E5E7EB] bg-[#F8FAFC] p-3 text-xs">
+                          <p className="font-bold text-[#2563EB]">{m.matchLabel} — Volunteer</p>
+                          {m.reasons?.length ? (
+                            <ul className="mt-1 list-disc pl-4 text-[#64748B]">
+                              {m.reasons.slice(0, 3).map((r) => <li key={r}>{r}</li>)}
+                            </ul>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </>
               ) : null}
             </div>

@@ -61,6 +61,8 @@ import {
   VERIFICATION_FILTER_OPTIONS,
   filterAdminNgos,
 } from "../../data/adminNgos";
+import { fetchAdminNgos } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 9;
@@ -82,12 +84,30 @@ function StatusBadge({ status, labels, colors }) {
 }
 
 export default function AdminNgos() {
-  const [ngos, setNgos] = useState(ADMIN_NGOS);
+  const [ngos, setNgos] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [selectedNgo, setSelectedNgo] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [filters, setFilters] = useState({ search: "", verification: "all", city: "all", status: "all" });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminNgos({ limit: 100 });
+        if (!cancelled) setNgos(result.ngos);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(() => filterAdminNgos(ngos, filters), [ngos, filters]);
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -236,6 +256,7 @@ export default function AdminNgos() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No NGOs match these filters."
               currentPage={currentPage}

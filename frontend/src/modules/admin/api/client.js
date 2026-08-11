@@ -52,6 +52,12 @@ export const adminApi = {
   updateSupportTicket(id, payload) {
     return axiosInstance.patch(`/admin/support-tickets/${id}`, payload);
   },
+  exportReport(type, format = "csv") {
+    return axiosInstance.get(`/admin/export/${type}`, {
+      params: { format },
+      responseType: "blob",
+    });
+  },
 };
 
 export default adminApi;

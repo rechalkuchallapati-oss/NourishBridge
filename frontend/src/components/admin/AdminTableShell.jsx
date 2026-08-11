@@ -7,6 +7,7 @@ import {
   ADMIN_TR,
 } from "./adminStyles";
 import AdminPagination from "./AdminPagination";
+import AdminTableSkeleton from "./AdminTableSkeleton";
 
 const EASE = [0.22, 1, 0.36, 1];
 const ROW_HEIGHT = 64;
@@ -15,6 +16,9 @@ export default function AdminTableShell({
   children,
   emptyMessage = "No records match these filters.",
   isEmpty = false,
+  isLoading = false,
+  loadingRows = 5,
+  loadingColSpan = 10,
   currentPage = 1,
   totalPages = 1,
   totalItems = 0,
@@ -38,7 +42,8 @@ export default function AdminTableShell({
         <table className={[ADMIN_TABLE, "nb-print-safe"].join(" ")} style={{ minHeight: minBodyHeight + 52 }}>
           {children}
         </table>
-        {isEmpty ? (
+        {isLoading ? <AdminTableSkeleton rows={loadingRows} /> : null}
+        {isEmpty && !isLoading ? (
           <p className="px-8 py-16 text-center text-sm text-[#64748B]">{emptyMessage}</p>
         ) : null}
       </div>

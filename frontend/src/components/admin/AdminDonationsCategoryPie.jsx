@@ -1,4 +1,6 @@
-import { DONATIONS_BY_CATEGORY } from "../../data/adminDashboard";(cx, cy, radius, angleDeg) {
+import { DONATIONS_BY_CATEGORY } from "../../data/adminDashboard";
+
+function polarToCartesian(cx, cy, radius, angleDeg) {
   const angleRad = ((angleDeg - 90) * Math.PI) / 180;
   return { x: cx + radius * Math.cos(angleRad), y: cy + radius * Math.sin(angleRad) };
 }

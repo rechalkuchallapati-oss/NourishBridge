@@ -113,7 +113,8 @@ export default function AdminAuditLogs() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
   const [search, setSearch] = useState("");
-  const [auditLogs, setAuditLogs] = useState(ADMIN_AUDIT_LOGS);
+  const [auditLogs, setAuditLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     action: "all",
     userType: "all",
@@ -126,13 +127,13 @@ export default function AdminAuditLogs() {
     let cancelled = false;
     fetchAdminAuditLogs({ limit: 200 })
       .then((data) => {
-        if (cancelled || !data.logs?.length) return;
+        if (cancelled) return;
         setAuditLogs(
-          data.logs.map((log) => ({
+          (data.logs || []).map((log) => ({
             id: log.id,
-            timestamp: log.createdAt,
-            user: log.actorName || "System",
-            userType: log.actorRole || "system",
+            timestamp: log.timestamp,
+            user: log.actor || "System",
+            userType: log.role || "system",
             action: log.action,
             module: log.module,
             description: log.description,
@@ -140,7 +141,10 @@ export default function AdminAuditLogs() {
           })),
         );
       })
-      .catch((err) => toast.error(getApiErrorMessage(err)));
+      .catch((err) => toast.error(getApiErrorMessage(err)))
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
     return () => {
       cancelled = true;
     };
@@ -285,6 +289,7 @@ export default function AdminAuditLogs() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No audit logs match these filters."
               currentPage={currentPage}

@@ -67,6 +67,8 @@ import {
   filterVolunteers,
   sortVolunteers,
 } from "../../data/adminVolunteers";
+import { fetchAdminVolunteers } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 13;
@@ -94,7 +96,8 @@ function KpiCard({ item }) {
 }
 
 export default function AdminVolunteers() {
-  const [volunteers] = useState(ADMIN_VOLUNTEERS);
+  const [volunteers, setVolunteers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -112,6 +115,23 @@ export default function AdminVolunteers() {
     verification: "all",
     missionStatus: "all",
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminVolunteers({ limit: 100 });
+        if (!cancelled) setVolunteers(result.volunteers);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(
     () => sortVolunteers(filterVolunteers(volunteers, filters), sortKey, sortDir),
@@ -216,6 +236,7 @@ export default function AdminVolunteers() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No volunteers match these filters."
               currentPage={currentPage}

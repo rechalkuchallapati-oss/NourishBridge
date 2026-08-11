@@ -62,6 +62,8 @@ import {
   getDonorTier,
   sortDonors,
 } from "../../data/adminDonors";
+import { fetchAdminDonors } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 12;
@@ -108,7 +110,8 @@ function TierBadge({ donations }) {
 }
 
 export default function AdminDonors() {
-  const [donors] = useState(ADMIN_DONORS);
+  const [donors, setDonors] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -124,6 +127,23 @@ export default function AdminDonors() {
     tier: "all",
     recurring: "all",
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminDonors({ limit: 100 });
+        if (!cancelled) setDonors(result.donors);
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(
     () => sortDonors(filterDonors(donors, filters), sortKey, sortDir),
@@ -237,6 +257,7 @@ export default function AdminDonors() {
 
           <AdminInteractivePanel className="!p-0">
             <AdminTableShell
+              isLoading={loading}
               isEmpty={filtered.length === 0}
               emptyMessage="No donors match these filters."
               currentPage={currentPage}

@@ -58,6 +58,8 @@ import {
   filterInventoryBatches,
   sortInventoryBatches,
 } from "../../data/adminInventory";
+import { fetchAdminInventory } from "../../modules/admin/services/adminService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 const EASE = [0.22, 1, 0.36, 1];
 const COL_SPAN = 10;
@@ -93,8 +95,9 @@ function KpiCard({ item }) {
 }
 
 export default function AdminInventory() {
-  const [batches] = useState(ADMIN_INVENTORY_BATCHES);
-  const [selected, setSelected] = useState(ADMIN_INVENTORY_BATCHES[0]);
+  const [batches, setBatches] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState(null);
   const [openMenuId, setOpenMenuId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE_OPTIONS[0]);
@@ -110,6 +113,26 @@ export default function AdminInventory() {
     dateFrom: "",
     dateTo: "",
   });
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const result = await fetchAdminInventory();
+        if (!cancelled) {
+          setBatches(result.items);
+          if (result.items.length) setSelected(result.items[0]);
+        }
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filtered = useMemo(
     () => sortInventoryBatches(filterInventoryBatches(batches, filters), sortKey, sortDir),
@@ -264,6 +287,7 @@ export default function AdminInventory() {
           <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
             <AdminInteractivePanel className="!p-0">
               <AdminTableShell
+                isLoading={loading}
                 isEmpty={filtered.length === 0}
                 emptyMessage="No inventory batches match these filters."
                 currentPage={currentPage}
