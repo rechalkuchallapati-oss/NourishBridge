@@ -14,6 +14,7 @@ export const DASHBOARD_ROUTES = {
   ngo: "/dashboard/ngo",
   ngoFoodRequests: "/dashboard/ngo/food-requests",
   ngoIncoming: "/dashboard/ngo/incoming",
+  ngoBrowse: "/dashboard/ngo/browse",
   ngoAccepted: "/dashboard/ngo/accepted-donations",
   ngoDistributionQueue: "/dashboard/ngo/distribution-queue",
   ngoDeliveries: "/dashboard/ngo/deliveries",
