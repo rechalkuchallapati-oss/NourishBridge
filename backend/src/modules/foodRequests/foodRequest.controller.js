@@ -13,7 +13,7 @@ const list = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const request = await foodRequestService.createFoodRequest(req.user.id, req.body);
+  const request = await foodRequestService.createFoodRequest(req.user.id, req.body, req);
   sendCreated(res, "Food request created", { request });
 };
 

@@ -41,6 +41,31 @@ function distanceScore(km, maxRadius = 30) {
   return Math.round(100 * (1 - km / maxRadius));
 }
 
+function buildNgoMatchReasons({ foodScore, qtyScore, expiryScore, distScore, demandScore, dist, donation, ngo }) {
+  const reasons = [];
+  if (foodScore >= 75) reasons.push("Food category compatible");
+  if (qtyScore >= 80) reasons.push(`NGO capacity supports ${donation.quantity} ${donation.quantityUnit}`);
+  if (demandScore >= 50) reasons.push("NGO has open food requests");
+  if (dist != null) reasons.push(`${dist.toFixed(1)} km away`);
+  if (donation.expiryTime) {
+    const hours = Math.max(0, Math.round((new Date(donation.expiryTime) - Date.now()) / 3600000));
+    reasons.push(`Expires in ${hours} hours`);
+  }
+  if (expiryScore >= 75) reasons.push("Urgency aligned with expiry window");
+  if (ngo.acceptedFoodCategories?.length) reasons.push("Storage/category fit");
+  return reasons.slice(0, 5);
+}
+
+function buildVolunteerMatchReasons({ distScore, availScore, vehicleScore, ratingScore, workloadScore, dist, v }) {
+  const reasons = [];
+  if (dist != null) reasons.push(`${dist.toFixed(1)} km from pickup`);
+  if (availScore >= 90) reasons.push("Currently available");
+  if (vehicleScore >= 80) reasons.push(`${v.vehicleType} suitable for transport`);
+  if (ratingScore >= 70) reasons.push(`Rating ${v.rating || 4}/5`);
+  if (workloadScore >= 70) reasons.push("Low current workload");
+  return reasons.slice(0, 5);
+}
+
 export async function scoreNgosForDonation(donationId, { limit = 10 } = {}) {
   const donation = await Donation.findById(donationId).lean();
   if (!donation) throw new Error("Donation not found");
@@ -49,7 +74,7 @@ export async function scoreNgosForDonation(donationId, { limit = 10 } = {}) {
   const ngos = await NGO.find({ verificationStatus: { $ne: "rejected" } }).lean();
 
   const openRequests = await FoodRequest.find({
-    status: { $in: [FOOD_REQUEST_STATUS.REQUESTED, FOOD_REQUEST_STATUS.APPROVED, FOOD_REQUEST_STATUS.MATCHED] },
+    status: { $in: [FOOD_REQUEST_STATUS.REQUESTED, FOOD_REQUEST_STATUS.APPROVED, FOOD_REQUEST_STATUS.DONATION_MATCHED] },
   }).lean();
 
   const demandByNgo = openRequests.reduce((acc, r) => {
@@ -106,6 +131,17 @@ export async function scoreNgosForDonation(donationId, { limit = 10 } = {}) {
         score: totalScore,
         distanceKm: dist,
         breakdown: { foodScore, qtyScore, expiryScore, distScore, demandScore, load },
+        reasons: buildNgoMatchReasons({
+          foodScore,
+          qtyScore,
+          expiryScore,
+          distScore,
+          demandScore,
+          load,
+          dist,
+          donation,
+          ngo,
+        }),
       };
     })
     .filter(Boolean)
@@ -170,6 +206,15 @@ export async function scoreVolunteersForDonation(donationId, { limit = 10 } = {}
         vehicleType: v.vehicleType,
         rating: v.rating,
         breakdown: { distScore, availScore, vehicleScore, ratingScore, workloadScore },
+        reasons: buildVolunteerMatchReasons({
+          distScore,
+          availScore,
+          vehicleScore,
+          ratingScore,
+          workloadScore,
+          dist,
+          v,
+        }),
       };
     })
     .filter(Boolean)

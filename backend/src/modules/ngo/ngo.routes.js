@@ -33,6 +33,7 @@ router.post("/donations/:id/complete", donationIdValidator, validate, asyncHandl
 router.get("/inventory", asyncHandler(ngoController.listInventory));
 router.get("/inventory/alerts", asyncHandler(ngoController.inventoryAlerts));
 router.get("/inventory/statistics", asyncHandler(ngoController.inventoryStats));
+router.get("/inventory/distribution-records", asyncHandler(ngoController.listDistributionRecords));
 router.get("/deliveries/incoming", asyncHandler(ngoController.listIncomingDeliveries));
 router.post(
   "/inventory/:id/distribute",

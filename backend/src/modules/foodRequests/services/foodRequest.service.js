@@ -115,7 +115,7 @@ export async function executeFoodRequestTransition(requestId, action, actor, { r
   return mapFoodRequest(foodRequest.toObject());
 }
 
-export async function createFoodRequest(userId, payload) {
+export async function createFoodRequest(userId, payload, req = null) {
   const ngo = await getNgoForUser(userId);
 
   const foodRequest = await FoodRequest.create({
@@ -137,6 +137,20 @@ export async function createFoodRequest(userId, payload) {
     dietaryRequirements: payload.dietaryRequirements || [],
     status: FOOD_REQUEST_STATUS.REQUESTED,
   });
+
+  const reqMeta = req ? auditFromRequest(req) : {};
+  const actor = req?.user
+    ? { id: req.user.id, role: req.user.role, fullName: req.user.fullName }
+    : { id: userId, role: "ngo", fullName: "NGO User" };
+  await recordHistory(
+    foodRequest._id,
+    null,
+    FOOD_REQUEST_STATUS.REQUESTED,
+    FOOD_REQUEST_ACTIONS.SUBMIT,
+    actor,
+    "Food request submitted",
+    reqMeta,
+  );
 
   const ngoDoc = await NGO.findById(ngo._id).select("ngoName").lean();
   notifyFoodRequestCreated(foodRequest.toObject(), ngoDoc?.ngoName).catch(() => {});

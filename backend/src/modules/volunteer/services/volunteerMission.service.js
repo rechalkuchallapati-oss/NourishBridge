@@ -1,8 +1,9 @@
 import Donation from "../../../models/Donation.model.js";
 import DonationStatusHistory from "../../../models/DonationStatusHistory.model.js";
 import Delivery from "../../../models/Delivery.model.js";
+import Volunteer from "../../../models/Volunteer.model.js";
 import ApiError from "../../../utils/ApiError.js";
-import { DONATION_STATUS } from "../../../constants/enums.js";
+import { DONATION_STATUS, VOLUNTEER_AVAILABILITY } from "../../../constants/enums.js";
 import { getVolunteerForUser } from "../../shared/repositories/roleProfiles.repository.js";
 import { mapDonationResponse } from "../../donations/utils/donation.mapper.js";
 import donationWorkflow from "../../donations/services/donationWorkflow.service.js";
@@ -139,7 +140,7 @@ export async function acceptMission(userId, donationId, actor, req) {
 }
 
 export async function rejectMission(userId, donationId, actor, reason) {
-  const volunteer = await getVolunteerForUser(userId);
+  await getVolunteerForUser(userId);
   const donation = await Donation.findById(donationId);
 
   if (!donation) throw ApiError.notFound("Mission not found");
@@ -147,9 +148,10 @@ export async function rejectMission(userId, donationId, actor, reason) {
     throw ApiError.badRequest("Mission is no longer available");
   }
 
-  volunteer.isAvailable = true;
-  volunteer.availability = "available";
-  await volunteer.save();
+  await Volunteer.findOneAndUpdate(
+    { userId, isActive: true },
+    { isAvailable: true, availability: VOLUNTEER_AVAILABILITY.AVAILABLE },
+  );
 
   await DonationStatusHistory.create({
     donationId,

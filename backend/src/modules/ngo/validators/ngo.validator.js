@@ -24,6 +24,11 @@ export const beneficiaryValidator = [
 export const distributeInventoryValidator = [
   param("id").isMongoId().withMessage("Invalid inventory ID"),
   body("quantity").optional().isFloat({ min: 0.01 }),
+  body("beneficiaryId").optional().isMongoId(),
+  body("beneficiaryGroup").optional().trim().isLength({ max: 200 }),
+  body("peopleServed").optional().isInt({ min: 1 }),
+  body("mealsServed").optional().isInt({ min: 1 }),
+  body("location").optional().trim().isLength({ max: 300 }),
   body("notes").optional().trim().isLength({ max: 1000 }),
 ];
 

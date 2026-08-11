@@ -1,4 +1,7 @@
 import Inventory from "../../../models/Inventory.model.js";
+import DistributionRecord from "../../../models/DistributionRecord.model.js";
+import Beneficiary from "../../../models/Beneficiary.model.js";
+import NGO from "../../../models/NGO.model.js";
 import ApiError from "../../../utils/ApiError.js";
 import { INVENTORY_STATUS } from "../../../constants/enums.js";
 import { getNgoForUser } from "../../shared/repositories/roleProfiles.repository.js";
@@ -47,7 +50,33 @@ export async function listInventory(userId, query = {}) {
   }
 
   const items = await Inventory.find(filter).sort({ expiryDate: 1 }).lean();
-  return { items: items.map(mapInventoryItem) };
+
+  const now = new Date();
+  const enriched = await Promise.all(
+    items.map(async (item) => {
+      if (
+        item.quantity > 0 &&
+        item.expiryDate &&
+        item.expiryDate <= now &&
+        item.status !== INVENTORY_STATUS.EXPIRED
+      ) {
+        await Inventory.updateOne({ _id: item._id }, { status: INVENTORY_STATUS.EXPIRED });
+        return { ...item, status: INVENTORY_STATUS.EXPIRED };
+      }
+      if (
+        item.quantity > 0 &&
+        item.expiryDate &&
+        item.expiryDate <= new Date(now.getTime() + 3 * 24 * 3600 * 1000) &&
+        item.status === INVENTORY_STATUS.AVAILABLE
+      ) {
+        await Inventory.updateOne({ _id: item._id }, { status: INVENTORY_STATUS.EXPIRING });
+        return { ...item, status: INVENTORY_STATUS.EXPIRING };
+      }
+      return item;
+    }),
+  );
+
+  return { items: enriched.map(mapInventoryItem) };
 }
 
 export async function getExpiryAlerts(userId, days = 3) {
@@ -123,6 +152,11 @@ export async function distributeInventory(userId, itemId, payload) {
     throw ApiError.badRequest("Cannot distribute more than available quantity");
   }
 
+  const mealsServed = payload.mealsServed || Math.round(
+    (item.estimatedMeals || distributeQty) * (distributeQty / (item.initialQuantity || item.quantity + distributeQty)),
+  ) || distributeQty;
+  const peopleServed = payload.peopleServed || payload.beneficiaryCount || 0;
+
   item.quantity -= distributeQty;
   item.distributedQuantity = (item.distributedQuantity || 0) + distributeQty;
 
@@ -135,7 +169,62 @@ export async function distributeInventory(userId, itemId, payload) {
   if (payload.notes) item.notes = payload.notes;
   await item.save();
 
-  return mapInventoryItem(item.toObject());
+  let beneficiary = null;
+  if (payload.beneficiaryId) {
+    beneficiary = await Beneficiary.findOne({ _id: payload.beneficiaryId, ngoId: ngo._id });
+    if (beneficiary) {
+      beneficiary.mealsServed = (beneficiary.mealsServed || 0) + mealsServed;
+      await beneficiary.save();
+    }
+  }
+
+  await NGO.updateOne({ _id: ngo._id }, { $inc: { mealsServed: mealsServed } });
+
+  const record = await DistributionRecord.create({
+    ngoId: ngo._id,
+    inventoryId: item._id,
+    beneficiaryId: beneficiary?._id || null,
+    beneficiaryGroup: payload.beneficiaryGroup || beneficiary?.name || beneficiary?.category,
+    foodItem: item.itemName,
+    category: item.category,
+    quantity: distributeQty,
+    quantityUnit: item.quantityUnit,
+    mealsServed,
+    peopleServed,
+    sourceDonationId: item.sourceDonationId,
+    batchCode: item.batchCode,
+    location: payload.location || beneficiary?.address,
+    notes: payload.notes,
+    loggedBy: userId,
+  });
+
+  return { item: mapInventoryItem(item.toObject()), distribution: record.toObject() };
+}
+
+export async function listDistributionRecords(userId, query = {}) {
+  const ngo = await getNgoForUser(userId);
+  const filter = { ngoId: ngo._id };
+  if (query.beneficiaryId) filter.beneficiaryId = query.beneficiaryId;
+
+  const records = await DistributionRecord.find(filter)
+    .sort({ distributedAt: -1 })
+    .limit(Number(query.limit) || 50)
+    .lean();
+
+  return {
+    records: records.map((r) => ({
+      id: r._id,
+      batchCode: r.batchCode,
+      foodItem: r.foodItem,
+      quantity: `${r.quantity} ${r.quantityUnit || "meals"}`,
+      mealsServed: r.mealsServed,
+      peopleServed: r.peopleServed,
+      beneficiaryGroup: r.beneficiaryGroup,
+      location: r.location,
+      distributedAt: r.distributedAt,
+      notes: r.notes,
+    })),
+  };
 }
 
 export async function getInventoryStatistics(userId) {
@@ -162,4 +251,4 @@ export async function getInventoryStatistics(userId) {
   };
 }
 
-export default { listInventory, getExpiryAlerts, distributeInventory, getInventoryStatistics };
+export default { listInventory, getExpiryAlerts, distributeInventory, getInventoryStatistics, listDistributionRecords };

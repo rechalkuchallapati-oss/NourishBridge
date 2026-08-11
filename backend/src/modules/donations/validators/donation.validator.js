@@ -30,7 +30,17 @@ export const createDonationValidator = [
   body("estimatedMeals").optional().isInt({ min: 0 }),
   body("freshness").optional().isIn(enumValues(FOOD_FRESHNESS)),
   body("preparationTime").optional().isISO8601().toDate(),
-  body("expiryTime").notEmpty().withMessage("Expiry time is required").isISO8601().toDate(),
+  body("expiryTime")
+    .notEmpty()
+    .withMessage("Expiry time is required")
+    .isISO8601()
+    .toDate()
+    .custom((value) => {
+      if (new Date(value) <= new Date()) {
+        throw new Error("Expiry time must be in the future");
+      }
+      return true;
+    }),
   body("pickupScheduledAt").optional().isISO8601().toDate(),
   body("pickupEndAt").optional().isISO8601().toDate(),
   body("pickupLocation.coordinates").optional().isArray({ min: 2, max: 2 }),

@@ -96,8 +96,13 @@ const listIncomingDeliveries = async (req, res) => {
 };
 
 const distributeInventory = async (req, res) => {
-  const item = await ngoInventoryService.distributeInventory(req.user.id, req.params.id, req.body);
-  sendOk(res, "Inventory distributed", { item });
+  const result = await ngoInventoryService.distributeInventory(req.user.id, req.params.id, req.body);
+  sendOk(res, "Inventory distributed", result);
+};
+
+const listDistributionRecords = async (req, res) => {
+  const result = await ngoInventoryService.listDistributionRecords(req.user.id, req.query);
+  sendOk(res, "Distribution records fetched", result);
 };
 
 const listBeneficiaries = async (req, res) => {
@@ -134,6 +139,7 @@ export default {
   inventoryStats,
   listIncomingDeliveries,
   distributeInventory,
+  listDistributionRecords,
   listBeneficiaries,
   createBeneficiary,
   updateBeneficiary,

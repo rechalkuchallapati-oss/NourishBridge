@@ -5,6 +5,7 @@ import NGO from "../../../models/NGO.model.js";
 import Volunteer from "../../../models/Volunteer.model.js";
 import ApiError from "../../../utils/ApiError.js";
 import { extractCoords, routeSummary } from "../../../utils/geo.js";
+import { broadcastVolunteerLocation } from "../../../services/socket.service.js";
 
 async function getDonationLocations(donationId) {
   const donation = await Donation.findById(donationId)
@@ -142,9 +143,16 @@ async function updateVolunteerLocation(userId, coordinates) {
   if (activeDelivery) {
     activeDelivery.currentLocation = volunteer.currentLocation;
     await activeDelivery.save();
+
+    broadcastVolunteerLocation({
+      deliveryId: activeDelivery._id,
+      volunteerId: volunteer._id,
+      missionId: activeDelivery.donationId,
+      coordinates: volunteer.currentLocation.coordinates,
+    });
   }
 
-  return { updated: true, coordinates: volunteer.currentLocation.coordinates };
+  return { updated: true, coordinates: volunteer.currentLocation.coordinates, deliveryId: activeDelivery?._id };
 }
 
 export default { getDonationLocations, getDeliveryRoute, updateVolunteerLocation };
