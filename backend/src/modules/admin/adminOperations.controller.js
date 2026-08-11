@@ -1,6 +1,7 @@
 import adminService from "../../services/admin.service.js";
 import adminOperations from "./services/adminOperations.service.js";
 import analyticsService from "../../services/analytics.service.js";
+import exportService from "../../services/export.service.js";
 import { sendOk } from "../../utils/responseHandler.js";
 
 const getDashboard = async (_req, res) => {
@@ -101,10 +102,20 @@ const updateSupportTicket = async (req, res) => {
   sendOk(res, "Support ticket updated", { ticket });
 };
 
+const exportReport = async (req, res) => {
+  const { type } = req.params;
+  const format = req.query.format || "csv";
+  const { content, contentType, filename } = await exportService.generateExport(type, format);
+  res.setHeader("Content-Type", contentType);
+  res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+  res.send(content);
+};
+
 export default {
   getDashboard,
   getAnalytics,
   getReports,
+  exportReport,
   listUsers,
   updateUser,
   listDonors,

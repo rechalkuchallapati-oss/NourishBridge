@@ -13,6 +13,8 @@ import notificationRoutes from "../../modules/notifications/notification.routes.
 import mapRoutes from "../../modules/maps/map.routes.js";
 import matchingRoutes from "../../modules/matching/matching.routes.js";
 
+import supportRoutes from "../../modules/support/support.routes.js";
+
 const router = Router();
 
 router.use("/health", healthRoutes);
@@ -28,5 +30,6 @@ router.use("/admin", adminRoutes);
 router.use("/donor", donorRoutes);
 router.use("/ngo", ngoRoutes);
 router.use("/volunteer", volunteerRoutes);
+router.use("/support-tickets", supportRoutes);
 
 export default router;
