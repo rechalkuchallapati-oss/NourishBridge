@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -17,15 +17,16 @@ import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOWorkflowStrip from "../../components/ngo/NGOWorkflowStrip";
 import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
 import {
-  ACCEPTED_DONATIONS,
-  ACCEPTED_OVERVIEW_STATS,
   ACCEPTED_QUICK_FILTERS,
   ACCEPTED_CATEGORY_OPTIONS,
   ACCEPTED_PIPELINE_STEPS,
   ACCEPTED_STATUS_LABELS,
   ACCEPTED_STATUS_COLORS,
+  computeAcceptedDonationStats,
   filterAcceptedDonations,
 } from "../../data/ngoAcceptedDonations";
+import { fetchAcceptedDonations } from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -193,12 +194,35 @@ export default function NGOAcceptedDonations() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [donations] = useState(ACCEPTED_DONATIONS);
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filters, setFilters] = useState({ quick: "all", category: "all" });
 
-  const stats = ACCEPTED_OVERVIEW_STATS;
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const items = await fetchAcceptedDonations();
+        if (!cancelled) setDonations(items);
+      } catch (err) {
+        if (!cancelled) setError(getApiErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const stats = useMemo(() => computeAcceptedDonationStats(donations), [donations]);
 
   const filtered = useMemo(
     () => filterAcceptedDonations(donations, filters),
@@ -333,7 +357,26 @@ export default function NGOAcceptedDonations() {
                       </tr>
                     </thead>
                     <tbody>
-                      {activeFiltered.map((donation) => (
+                      {loading ? (
+                        <tr>
+                          <td colSpan={9} className="px-4 py-8 text-center text-sm text-[#64748B]">
+                            Loading accepted donations…
+                          </td>
+                        </tr>
+                      ) : error ? (
+                        <tr>
+                          <td colSpan={9} className="px-4 py-8 text-center text-sm text-red-600">
+                            {error}
+                          </td>
+                        </tr>
+                      ) : activeFiltered.length === 0 ? (
+                        <tr>
+                          <td colSpan={9} className="px-4 py-8 text-center text-sm text-[#64748B]">
+                            No accepted donations match your filters.
+                          </td>
+                        </tr>
+                      ) : (
+                      activeFiltered.map((donation) => (
                         <tr
                           key={donation.id}
                           onClick={() => setSelectedId(donation.id)}
@@ -372,7 +415,7 @@ export default function NGOAcceptedDonations() {
                             </button>
                           </td>
                         </tr>
-                      ))}
+                      )))}
                     </tbody>
                   </table>
                 </div>

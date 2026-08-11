@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -18,10 +18,6 @@ import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOWorkflowStrip from "../../components/ngo/NGOWorkflowStrip";
 import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
 import {
-  DISTRIBUTION_QUEUE,
-  DISTRIBUTION_OVERVIEW_STATS,
-  DISTRIBUTION_SUMMARY,
-  BENEFICIARY_LOCATIONS,
   DISTRIBUTION_PIPELINE_STEPS,
   DISTRIBUTION_STATUS_LABELS,
   DISTRIBUTION_STATUS_COLORS,
@@ -29,6 +25,14 @@ import {
   DISTRIBUTION_STATUS_OPTIONS,
   filterDistributionQueue,
 } from "../../data/ngoDistributionQueue";
+import {
+  fetchNgoInventory,
+  fetchInventoryStatistics,
+  fetchBeneficiaries,
+  distributeInventory,
+  apiInventoryToDistributionBatch,
+} from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -55,7 +59,7 @@ function StatusBadge({ status }) {
   );
 }
 
-function SidePanel({ selected }) {
+function SidePanel({ selected, beneficiaryLocations, summaryStats }) {
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
       <div className="rounded-[16px] border border-[#E5E7EB] bg-white p-[0.5cm] shadow-sm">
@@ -88,7 +92,7 @@ function SidePanel({ selected }) {
           Beneficiary Details
         </h2>
         <ul className="mt-3 flex flex-col gap-2">
-          {BENEFICIARY_LOCATIONS.map((loc) => (
+          {(beneficiaryLocations.length ? beneficiaryLocations : [{ id: "none", name: "No beneficiaries yet", people: 0 }]).map((loc) => (
             <li
               key={loc.id}
               className={[
@@ -114,23 +118,23 @@ function SidePanel({ selected }) {
         <dl className="mt-3 grid grid-cols-2 gap-2 text-sm">
           <div>
             <dt className="text-[#94A3B8]">Meals Planned</dt>
-            <dd className="font-bold text-[#0F172A]">{DISTRIBUTION_SUMMARY.mealsPlanned}</dd>
+            <dd className="font-bold text-[#0F172A]">{summaryStats.mealsPlanned}</dd>
           </div>
           <div>
             <dt className="text-[#94A3B8]">Meals Distributed</dt>
-            <dd className="font-bold text-[#15803D]">{DISTRIBUTION_SUMMARY.mealsDistributed}</dd>
+            <dd className="font-bold text-[#15803D]">{summaryStats.mealsDistributed}</dd>
           </div>
           <div>
             <dt className="text-[#94A3B8]">Meals Remaining</dt>
-            <dd className="font-bold text-[#2563EB]">{DISTRIBUTION_SUMMARY.mealsRemaining}</dd>
+            <dd className="font-bold text-[#2563EB]">{summaryStats.mealsRemaining}</dd>
           </div>
           <div>
             <dt className="text-[#94A3B8]">Food Wasted</dt>
-            <dd className="font-bold text-red-600">{DISTRIBUTION_SUMMARY.foodWasted}</dd>
+            <dd className="font-bold text-red-600">{summaryStats.foodWasted}</dd>
           </div>
           <div className="col-span-2">
             <dt className="text-[#94A3B8]">People Served</dt>
-            <dd className="font-bold text-[#0F172A]">{DISTRIBUTION_SUMMARY.peopleServed}</dd>
+            <dd className="font-bold text-[#0F172A]">{summaryStats.peopleServed}</dd>
           </div>
         </dl>
       </div>
@@ -142,12 +146,72 @@ export default function NGODistributionQueue() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [batches, setBatches] = useState(DISTRIBUTION_QUEUE);
+  const [batches, setBatches] = useState([]);
+  const [stats, setStats] = useState({
+    mealsDistributed: 0,
+    remainingInventory: 0,
+    familiesServed: 0,
+    communitiesCovered: 0,
+    distributionEvents: 0,
+    todaysBeneficiaries: 0,
+  });
+  const [beneficiaryLocations, setBeneficiaryLocations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filters, setFilters] = useState({ status: "all", destination: "all" });
 
-  const stats = DISTRIBUTION_OVERVIEW_STATS;
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setLoading(true);
+      try {
+        const [items, inventoryStats, beneficiaries] = await Promise.all([
+          fetchNgoInventory(),
+          fetchInventoryStatistics(),
+          fetchBeneficiaries(),
+        ]);
+        if (cancelled) return;
+        setBatches(items.map(apiInventoryToDistributionBatch));
+        setStats({
+          mealsDistributed: inventoryStats?.estimatedMeals ?? 0,
+          remainingInventory: inventoryStats?.availableFoodStock ?? 0,
+          familiesServed: beneficiaries.length,
+          communitiesCovered: new Set(beneficiaries.map((b) => b.location)).size,
+          distributionEvents: items.filter((i) => i.distributedQuantity > 0).length,
+          todaysBeneficiaries: beneficiaries.reduce((sum, b) => sum + (b.beneficiaryCount || 0), 0),
+        });
+        setBeneficiaryLocations(
+          beneficiaries.slice(0, 6).map((b) => ({
+            id: b.locationKey || b.id,
+            name: b.name,
+            people: b.beneficiaryCount || 0,
+          })),
+        );
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const summaryStats = useMemo(
+    () => ({
+      mealsPlanned: stats.mealsDistributed + stats.remainingInventory,
+      mealsDistributed: stats.mealsDistributed,
+      mealsRemaining: stats.remainingInventory,
+      foodWasted: 0,
+      peopleServed: stats.todaysBeneficiaries,
+    }),
+    [stats],
+  );
 
   const filtered = useMemo(
     () => filterDistributionQueue(batches, filters),
@@ -195,27 +259,27 @@ export default function NGODistributionQueue() {
     setDrawerOpen(true);
   };
 
-  const handleSubmitProof = (batchId, proof) => {
-    setBatches((prev) =>
-      prev.map((b) =>
-        b.id === batchId
-          ? {
-              ...b,
-              status: "completed",
-              beneficiaryCount: Number(proof.beneficiaryCount),
-              proofNotes: proof.notes,
-              completionTime: proof.completionTime,
-              remainingQuantity: "0 meals",
-              timeline: [
-                ...b.timeline,
-                { step: "completed", time: proof.completionTime || "Just now" },
-              ],
-            }
-          : b,
-      ),
-    );
-    setDrawerOpen(false);
-    toast.success(`Proof saved for ${batchId}`);
+  const handleSubmitProof = async (batchId, proof) => {
+    const batch = batches.find((b) => b.id === batchId);
+    if (!batch?.mongoId) return;
+
+    try {
+      const updated = await distributeInventory(batch.mongoId, {
+        quantity: Number(proof.quantity) || undefined,
+        notes: proof.notes,
+      });
+      setBatches((prev) =>
+        prev.map((b) =>
+          b.id === batchId
+            ? apiInventoryToDistributionBatch(updated.item || updated)
+            : b,
+        ),
+      );
+      setDrawerOpen(false);
+      toast.success(`Distribution recorded for ${batchId}`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
   return (
@@ -433,7 +497,11 @@ export default function NGODistributionQueue() {
               </div>
             </div>
 
-            <SidePanel selected={selected} />
+            <SidePanel
+              selected={selected}
+              beneficiaryLocations={beneficiaryLocations}
+              summaryStats={summaryStats}
+            />
           </div>
 
           <NGOWorkflowStrip />

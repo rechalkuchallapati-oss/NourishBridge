@@ -18,7 +18,6 @@ import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
 import NGOWorkflowStrip from "../../components/ngo/NGOWorkflowStrip";
 import NGOModal from "../../components/ngo/NGOModal";
 import {
-  FOOD_REQUESTS,
   FOOD_CATEGORY_OPTIONS,
   PRIORITY_OPTIONS,
   STATUS_FILTER_OPTIONS,
@@ -28,13 +27,15 @@ import {
   REQUEST_STATUS_COLORS,
   PRIORITY_LABELS,
   PRIORITY_COLORS,
-  computeFoodRequestStats,
-  filterFoodRequests,
 } from "../../data/ngoFoodRequests";
 import {
   fetchFoodRequests,
   createFoodRequest,
+  updateFoodRequest,
   cancelFoodRequest,
+  fetchFoodRequestHistory,
+  computeFoodRequestStats,
+  filterFoodRequests,
 } from "../../modules/foodRequests/services/foodRequestService";
 import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
@@ -77,18 +78,20 @@ function PriorityBadge({ priority }) {
   );
 }
 
-function StatusBadge({ status }) {
+function StatusBadge({ request }) {
+  const status = request?.uiStatus || request?.status;
+  const label = request?.statusLabel || REQUEST_STATUS_LABELS[status] || status;
   return (
     <span
-      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${REQUEST_STATUS_COLORS[status]}`}
+      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${REQUEST_STATUS_COLORS[status] || "bg-[#F1F5F9] text-[#475569]"}`}
     >
-      {REQUEST_STATUS_LABELS[status]}
+      {label}
     </span>
   );
 }
 
 function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
-  const canModify = selected && !["completed", "expired"].includes(selected.status);
+  const canModify = selected && !["completed", "expired"].includes(selected.uiStatus || selected.status);
 
   return (
     <aside className="flex flex-col gap-[0.5cm] lg:sticky lg:top-6 lg:self-start">
@@ -158,7 +161,7 @@ function SidePanel({ selected, onCreate, onDuplicate, onEdit, onCancel }) {
           <p className="mt-1 text-sm text-[#64748B]">{selected.quantity}</p>
           <div className="mt-3 flex flex-wrap gap-2">
             <PriorityBadge priority={selected.priority} />
-            <StatusBadge status={selected.status} />
+            <StatusBadge request={selected} />
           </div>
           <p className="mt-3 text-sm text-[#64748B]">{selected.notes}</p>
         </div>
@@ -179,6 +182,8 @@ export default function NGOFoodRequests() {
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [requestHistory, setRequestHistory] = useState([]);
   const [filters, setFilters] = useState({
     category: "all",
     priority: "all",
@@ -195,14 +200,14 @@ export default function NGOFoodRequests() {
   );
 
   const activeFiltered = useMemo(
-    () => filtered.filter((r) => !["completed", "expired"].includes(r.status)),
+    () => filtered.filter((r) => !["completed", "expired"].includes(r.uiStatus || r.status)),
     [filtered],
   );
 
   const historyRequests = useMemo(
     () =>
       requests.filter((r) =>
-        ["completed", "expired"].includes(r.status),
+        ["completed", "expired"].includes(r.uiStatus || r.status),
       ),
     [requests],
   );
@@ -216,29 +221,43 @@ export default function NGOFoodRequests() {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleView = (request) => {
+  const handleView = async (request) => {
     setSelectedId(request.id);
+    try {
+      const history = await fetchFoodRequestHistory(request.mongoId || request.id);
+      setRequestHistory(history);
+    } catch {
+      setRequestHistory([]);
+    }
   };
 
   const handleCreate = () => setShowCreateModal(true);
 
-  const handleDuplicate = () => {
+  const handleDuplicate = async () => {
     if (!selected) return;
-    const newId = `REQ-${2048 + requests.length + 1}`;
-    const duplicate = {
-      ...selected,
-      id: newId,
-      status: "open",
-      createdAt: "Just now",
-    };
-    setRequests((prev) => [duplicate, ...prev]);
-    setSelectedId(newId);
-    toast.success(`Duplicated as ${newId}`);
+    try {
+      const duplicate = await createFoodRequest({
+        foodItem: selected.foodNeeded || selected.title,
+        title: selected.foodNeeded || selected.title,
+        quantity: selected.quantity,
+        priority: selected.priority,
+        requiredDate: selected.requiredDate || selected.neededBy,
+        location: selected.location,
+        category: selected.category,
+        beneficiaries: selected.beneficiaries,
+        specialRequirements: selected.notes || selected.specialRequirements,
+      });
+      setRequests((prev) => [duplicate, ...prev]);
+      setSelectedId(duplicate.id);
+      toast.success(`Duplicated as ${duplicate.id}`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
   const handleEdit = () => {
     if (!selected) return;
-    toast("Edit form coming soon — selected " + selected.id, { icon: "✏️" });
+    setShowEditModal(true);
   };
 
   useEffect(() => {
@@ -270,6 +289,33 @@ export default function NGOFoodRequests() {
         prev.map((r) => ((r.mongoId || r.id) === (selected.mongoId || selected.id) ? updated : r)),
       );
       toast.success(`${selected.id} cancelled`);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
+
+  const handleEditSubmit = async (event) => {
+    event.preventDefault();
+    if (!selected) return;
+    const form = event.target;
+
+    try {
+      const updated = await updateFoodRequest(selected.mongoId || selected.id, {
+        foodItem: form.foodNeeded.value,
+        title: form.foodNeeded.value,
+        quantity: form.quantity.value,
+        priority: form.priority.value,
+        requiredDate: form.neededBy.value,
+        location: form.location.value,
+        category: form.category.value,
+        beneficiaries: Number(form.beneficiaries?.value) || 0,
+        specialRequirements: form.notes?.value || "",
+      });
+      setRequests((prev) =>
+        prev.map((r) => ((r.mongoId || r.id) === (selected.mongoId || selected.id) ? updated : r)),
+      );
+      setShowEditModal(false);
+      toast.success(`${selected.id} updated`);
     } catch (error) {
       toast.error(getApiErrorMessage(error));
     }
@@ -422,7 +468,7 @@ export default function NGOFoodRequests() {
                         <td className="px-4 py-3 text-[#64748B]">{request.neededBy}</td>
                         <td className="px-4 py-3">{request.location}</td>
                         <td className="px-4 py-3">
-                          <StatusBadge status={request.status} />
+                          <StatusBadge request={request} />
                         </td>
                         <td className="px-4 py-3">
                           <button
@@ -477,7 +523,7 @@ export default function NGOFoodRequests() {
                             </td>
                             <td className="px-4 py-3">{request.location}</td>
                             <td className="px-4 py-3">
-                              <StatusBadge status={request.status} />
+                              <StatusBadge request={request} />
                             </td>
                             <td className="px-4 py-3 text-[#64748B]">{request.createdAt}</td>
                           </tr>
@@ -596,6 +642,94 @@ export default function NGOFoodRequests() {
                 className="rounded-[10px] bg-[#16A34A] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#15803D]"
               >
                 Create Request
+              </button>
+            </div>
+          </form>
+        </NGOModal>
+      ) : null}
+
+      {showEditModal && selected ? (
+        <NGOModal title="Edit Food Request" onClose={() => setShowEditModal(false)} wide>
+          <form onSubmit={handleEditSubmit} className="flex flex-col gap-4">
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-[#334155]">Food Needed</span>
+              <input
+                name="foodNeeded"
+                required
+                defaultValue={selected.foodNeeded || selected.title}
+                className={FILTER_SELECT_CLASS}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-[#334155]">Quantity</span>
+              <input
+                name="quantity"
+                required
+                defaultValue={selected.quantity}
+                className={FILTER_SELECT_CLASS}
+              />
+            </label>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="flex flex-col gap-1.5">
+                <span className="text-sm font-semibold text-[#334155]">Category</span>
+                <select name="category" defaultValue={selected.category} className={FILTER_SELECT_CLASS}>
+                  {FOOD_CATEGORY_OPTIONS.filter((o) => o.id !== "all").map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex flex-col gap-1.5">
+                <span className="text-sm font-semibold text-[#334155]">Priority</span>
+                <select name="priority" defaultValue={selected.priority} className={FILTER_SELECT_CLASS}>
+                  <option value="emergency">Emergency</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </label>
+            </div>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-[#334155]">Needed By</span>
+              <input
+                name="neededBy"
+                required
+                defaultValue={selected.neededBy}
+                className={FILTER_SELECT_CLASS}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-[#334155]">Location</span>
+              <input
+                name="location"
+                required
+                defaultValue={selected.location}
+                className={FILTER_SELECT_CLASS}
+              />
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="text-sm font-semibold text-[#334155]">Notes</span>
+              <textarea
+                name="notes"
+                rows={3}
+                defaultValue={selected.notes}
+                className={FILTER_SELECT_CLASS}
+              />
+            </label>
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setShowEditModal(false)}
+                className="rounded-[10px] border border-[#E5E7EB] px-4 py-2.5 text-sm font-semibold text-[#64748B] hover:bg-[#F8FAFC]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="rounded-[10px] bg-[#2563EB] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1D4ED8]"
+              >
+                Save Changes
               </button>
             </div>
           </form>

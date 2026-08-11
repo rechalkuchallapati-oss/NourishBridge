@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import {
@@ -18,8 +18,6 @@ import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOWorkflowStrip from "../../components/ngo/NGOWorkflowStrip";
 import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
 import {
-  BENEFICIARIES,
-  BENEFICIARY_OVERVIEW_STATS,
   BENEFICIARY_TYPE_LABELS,
   BENEFICIARY_TYPE_OPTIONS,
   BENEFICIARY_STATUS_LABELS,
@@ -31,6 +29,8 @@ import {
   PRIORITY_COLORS,
   filterBeneficiaries,
 } from "../../data/ngoBeneficiaries";
+import { fetchBeneficiaries } from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -267,7 +267,10 @@ export default function NGOBeneficiaries() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
 
-  const [selectedId, setSelectedId] = useState("BEN-201");
+  const [beneficiaries, setBeneficiaries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
   const [filters, setFilters] = useState({
     type: "all",
     status: "all",
@@ -276,16 +279,51 @@ export default function NGOBeneficiaries() {
     search: "",
   });
 
-  const stats = BENEFICIARY_OVERVIEW_STATS;
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const items = await fetchBeneficiaries();
+        if (!cancelled) {
+          setBeneficiaries(items);
+          if (items[0]) setSelectedId(items[0].id);
+        }
+      } catch (err) {
+        if (!cancelled) setError(getApiErrorMessage(err));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const stats = useMemo(
+    () => ({
+      registeredBeneficiaries: beneficiaries.length,
+      familiesSupported: beneficiaries.reduce((sum, b) => sum + (b.beneficiaryCount || 0), 0),
+      shelters: beneficiaries.filter((b) => b.type === "shelter").length,
+      orphanages: beneficiaries.filter((b) => b.type === "orphanage").length,
+      oldAgeHomes: beneficiaries.filter((b) => b.type === "old_age_home").length,
+      mealsServedToday: beneficiaries.reduce((sum, b) => sum + (b.mealsServed || 0), 0),
+      communitiesCovered: new Set(beneficiaries.map((b) => b.location).filter(Boolean)).size,
+    }),
+    [beneficiaries],
+  );
 
   const filtered = useMemo(
-    () => filterBeneficiaries(BENEFICIARIES, filters),
-    [filters],
+    () => filterBeneficiaries(beneficiaries, filters),
+    [beneficiaries, filters],
   );
 
   const selected = useMemo(
-    () => BENEFICIARIES.find((b) => b.id === selectedId) ?? null,
-    [selectedId],
+    () => beneficiaries.find((b) => b.id === selectedId) ?? null,
+    [beneficiaries, selectedId],
   );
 
   const handleSchedule = () => {

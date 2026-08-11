@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   FaBoxOpen,
   FaLeaf,
@@ -12,7 +13,7 @@ import NGOOverviewImpactMonth from "../../components/ngo/NGOOverviewImpactMonth"
 import NGOOverviewIncomingPanel from "../../components/ngo/NGOOverviewIncomingPanel";
 import NGOOverviewInventorySummary from "../../components/ngo/NGOOverviewInventorySummary";
 import NGOLayout, { NGOStatCard } from "../../components/dashboard/NGOLayout";
-import { NGO_OVERVIEW_METRICS } from "../../data/ngoDashboard";
+import { fetchNgoDashboard } from "../../modules/ngo/services/ngoService";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
 import { Toaster } from "react-hot-toast";
 
@@ -28,6 +29,27 @@ const METRIC_ICONS = {
 export default function NGODashboard() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
+  const [metrics, setMetrics] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const dashboard = await fetchNgoDashboard();
+        if (mounted) setMetrics(dashboard.metrics);
+      } catch {
+        if (mounted) setMetrics([]);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <NGOLayout organizationName={orgName}>
@@ -37,16 +59,20 @@ export default function NGODashboard() {
         <NGOContentHeader organizationName={orgName} unreadNotifications={5} />
 
         <div className="grid gap-2 p-3 sm:grid-cols-2 sm:p-4 xl:grid-cols-3 [&_*]:text-sm">
-          {NGO_OVERVIEW_METRICS.map((metric) => (
-            <NGOStatCard
-              key={metric.id}
-              label={metric.label}
-              value={metric.value}
-              caption={metric.caption}
-              icon={METRIC_ICONS[metric.id]}
-              accent={metric.accent}
-            />
-          ))}
+          {loading ? (
+            <p className="col-span-full px-2 py-4 text-sm text-[#64748B]">Loading dashboard metrics…</p>
+          ) : (
+            metrics.map((metric) => (
+              <NGOStatCard
+                key={metric.id}
+                label={metric.label}
+                value={metric.value}
+                caption={metric.caption}
+                icon={METRIC_ICONS[metric.id]}
+                accent={metric.accent}
+              />
+            ))
+          )}
         </div>
       </div>
 

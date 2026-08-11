@@ -32,6 +32,7 @@ import {
   acceptDonation,
   rejectDonation,
   completeDonation,
+  buildDonationQueryParams,
 } from "../../modules/ngo/services/ngoService";
 import { getApiErrorMessage } from "../../utils/apiErrors";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
@@ -202,7 +203,11 @@ export default function NGOIncomingDonations() {
     async function load() {
       setLoading(true);
       try {
-        const items = await fetchIncomingDonations();
+        const items = await fetchIncomingDonations(buildDonationQueryParams({
+          search: filters.search,
+          category: filters.category,
+          priority: filters.priority,
+        }));
         if (!cancelled) setDonations(items);
       } catch (error) {
         if (!cancelled) toast.error(getApiErrorMessage(error));

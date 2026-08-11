@@ -1,13 +1,18 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { FaCheckCircle, FaMapMarkerAlt } from "react-icons/fa";
 import toast from "react-hot-toast";
 import DeclineDonationModal from "./DeclineDonationModal";
 import { getNgoFoodImage } from "../../data/ngoFoodAssets";
-import { OVERVIEW_INCOMING_DONATIONS } from "../../data/ngoDashboard";
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import DonationItemsList from "../common/DonationItemsList";
 import EventTypeBadge from "../common/EventTypeBadge";
 import { NGOSectionHeader, NGO_SECTION_CLASS, NGO_SECTION_TEXT } from "./NGOSectionLink";
+import {
+  acceptDonation,
+  fetchIncomingDonations,
+  rejectDonation,
+} from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 
 function DetailItem({ label, value }) {
   return (
@@ -87,7 +92,7 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
             <div className="flex gap-1.5">
               <button
                 type="button"
-                onClick={() => onAccept(donation.id)}
+                onClick={() => onAccept(donation)}
                 className="rounded-[10px] border-2 border-[#16A34A] bg-white px-2.5 py-1 text-[10px] font-semibold text-[#15803D] hover:bg-[#F0FDF4] sm:text-xs"
               >
                 Accept
@@ -108,34 +113,78 @@ function IncomingDonationRow({ donation, onAccept, onDecline }) {
 }
 
 export default function NGOOverviewIncomingPanel() {
-  const [donations, setDonations] = useState(
-    OVERVIEW_INCOMING_DONATIONS.map((item) => ({ ...item, status: "pending" })),
-  );
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [declineTarget, setDeclineTarget] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const items = await fetchIncomingDonations();
+        if (!mounted) return;
+        setDonations(
+          items.slice(0, 5).map((item) => ({
+            ...item,
+            status: item.status === "pending_ngo_acceptance" ? "pending" : item.status,
+            eventLocation: item.pickupLocation || item.pickupAddress,
+            pickup: item.pickupTime || "TBD",
+            estimatedMeals: item.estimatedServings || item.estimatedMeals,
+            donor: item.donorName || "Donor",
+            verifiedDonor: item.status !== "pending_review",
+          })),
+        );
+      } catch (error) {
+        if (mounted) toast.error(getApiErrorMessage(error));
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const pendingCount = useMemo(
     () => donations.filter((item) => item.status === "pending").length,
     [donations],
   );
 
-  const handleAccept = (id) => {
-    setDonations((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, status: "accepted" } : item)),
-    );
-    toast.success("Donation accepted.");
+  const handleAccept = async (donation) => {
+    try {
+      await acceptDonation(donation.mongoId || donation.id);
+      setDonations((prev) =>
+        prev.map((item) =>
+          item.id === donation.id ? { ...item, status: "accepted" } : item,
+        ),
+      );
+      toast.success("Donation accepted.");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
   };
 
-  const handleDeclineConfirm = (rowId, payload) => {
-    setDonations((prev) =>
-      prev.map((item) =>
-        item.id === rowId
-          ? { ...item, status: "declined", declineReason: payload.reason }
-          : item,
-      ),
-    );
-    setDeclineTarget(null);
-  };
+  const handleDeclineConfirm = async (rowId, payload) => {
+    const target = declineTarget || donations.find((d) => d.id === rowId);
+    if (!target) return;
 
+    try {
+      await rejectDonation(target.mongoId || target.id, payload.reason || payload.notes);
+      setDonations((prev) =>
+        prev.map((item) =>
+          item.id === target.id
+            ? { ...item, status: "declined", declineReason: payload.reason }
+            : item,
+        ),
+      );
+      toast.success("Donation declined.");
+      setDeclineTarget(null);
+    } catch (error) {
+      toast.error(getApiErrorMessage(error));
+    }
+  };
   return (
     <section className={NGO_SECTION_CLASS}>
       <NGOSectionHeader
@@ -146,14 +195,20 @@ export default function NGOOverviewIncomingPanel() {
       />
 
       <ul className="mt-3 flex flex-col gap-2">
-        {donations.map((donation) => (
-          <IncomingDonationRow
-            key={donation.id}
-            donation={donation}
-            onAccept={handleAccept}
-            onDecline={setDeclineTarget}
-          />
-        ))}
+        {loading ? (
+          <li className="text-sm text-[#64748B]">Loading incoming donations…</li>
+        ) : donations.length === 0 ? (
+          <li className="text-sm text-[#64748B]">No incoming donations right now.</li>
+        ) : (
+          donations.map((donation) => (
+            <IncomingDonationRow
+              key={donation.id}
+              donation={donation}
+              onAccept={handleAccept}
+              onDecline={setDeclineTarget}
+            />
+          ))
+        )}
       </ul>
 
       {declineTarget ? (

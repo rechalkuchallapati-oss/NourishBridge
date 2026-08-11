@@ -43,6 +43,9 @@ export const ngoApi = {
   distributeInventory(id, payload) {
     return axiosInstance.post(`/ngo/inventory/${id}/distribute`, payload);
   },
+  listDistributionRecords(params) {
+    return axiosInstance.get("/ngo/inventory/distribution-records", { params });
+  },
   listBeneficiaries(params) {
     return axiosInstance.get("/ngo/beneficiaries", { params });
   },

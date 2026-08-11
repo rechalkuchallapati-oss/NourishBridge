@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { FaUsers } from "react-icons/fa";
 import NGOPageHeader from "../../components/ngo/NGOPageHeader";
 import NGOLayout from "../../components/dashboard/NGOLayout";
-import { BENEFICIARY_GROUPS, DISTRIBUTION_RECORDS } from "../../data/ngoDistribution";
+import { BENEFICIARY_GROUPS } from "../../data/ngoDistribution";
+import {
+  fetchDistributionRecords,
+} from "../../modules/ngo/services/ngoService";
+import { getApiErrorMessage } from "../../utils/apiErrors";
 import DonationItemsList from "../../components/common/DonationItemsList";
 import EventTypeBadge from "../../components/common/EventTypeBadge";
 import { getNgoDisplayName, getSessionUser } from "../../utils/authStorage";
@@ -14,8 +18,42 @@ const EASE = [0.22, 1, 0.36, 1];
 export default function NGODistributionRecords() {
   const user = getSessionUser();
   const orgName = getNgoDisplayName(user);
-  const [records] = useState(DISTRIBUTION_RECORDS);
+  const [records, setRecords] = useState([]);
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const records = await fetchDistributionRecords();
+        if (cancelled) return;
+        setRecords(
+          records.map((r) => ({
+            id: r.id,
+            location: r.location || r.beneficiaryGroup || "Distribution site",
+            dateTime: r.distributedAt
+              ? new Date(r.distributedAt).toLocaleString("en-IN")
+              : "—",
+            foodType: r.foodItem,
+            quantity: r.quantity,
+            mealsServed: r.mealsServed,
+            beneficiaries: r.peopleServed,
+            group: r.beneficiaryGroup || "Community",
+            notes: r.notes || "",
+            eventType: "individual",
+          })),
+        );
+      } catch (error) {
+        if (!cancelled) toast.error(getApiErrorMessage(error));
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
