@@ -11,9 +11,23 @@ import SupportTicket from "../../../models/SupportTicket.model.js";
 import ApiError from "../../../utils/ApiError.js";
 import notificationService from "../../../services/notification.service.js";
 
+const MAX_PAGE_LIMIT = 100;
+
+function clampLimit(limit, fallback = 20) {
+  return Math.min(Math.max(Number(limit) || fallback, 1), MAX_PAGE_LIMIT);
+}
+
 function paginate(query, { page = 1, limit = 20 }) {
-  const skip = (page - 1) * limit;
-  return query.skip(skip).limit(limit);
+  const safePage = Math.max(Number(page) || 1, 1);
+  const safeLimit = clampLimit(limit);
+  const skip = (safePage - 1) * safeLimit;
+  return query.skip(skip).limit(safeLimit);
+}
+
+function paginationMeta(page, limit, total) {
+  const safePage = Math.max(Number(page) || 1, 1);
+  const safeLimit = clampLimit(limit);
+  return { page: safePage, limit: safeLimit, total, pages: Math.ceil(total / safeLimit) || 1 };
 }
 
 function mapUser(u) {
@@ -48,7 +62,7 @@ export async function listUsers({ page = 1, limit = 20, role = null, search = nu
 
   return {
     users: users.map(mapUser),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -85,7 +99,7 @@ export async function listDonors({ page = 1, limit = 20 } = {}) {
       isActive: d.isActive,
       createdAt: d.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -113,7 +127,7 @@ export async function listVolunteers({ page = 1, limit = 20 } = {}) {
       isActive: v.isActive,
       createdAt: v.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -139,7 +153,7 @@ export async function listNgos({ page = 1, limit = 20 } = {}) {
       isVerified: n.verificationStatus === "verified" || n.userId?.isVerified,
       createdAt: n.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -184,7 +198,7 @@ export async function listDonations({ page = 1, limit = 20, status = null } = {}
       estimatedMeals: d.estimatedMeals,
       createdAt: d.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -217,7 +231,7 @@ export async function listDeliveries({ page = 1, limit = 20, status = null } = {
       completedAt: d.completedAt,
       createdAt: d.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -246,7 +260,7 @@ export async function listFoodRequests({ page = 1, limit = 20, status = null } =
       neededBy: r.neededBy,
       createdAt: r.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -274,7 +288,7 @@ export async function listInventory({ page = 1, limit = 20 } = {}) {
       expiryDate: i.expiryDate,
       receivedAt: i.receivedAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -300,7 +314,7 @@ export async function listAuditLogs({ page = 1, limit = 50, module = null } = {}
       success: l.success,
       createdAt: l.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
@@ -331,7 +345,7 @@ export async function listSupportTickets({ page = 1, limit = 20, status = null }
         : null,
       createdAt: t.createdAt,
     })),
-    pagination: { page, limit, total, pages: Math.ceil(total / limit) },
+    pagination: paginationMeta(page, limit, total),
   };
 }
 
