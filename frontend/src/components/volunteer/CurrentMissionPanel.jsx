@@ -8,10 +8,6 @@ import {
 import { DASHBOARD_ROUTES } from "../../constants/routes";
 import DonationProofThumbnail from "../common/DonationProofThumbnail";
 import { volunteerInteractive, VOLUNTEER_BTN } from "./volunteerDashboardStyles";
-import {
-  volunteerInteractive,
-  VOLUNTEER_BTN,
-} from "./volunteerDashboardStyles";
 
 export default function CurrentMissionPanel({
   mission,
