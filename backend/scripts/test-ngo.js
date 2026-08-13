@@ -50,6 +50,21 @@ function futureIso(hours = 24) {
   return new Date(Date.now() + hours * 3600 * 1000).toISOString();
 }
 
+function sanitizeForLog(data) {
+  if (!data || typeof data !== "object") return data;
+  const copy = JSON.parse(JSON.stringify(data));
+  const redactKeys = ["accessToken", "refreshToken", "token", "password", "otp"];
+  const walk = (obj) => {
+    if (!obj || typeof obj !== "object") return;
+    for (const key of Object.keys(obj)) {
+      if (redactKeys.includes(key)) obj[key] = "[REDACTED]";
+      else if (typeof obj[key] === "object") walk(obj[key]);
+    }
+  };
+  walk(copy);
+  return copy;
+}
+
 async function run() {
   console.log(`\n=== NGO Module Tests (port ${PORT}) ===\n`);
 
@@ -84,6 +99,13 @@ async function run() {
   const ngoToken = ngoReg.data.data.accessToken;
   pass("Registered donor and NGO");
 
+  if (!donorToken) {
+    fail("Donor access token missing after registration");
+    console.error("[DIAG] donorReg.status:", donorReg.status);
+    console.error("[DIAG] donorReg.data:", JSON.stringify(sanitizeForLog(donorReg.data)));
+    process.exit(1);
+  }
+
   const adminLogin = await request("POST", `${API}/auth/login`, {
     email: process.env.ADMIN_SEED_EMAIL || "admin@nourishbridge.local",
     password: process.env.ADMIN_SEED_PASSWORD || "AdminPass123",
@@ -106,7 +128,26 @@ async function run() {
   const donationId = created.data?.data?.donation?.id;
 
   if (created.status !== 201) {
-    fail("Create donation for NGO tests");
+    console.error("[DIAG] endpoint: POST /api/v1/donations");
+    console.error("[DIAG] httpStatus:", created.status);
+    console.error("[DIAG] response:", JSON.stringify(sanitizeForLog(created.data)));
+    console.error(
+      "[DIAG] requestMetadata:",
+      JSON.stringify({
+        foodName: createPayload.foodName,
+        category: createPayload.category,
+        quantity: createPayload.quantity,
+        quantityUnit: createPayload.quantityUnit,
+        estimatedMeals: createPayload.estimatedMeals,
+        expiryTime: createPayload.expiryTime,
+        pickupScheduledAt: createPayload.pickupScheduledAt,
+        pickupEndAt: createPayload.pickupEndAt,
+        pickupAddress: createPayload.pickupAddress,
+        donorAuthPresent: Boolean(donorToken),
+        donorRegStatus: donorReg.status,
+      }),
+    );
+    fail("Create donation for NGO tests", `status ${created.status} — ${created.data?.message || "no message"}`);
     process.exit(1);
   }
 
