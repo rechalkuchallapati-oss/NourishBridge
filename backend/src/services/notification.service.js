@@ -3,6 +3,7 @@ import User from "../models/User.model.js";
 import Donor from "../models/Donor.model.js";
 import NGO from "../models/NGO.model.js";
 import Volunteer from "../models/Volunteer.model.js";
+import ApiError from "../utils/ApiError.js";
 import {
   NOTIFICATION_TYPES,
   NOTIFICATION_PRIORITY,
@@ -115,7 +116,10 @@ export async function markNotificationRead(userId, notificationId) {
     { new: true },
   ).lean();
 
-  if (!notification) return null;
+  if (!notification) {
+    throw ApiError.notFound("Notification not found");
+  }
+
   return mapNotification(notification);
 }
 
