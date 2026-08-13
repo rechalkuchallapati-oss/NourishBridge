@@ -50,6 +50,14 @@ const errorHandler = (err, req, res, _next) => {
     message = err.code === "LIMIT_FILE_SIZE" ? "File too large" : err.message;
   }
 
+  // Multer fileFilter rejection (invalid MIME type)
+  if (
+    err.message?.includes("Only JPEG, PNG, WebP, and GIF images are allowed")
+  ) {
+    statusCode = HTTP_STATUS.BAD_REQUEST;
+    message = err.message;
+  }
+
   if (config.isDevelopment) {
     logger.error(`${req.method} ${req.originalUrl} → ${statusCode}: ${message}`);
     if (err.stack) logger.debug(err.stack);
