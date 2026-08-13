@@ -2,12 +2,17 @@ import { io } from "socket.io-client";
 import { getAccessToken } from "../auth/storage/tokenStorage.js";
 
 function resolveSocketUrl() {
-  const explicit = import.meta.env.VITE_API_BASE_URL?.replace(/\/api\/v1\/?$/, "");
-  if (explicit) return explicit;
+  const apiBase = import.meta.env.VITE_API_BASE_URL;
+  if (apiBase) {
+    return apiBase.replace(/\/api\/v1\/?$/, "");
+  }
+  if (import.meta.env.VITE_SOCKET_URL) {
+    return import.meta.env.VITE_SOCKET_URL.replace(/\/$/, "");
+  }
   if (import.meta.env.DEV && typeof window !== "undefined") {
     return window.location.origin;
   }
-  return "http://localhost:5000";
+  return typeof window !== "undefined" ? window.location.origin : "";
 }
 
 const SOCKET_URL = resolveSocketUrl();
