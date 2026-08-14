@@ -29,6 +29,11 @@ describe("Protected route & error message helpers", () => {
     expect(msg).toContain("Email is required");
   });
 
+  it("formats plain Error messages for UI display", () => {
+    const msg = getApiErrorMessage(new Error("Signup session expired. Please create your account again."));
+    expect(msg).toBe("Signup session expired. Please create your account again.");
+  });
+
   it("formats 401-style messages without crashing", () => {
     const msg = getApiErrorMessage({
       response: { data: { message: "Invalid email or password" } },

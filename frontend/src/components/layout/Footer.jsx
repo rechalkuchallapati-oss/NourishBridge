@@ -15,13 +15,18 @@ import {
 import { FaXTwitter } from "react-icons/fa6";
 import BrandLogo, { BRAND_TAGLINE } from "../common/BrandLogo";
 
-const LINE_GAP = "space-y-[0.5cm]";
+const LINE_GAP = "space-y-3 sm:space-y-4";
+
+const columnHeadingClass =
+  "text-sm font-bold leading-tight text-[#0F172A] sm:text-base";
+
+const columnHeadingOffset = "pt-0 lg:pt-2";
 
 const quickLinks = [
   { label: "Home", to: "/" },
   { label: "About Us", to: "/about" },
   { label: "How It Works", to: "/#how-it-works" },
-  { label: "Donate Food", to: "/donate" },
+  { label: "Donate Food", to: "/donor" },
   { label: "NGOs", to: "/ngo" },
   { label: "Volunteer", to: "/volunteer" },
   { label: "Contact Us", to: "/contact" },
@@ -36,33 +41,27 @@ const socialLinks = [
 ];
 
 const donorLinks = [
-  { label: "How to Donate", to: "/donate" },
-  { label: "Food Guidelines", to: "/food-guidelines" },
+  { label: "How to Donate", to: "/donor" },
+  { label: "Food Guidelines", to: "/donor" },
   { label: "Impact & Stories", to: "/#impact" },
-  { label: "FAQs", to: "/faqs" },
+  { label: "FAQs", to: "/contact" },
 ];
 
 const ngoLinks = [
   { label: "Partner With Us", to: "/ngo" },
-  { label: "NGO Resources", to: "/ngo-resources" },
-  { label: "Success Stories", to: "/success-stories" },
-  { label: "FAQs", to: "/ngo-faqs" },
+  { label: "NGO Resources", to: "/ngo" },
+  { label: "Success Stories", to: "/#impact" },
+  { label: "FAQs", to: "/contact" },
 ];
 
 const resourceLinks = [
-  { label: "Blog", to: "/blog" },
-  { label: "News & Updates", to: "/news" },
+  { label: "Platform Updates", to: "/#impact" },
   { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms & Conditions", to: "/terms" },
 ];
 
-const columnHeadingClass =
-  "text-sm font-bold leading-tight text-[#0F172A] sm:text-[15px]";
-
-const columnHeadingOffset = "pt-[1cm]";
-
 const linkClassName =
-  "group inline-flex items-center gap-1.5 text-[11px] font-medium leading-tight text-[#64748B] transition-colors duration-300 hover:text-[#16A34A] sm:text-xs";
+  "group inline-flex items-center gap-1.5 text-xs font-medium leading-tight text-[#64748B] transition-colors duration-300 hover:text-[#16A34A] sm:text-sm";
 
 function FooterLinkList({ links }) {
   return (
@@ -83,7 +82,7 @@ function FooterLinkColumn({ heading, links }) {
   return (
     <div className={`min-w-0 flex-1 ${columnHeadingOffset}`}>
       <h3 className={columnHeadingClass}>{heading}</h3>
-      <div className="mt-[0.5cm]">
+      <div className="mt-4">
         <FooterLinkList links={links} />
       </div>
     </div>
@@ -255,9 +254,9 @@ function FooterCopyrightRow() {
 
 const Footer = () => {
   return (
-    <footer className="mt-[1cm] bg-[#F4FAF7]">
+    <footer className="mt-12 bg-[#F4FAF7] sm:mt-16">
       <div
-        className="mx-auto max-w-[1400px] rounded-t-[32px] border border-[#E5F5E8] px-10 py-12 shadow-[0_-10px_40px_rgba(22,163,74,0.07)]"
+        className="mx-auto max-w-[1400px] rounded-t-[32px] border border-[#E5F5E8] px-6 py-10 shadow-[0_-10px_40px_rgba(22,163,74,0.07)] sm:px-10 sm:py-12"
         style={{
           background:
             "linear-gradient(180deg, #FFFFFF 0%, #FAFFFB 45%, #F3FBF6 100%)",

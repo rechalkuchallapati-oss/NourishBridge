@@ -6,8 +6,13 @@ import GuestRoute from "../components/auth/GuestRoute";
 import Skeleton from "../components/ui/Skeleton";
 
 import Home from "../pages/Home/Home";
+import About from "../pages/About/About";
+import Donor from "../pages/Donor/Donor";
+import Volunteer from "../pages/Volunteer/Volunteer";
 import NGO from "../pages/NGO/NGO";
 import Contact from "../pages/Contact/Contact";
+import Privacy from "../pages/Legal/Privacy";
+import Terms from "../pages/Legal/Terms";
 import Login from "../pages/Login/Login";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
 import Register from "../pages/Register/Register";
@@ -16,6 +21,7 @@ import NGOOnboarding from "../pages/Onboarding/NGOOnboarding";
 import VolunteerOnboarding from "../pages/Onboarding/VolunteerOnboarding";
 import VerifyOTP from "../pages/VerifyOTP/VerifyOTP";
 import Forbidden403 from "../pages/Forbidden/Forbidden403";
+import NotFound from "../pages/NotFound/NotFound";
 import VolunteerShell from "../components/dashboard/VolunteerShell";
 import AdminShell from "../components/dashboard/AdminShell";
 
@@ -50,6 +56,7 @@ const NGOReports = lazy(() => import("../pages/Dashboard/NGOReports"));
 const NGONotifications = lazy(() => import("../pages/Dashboard/NGONotifications"));
 const NGOProfileCapacity = lazy(() => import("../pages/Dashboard/NGOProfileCapacity"));
 const NGOSettings = lazy(() => import("../pages/Dashboard/NGOSettings"));
+const NGOHelp = lazy(() => import("../pages/Dashboard/NGOHelp"));
 
 const VolunteerDashboard = lazy(() => import("../pages/Dashboard/VolunteerDashboard"));
 const VolunteerAvailablePickups = lazy(() => import("../pages/Dashboard/VolunteerAvailablePickups"));
@@ -61,6 +68,8 @@ const VolunteerDelivery = lazy(() => import("../pages/Dashboard/VolunteerDeliver
 const VolunteerNotifications = lazy(() => import("../pages/Dashboard/VolunteerNotifications"));
 const VolunteerImpact = lazy(() => import("../pages/Dashboard/VolunteerImpact"));
 const VolunteerProfile = lazy(() => import("../pages/Dashboard/VolunteerProfile"));
+const VolunteerHelp = lazy(() => import("../pages/Dashboard/VolunteerHelp"));
+const VolunteerSettings = lazy(() => import("../pages/Dashboard/VolunteerSettings"));
 
 const AdminDashboard = lazy(() => import("../pages/Admin/AdminDashboard"));
 const AdminUsers = lazy(() => import("../pages/Admin/AdminUsers"));
@@ -97,8 +106,14 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout><Home /></Layout>} />
+      <Route path="/about" element={<Layout><About /></Layout>} />
+      <Route path="/donor" element={<Layout><Donor /></Layout>} />
+      <Route path="/donate" element={<Layout><Donor /></Layout>} />
+      <Route path="/volunteer" element={<Layout><Volunteer /></Layout>} />
       <Route path="/ngo" element={<Layout><NGO /></Layout>} />
       <Route path="/contact" element={<Layout><Contact /></Layout>} />
+      <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
+      <Route path="/terms" element={<Layout><Terms /></Layout>} />
       <Route path="/login" element={<Layout><Login /></Layout>} />
       <Route path="/forgot-password" element={<Layout><ForgotPassword /></Layout>} />
       <Route path="/register" element={<Layout><Register /></Layout>} />
@@ -143,6 +158,7 @@ const AppRoutes = () => {
         <Route path="/dashboard/ngo/notifications" element={<PageLoader><NGONotifications /></PageLoader>} />
         <Route path="/dashboard/ngo/profile" element={<PageLoader><NGOProfileCapacity /></PageLoader>} />
         <Route path="/dashboard/ngo/settings" element={<PageLoader><NGOSettings /></PageLoader>} />
+        <Route path="/dashboard/ngo/help" element={<PageLoader><NGOHelp /></PageLoader>} />
       </Route>
 
       <Route element={<ProtectedRoute allowedRoles={["volunteer"]} />}>
@@ -159,6 +175,8 @@ const AppRoutes = () => {
           <Route path="notifications" element={<PageLoader><VolunteerNotifications /></PageLoader>} />
           <Route path="impact" element={<PageLoader><VolunteerImpact /></PageLoader>} />
           <Route path="profile" element={<PageLoader><VolunteerProfile /></PageLoader>} />
+          <Route path="settings" element={<PageLoader><VolunteerSettings /></PageLoader>} />
+          <Route path="help" element={<PageLoader><VolunteerHelp /></PageLoader>} />
         </Route>
       </Route>
 
@@ -181,6 +199,8 @@ const AppRoutes = () => {
           <Route path="profile" element={<PageLoader><AdminProfile /></PageLoader>} />
         </Route>
       </Route>
+
+      <Route path="*" element={<Layout><NotFound /></Layout>} />
     </Routes>
   );
 };
