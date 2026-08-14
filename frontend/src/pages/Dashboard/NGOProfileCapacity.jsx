@@ -106,11 +106,16 @@ export default function NGOProfileCapacity() {
 
           <ProfileImageUpload
             profileImage={profileImage}
+            role="ngo"
             displayName={profile.organizationName || orgName}
             accent="blue"
             onUploaded={(url) => {
               setProfileImage(url);
               toast.success("Profile photo updated.");
+            }}
+            onRemoved={() => {
+              setProfileImage("");
+              toast.success("Profile photo removed.");
             }}
             onError={(message) => toast.error(message)}
           />

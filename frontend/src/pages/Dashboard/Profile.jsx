@@ -168,11 +168,16 @@ export default function Profile() {
 
         <ProfileImageUpload
           profileImage={profileImage}
+          role="donor"
           displayName={profile.fullName || donorName}
           accent="green"
           onUploaded={(url) => {
             setProfileImage(url);
             setSavedMessage("Profile photo updated.");
+          }}
+          onRemoved={() => {
+            setProfileImage("");
+            setSavedMessage("Profile photo removed.");
           }}
           onError={(message) => setErrorMessage(message)}
         />

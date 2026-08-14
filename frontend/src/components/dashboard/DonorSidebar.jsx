@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   FaBell,
   FaChartBar,
@@ -13,6 +14,7 @@ import {
   FaTruck,
   FaUser,
 } from "react-icons/fa";
+import SidebarAccountSection from "./SidebarAccountSection";
 import { DASHBOARD_ROUTES, matchDonorRoute } from "../../constants/routes";
 
 const NAV_SECTIONS = [
@@ -39,36 +41,30 @@ const NAV_SECTIONS = [
       { label: "Impact Reports", to: DASHBOARD_ROUTES.donorImpactReports, icon: FaFileAlt },
     ],
   },
-  {
-    title: "Account",
-    items: [
-      { label: "Notifications", to: DASHBOARD_ROUTES.donorNotifications, icon: FaBell },
-      { label: "Profile", to: DASHBOARD_ROUTES.donorProfile, icon: FaUser },
-      { label: "Settings", to: DASHBOARD_ROUTES.donorSettings, icon: FaCog },
-      { label: "Help & Support", to: DASHBOARD_ROUTES.donorHelp, icon: FaLifeRing },
-    ],
-  },
+];
+
+const ACCOUNT_ITEMS = [
+  { label: "Profile", to: DASHBOARD_ROUTES.donorProfile, icon: FaUser },
+  { label: "Notifications", to: DASHBOARD_ROUTES.donorNotifications, icon: FaBell },
+  { label: "Settings", to: DASHBOARD_ROUTES.donorSettings, icon: FaCog },
+  { label: "Help & Support", to: DASHBOARD_ROUTES.donorHelp, icon: FaLifeRing },
 ];
 
 function NavLink({ item, isActive }) {
   const Icon = item.icon;
-  const emphasized = item.emphasized;
 
   return (
     <Link
       to={item.to}
       className={[
         "flex items-center gap-3 rounded-[10px] px-4 py-2.5 transition-colors",
-        emphasized ? "text-base font-semibold" : "text-sm font-medium",
+        item.emphasized ? "text-base font-semibold" : "text-sm font-medium",
         isActive
           ? "bg-[#F0FDF4] text-[#16A34A]"
           : "text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#0F172A]",
       ].join(" ")}
     >
-      <Icon
-        className={emphasized ? "shrink-0 text-lg" : "shrink-0 text-base"}
-        aria-hidden="true"
-      />
+      <Icon className={item.emphasized ? "shrink-0 text-lg" : "shrink-0 text-base"} aria-hidden="true" />
       <span className="truncate">{item.label}</span>
     </Link>
   );
@@ -79,27 +75,29 @@ export default function DonorSidebar() {
 
   return (
     <nav className="sticky top-8 flex h-[calc(100vh-72px)] max-h-[calc(100vh-72px)] w-full flex-col overflow-y-auto rounded-[16px] border border-[#E5E7EB] bg-white px-5 py-7 shadow-sm">
-      <div className="flex flex-col gap-[0.5cm]">
+      <div className="flex flex-col gap-4">
         {NAV_SECTIONS.map((section) => (
-          <div key={section.title ?? "dashboard"} className="flex flex-col gap-[0.5cm]">
+          <div key={section.title ?? "dashboard"} className="flex flex-col gap-2">
             {section.title ? (
-              <p className="px-3 text-sm font-extrabold uppercase tracking-[0.12em] text-[#0F172A]">
+              <p className="px-3 text-xs font-extrabold uppercase tracking-[0.12em] text-[#0F172A]">
                 {section.title}
               </p>
             ) : null}
             {section.items.map((item) => (
-              <NavLink
-                key={item.label}
-                item={item}
-                isActive={matchDonorRoute(pathname, item.to)}
-              />
+              <NavLink key={item.label} item={item} isActive={matchDonorRoute(pathname, item.to)} />
             ))}
           </div>
         ))}
 
+        <SidebarAccountSection
+          items={ACCOUNT_ITEMS}
+          pathname={pathname}
+          matchRoute={matchDonorRoute}
+        />
+
         <Link
           to={DASHBOARD_ROUTES.donorCreate}
-          className="flex w-full shrink-0 items-center justify-center gap-2.5 rounded-[12px] bg-[#16A34A] px-5 py-4 text-base font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-all hover:bg-[#15803D]"
+          className="mt-2 flex w-full shrink-0 items-center justify-center gap-2.5 rounded-[12px] bg-[#16A34A] px-5 py-4 text-base font-semibold text-white shadow-[0_4px_14px_rgba(22,163,74,0.28)] transition-all hover:bg-[#15803D]"
         >
           <FaPlus className="text-lg" aria-hidden="true" />
           Create Donation

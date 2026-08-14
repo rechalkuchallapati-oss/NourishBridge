@@ -94,11 +94,16 @@ export default function AdminProfile() {
 
         <ProfileImageUpload
           profileImage={profileImage}
+          role="admin"
           displayName={profile.fullName}
           accent="indigo"
           onUploaded={(url) => {
             setProfileImage(url);
             toast.success("Profile photo updated.");
+          }}
+          onRemoved={() => {
+            setProfileImage("");
+            toast.success("Profile photo removed.");
           }}
           onError={(message) => toast.error(message)}
         />

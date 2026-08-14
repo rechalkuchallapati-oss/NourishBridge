@@ -1,4 +1,7 @@
 import { DONATION_THUMBNAILS, resolveDonationThumbnail } from "./donationThumbnails";
+import { getCategoryDefaultImage, GENERIC_FOOD_PLACEHOLDER } from "./foodCategoryImages";
+import { categoryToApi } from "../modules/donations/utils/donationMappers.js";
+import { resolveImageUrl } from "../modules/donations/api/client.js";
 
 /** Donor-upload style thumbnails keyed by donation ID (donor dashboard). */
 export const DONATION_FOOD_IMAGES = {
@@ -13,9 +16,20 @@ export const DONATION_FOOD_IMAGES = {
 };
 
 export function getDonationFoodImage(donation) {
+  const apiImage = donation?.images?.[0];
+  if (apiImage) return resolveImageUrl(apiImage);
   if (donation?.image) return donation.image;
   if (donation?.id && DONATION_FOOD_IMAGES[donation.id]) {
     return DONATION_FOOD_IMAGES[donation.id];
   }
-  return resolveDonationThumbnail(donation);
+
+  const categorySlug = donation?.category
+    ? categoryToApi(donation.category)
+    : donation?.categorySlug;
+
+  if (categorySlug) {
+    return getCategoryDefaultImage(categorySlug);
+  }
+
+  return resolveDonationThumbnail(donation) || GENERIC_FOOD_PLACEHOLDER;
 }

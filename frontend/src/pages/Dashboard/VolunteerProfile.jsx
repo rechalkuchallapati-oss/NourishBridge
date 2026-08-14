@@ -96,11 +96,16 @@ export default function VolunteerProfile() {
       <div className={VOLUNTEER_PAGE_SECTION_GAP}>
         <ProfileImageUpload
           profileImage={profileImage}
+          role="volunteer"
           displayName={profile.fullName}
           accent="green"
           onUploaded={(url) => {
             setProfileImage(url);
             toast.success("Profile photo updated.");
+          }}
+          onRemoved={() => {
+            setProfileImage("");
+            toast.success("Profile photo removed.");
           }}
           onError={(message) => toast.error(message)}
         />
