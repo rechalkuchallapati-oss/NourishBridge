@@ -6,14 +6,20 @@ import OnboardingLayout, {
 import { DONOR_TYPES } from "../../constants/roles";
 import { fieldLabelClass } from "../../components/auth/authStyles";
 import useCompleteOnboarding from "../../hooks/useCompleteOnboarding";
+import usePendingSignupGuard from "../../hooks/usePendingSignupGuard";
 
 export default function DonorOnboarding() {
   const { state } = useLocation();
+  const signupReady = usePendingSignupGuard();
   const completeOnboarding = useCompleteOnboarding();
   const [donorType, setDonorType] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  if (!signupReady) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

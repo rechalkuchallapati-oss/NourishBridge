@@ -140,6 +140,9 @@ export function buildRegisterPayload(pending, onboarding = {}) {
       },
       profile: {
         vehicleType: onboarding.vehicleType || "bike",
+        availabilitySchedule: onboarding.availability || [],
+        serviceRadiusKm: onboarding.serviceRadiusKm ?? 10,
+        serviceAreas: onboarding.city ? [onboarding.city] : [],
       },
     };
   }
@@ -155,7 +158,20 @@ export async function registerFromOnboarding(onboardingFields) {
   }
 
   const payload = buildRegisterPayload(pending, onboardingFields);
-  return register(payload, true);
+  const sessionUser = await register(payload, true);
+
+  if (pending.role === "volunteer") {
+    saveVolunteerProfile({
+      fullName: sessionUser.fullName,
+      email: sessionUser.email,
+      phone: sessionUser.phone ?? "",
+      city: onboardingFields.city ?? "Hyderabad",
+      serviceRadiusKm: onboardingFields.serviceRadiusKm ?? 10,
+      availability: onboardingFields.availability ?? [],
+    });
+  }
+
+  return sessionUser;
 }
 
 export async function refreshSession() {

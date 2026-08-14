@@ -366,13 +366,13 @@ export default function CreateAccountForm({ onSwitchToSignIn }) {
         </p>
       )}
 
-      <div className={`mt-[1cm] ${BOTTOM_SECTION_GAP}`}>
+      <div className={`mt-8 ${BOTTOM_SECTION_GAP}`}>
         <div className="flex justify-center">
           <Button
             type="submit"
             loading={loading}
             disabled={loading}
-            className="h-14 min-w-[280px] px-12 text-base sm:min-w-[300px] sm:text-lg"
+            className="h-12 min-w-[240px] px-10 sm:h-14 sm:min-w-[280px]"
           >
             Create Account
           </Button>

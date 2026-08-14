@@ -6,9 +6,11 @@ import OnboardingLayout, {
 } from "../../components/onboarding/OnboardingLayout";
 import { fieldLabelClass } from "../../components/auth/authStyles";
 import useCompleteOnboarding from "../../hooks/useCompleteOnboarding";
+import usePendingSignupGuard from "../../hooks/usePendingSignupGuard";
 
 export default function NGOOnboarding() {
   const { state } = useLocation();
+  const signupReady = usePendingSignupGuard();
   const completeOnboarding = useCompleteOnboarding();
   const [orgName, setOrgName] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
@@ -16,6 +18,10 @@ export default function NGOOnboarding() {
   const [serviceArea, setServiceArea] = useState("");
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  if (!signupReady) {
+    return null;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

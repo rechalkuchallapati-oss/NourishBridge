@@ -30,6 +30,13 @@ async function createRoleProfile(user, profile = {}) {
       await Volunteer.create({
         userId: user._id,
         vehicleType: profile.vehicleType || VEHICLE_TYPES.BIKE,
+        availabilitySchedule: profile.availabilitySchedule || [],
+        serviceRadiusKm: profile.serviceRadiusKm ?? 10,
+        serviceAreas: profile.serviceAreas?.length
+          ? profile.serviceAreas
+          : user.address?.city
+            ? [user.address.city]
+            : [],
       });
       break;
 

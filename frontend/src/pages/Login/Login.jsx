@@ -67,6 +67,7 @@ export default function Login() {
   const location = useLocation();
   const initialTab = location.state?.tab === "create" ? "create" : "signin";
   const [activeTab, setActiveTab] = useState(initialTab);
+  const infoMessage = location.state?.message;
   const isSignIn = activeTab === "signin";
 
   return (
@@ -100,6 +101,11 @@ export default function Login() {
             }`}
           >
             <AuthHeader />
+            {infoMessage ? (
+              <p className="rounded-lg border border-[#BBF7D0] bg-[#F0FDF4] px-4 py-3 text-sm leading-6 text-[#15803D]">
+                {infoMessage}
+              </p>
+            ) : null}
             <AuthTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
             <AnimatePresence mode="wait">

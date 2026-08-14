@@ -17,6 +17,9 @@ export function useCompleteOnboarding() {
       toast.success("Account created successfully! Welcome to NourishBridge.");
       navigate(getDashboardRouteForRole(sessionUser.role), { replace: true });
     } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error("[onboarding] registration failed", error);
+      }
       const message = getApiErrorMessage(error, "Registration failed. Please try again.");
       toast.error(message);
       throw new Error(message);

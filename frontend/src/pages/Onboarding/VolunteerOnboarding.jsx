@@ -6,15 +6,21 @@ import OnboardingLayout, {
 import { AVAILABILITY_OPTIONS } from "../../constants/roles";
 import { fieldLabelClass } from "../../components/auth/authStyles";
 import useCompleteOnboarding from "../../hooks/useCompleteOnboarding";
+import usePendingSignupGuard from "../../hooks/usePendingSignupGuard";
 
 export default function VolunteerOnboarding() {
   const { state } = useLocation();
+  const signupReady = usePendingSignupGuard();
   const completeOnboarding = useCompleteOnboarding();
   const [city, setCity] = useState("");
   const [availability, setAvailability] = useState([]);
   const [serviceRadius, setServiceRadius] = useState("");
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  if (!signupReady) {
+    return null;
+  }
 
   const toggleAvailability = (slot) => {
     setAvailability((prev) =>
