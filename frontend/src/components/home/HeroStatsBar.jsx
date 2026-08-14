@@ -51,7 +51,6 @@ const cardVariants = {
 export default function HeroStatsBar() {
   return (
     <motion.div
-      id="how-it-works"
       className="rounded-3xl border border-[#E5E7EB] bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.06)] md:p-6 lg:p-4"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}

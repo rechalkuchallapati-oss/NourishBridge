@@ -67,7 +67,7 @@ export default function HeroContent() {
 
       <motion.div
         variants={itemVariants}
-        className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-stretch lg:mt-5"
+        className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-stretch lg:mt-8"
       >
         <Link to="/donor" className="w-full sm:w-auto">
           <Button

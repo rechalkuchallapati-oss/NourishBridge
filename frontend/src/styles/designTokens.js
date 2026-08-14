@@ -188,6 +188,45 @@ export const ALERTS_GRID = "grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-col
 
 export const SECTION_TITLE = "text-lg font-bold tracking-tight text-[#0F172A]";
 
+/* ─── Typography ─── */
+export const PAGE_TITLE =
+  "text-3xl font-bold tracking-tight text-[#0F172A] sm:text-4xl lg:text-[2.5rem] lg:leading-tight";
+
+export const SUBSECTION_TITLE = "text-base font-bold text-[#0F172A] sm:text-lg";
+
+export const CARD_TITLE = "text-base font-semibold text-[#0F172A] sm:text-lg";
+
+export const BODY_TEXT = "text-base leading-7 text-[#64748B] sm:text-lg sm:leading-8";
+
+export const BODY_TEXT_SM = "text-sm leading-6 text-[#64748B]";
+
+export const LABEL_TEXT = "block text-sm font-semibold text-[#0F172A] mb-2";
+
+export const HELPER_TEXT = "text-xs leading-5 text-[#94A3B8] sm:text-sm";
+
+export const ERROR_TEXT = "text-sm leading-5 text-red-600";
+
+/* ─── Layout stacks ─── */
+export const SECTION_STACK = "flex flex-col gap-6 sm:gap-8";
+
+export const FORM_STACK = "flex flex-col gap-4 sm:gap-5";
+
+export const BTN_OUTLINE = [
+  BTN_BASE,
+  NB.radiusMd,
+  "border-2 border-[#16A34A] bg-white text-[#16A34A]",
+  NB.transitionFast,
+  "hover:bg-[#F0FDF4] active:scale-[0.98]",
+].join(" ");
+
+export const BTN_GHOST = [
+  BTN_BASE,
+  NB.radiusMd,
+  "bg-transparent text-[#16A34A]",
+  NB.transitionFast,
+  "hover:bg-[#F0FDF4] active:scale-[0.98]",
+].join(" ");
+
 export const DEFAULT_PAGE_SIZE_OPTIONS = [5, 8, 10];
 
 export const TABLE_MIN_ROWS = 5;

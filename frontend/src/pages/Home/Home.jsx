@@ -10,7 +10,7 @@ import ContactSection from "../../components/home/ContactSection";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-[1.25cm] sm:gap-[1.5cm]">
+    <main className="flex flex-col gap-12 sm:gap-16 lg:gap-20">
       <Hero />
 
       <TrustedPartners />

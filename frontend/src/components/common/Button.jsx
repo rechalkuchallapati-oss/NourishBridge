@@ -26,6 +26,13 @@ const variants = {
     "hover:bg-[#E8F8EF]",
     "focus-visible:ring-[#16A34A]/25",
   ].join(" "),
+
+  danger: [
+    "bg-[#DC2626] text-white",
+    "shadow-[0_4px_14px_rgba(220,38,38,0.25)]",
+    "hover:bg-[#B91C1C] hover:shadow-[0_6px_20px_rgba(220,38,38,0.32)]",
+    "focus-visible:ring-red-400/40",
+  ].join(" "),
 };
 
 const Button = ({

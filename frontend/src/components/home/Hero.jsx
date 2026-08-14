@@ -6,17 +6,17 @@ import HeroStatsBar from "./HeroStatsBar";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-white lg:flex lg:h-[calc(100vh-90px)] lg:max-h-[calc(100vh-90px)] lg:flex-col">
+    <section className="relative overflow-hidden bg-white py-10 sm:py-12 lg:py-14">
       <HeroBackground />
 
-      <Container className="relative z-10 flex flex-1 flex-col justify-between py-8 md:py-10 lg:min-h-0 lg:py-5">
-        <div className="w-full pl-[1cm]">
-          <div className="grid min-h-0 flex-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-6 xl:gap-8">
+      <Container className="relative z-10 flex flex-1 flex-col justify-center py-8 md:py-10 lg:min-h-0 lg:py-6">
+        <div className="w-full">
+          <div className="grid min-h-0 flex-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12">
             <HeroContent />
             <HeroImage />
           </div>
 
-          <div className="mt-6 shrink-0 md:mt-8 lg:mt-4">
+          <div className="mt-8 shrink-0 lg:mt-6">
             <HeroStatsBar />
           </div>
         </div>

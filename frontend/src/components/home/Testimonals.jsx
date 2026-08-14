@@ -293,7 +293,7 @@ function TestimonialCarousel() {
 
 export default function Testimonals() {
   return (
-    <section className="relative flex flex-col items-center overflow-x-hidden bg-white pb-0 pt-16 sm:pt-20 lg:pt-24">
+    <section id="testimonials" className="relative flex flex-col items-center overflow-x-hidden bg-white pb-0 pt-16 sm:pt-20 lg:pt-24">
       <FloatingHeart
         className="absolute left-[6%] top-[14%] text-lg text-[#16A34A]/15 sm:text-xl"
         delay={0}
