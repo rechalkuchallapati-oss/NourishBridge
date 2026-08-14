@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaArrowRight, FaHandHoldingHeart, FaUserFriends } from "react-icons/fa";
 import Container from "../common/Container";
@@ -83,13 +84,14 @@ export default function NGOClosingBanner() {
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.65, delay: 0.18, ease: EASE }}
             >
-              <button
-                type="button"
+              <Link
+                to="/login"
+                state={{ tab: "create" }}
                 className="group/btn inline-flex h-14 w-full max-w-[240px] items-center justify-center gap-2 rounded-[14px] border-2 border-[#16A34A] bg-white px-6 text-[15px] font-semibold text-[#16A34A] transition-all duration-300 hover:bg-[#16A34A] hover:text-white lg:w-full lg:max-w-none"
               >
                 Partner With Us
                 <FaArrowRight className="text-sm transition-transform duration-300 group-hover/btn:translate-x-1" />
-              </button>
+              </Link>
             </motion.div>
           </div>
         </motion.div>

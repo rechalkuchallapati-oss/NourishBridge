@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaMapMarkerAlt, FaUsers, FaArrowRight, FaHeart } from "react-icons/fa";
 import Container from "../common/Container";
@@ -108,8 +109,10 @@ function PartnerCard({ partner, index }) {
           />
 
           <span className="inline-flex w-full items-center justify-center gap-1.5 text-[11px] font-semibold text-[#16A34A] transition-all duration-300 group-hover:gap-2">
-            Learn More
-            <FaArrowRight className="text-[9px] transition-transform duration-300 group-hover:translate-x-0.5" />
+            <Link to="/contact" className="inline-flex items-center gap-1.5">
+              Learn More
+              <FaArrowRight className="text-[9px] transition-transform duration-300 group-hover:translate-x-0.5" />
+            </Link>
           </span>
         </div>
       </div>

@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
 import { FaHeart } from "react-icons/fa";
 import BrandLogo from "../common/BrandLogo";
 import Button from "../common/Button";
 import Container from "../common/Container";
+import { NavbarLink, NavbarMobileLink } from "./NavbarLink";
+import { useProtectedAction } from "../../hooks/useProtectedAction";
 
 const navLinks = [
   { to: "/", label: "Home", end: true },
+  { to: "/about", label: "About" },
   { to: "/#how-it-works", label: "How It Works" },
   { to: "/#impact", label: "Impact" },
   { to: "/ngo", label: "NGOs" },
@@ -15,20 +18,14 @@ const navLinks = [
   { to: "/contact", label: "Contact" },
 ];
 
-const navLinkClass = ({ isActive }) =>
-  [
-    "relative whitespace-nowrap py-2 text-[17px] font-medium transition-colors duration-300 xl:text-[18px]",
-    "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:rounded-full after:bg-[#16A34A] after:transition-all after:duration-300 after:ease-out",
-    "hover:text-[#16A34A] hover:after:w-full",
-    isActive ? "text-[#16A34A] after:w-full" : "text-[#0F172A]/70",
-  ].join(" ");
-
 const actionButtonClass =
   "box-border !h-[52px] !min-h-[52px] !shrink-0 !rounded-xl !px-7 !text-[15px] !font-semibold !leading-none hover:!-translate-y-0.5 hover:!scale-[1.02] active:!scale-[0.98]";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+  const { runProtected } = useProtectedAction();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 12);
@@ -62,9 +59,9 @@ export default function Navbar() {
           <ul className="flex items-center justify-center gap-9 xl:gap-11">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <NavLink to={link.to} end={link.end} className={navLinkClass}>
+                <NavbarLink to={link.to} end={link.end}>
                   {link.label}
-                </NavLink>
+                </NavbarLink>
               </li>
             ))}
           </ul>
@@ -75,15 +72,20 @@ export default function Navbar() {
                 Login
               </Button>
             </Link>
-            <Link to="/donor" className="inline-flex items-center">
-              <Button
-                variant="primary"
-                icon={FaHeart}
-                className={`min-w-0 ${actionButtonClass}`}
-              >
-                Donate Food
-              </Button>
-            </Link>
+            <Button
+              type="button"
+              variant="primary"
+              icon={FaHeart}
+              className={`min-w-0 ${actionButtonClass}`}
+              onClick={() =>
+                runProtected(() => navigate("/dashboard/donor/create"), {
+                  message: "Sign in as a donor to create a food donation.",
+                  requiredRole: "donor",
+                })
+              }
+            >
+              Donate Food
+            </Button>
           </div>
         </nav>
 
@@ -141,21 +143,9 @@ export default function Navbar() {
           <ul className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <li key={link.label}>
-                <NavLink
-                  to={link.to}
-                  end={link.end}
-                  onClick={closeMenu}
-                  className={({ isActive }) =>
-                    [
-                      "block rounded-xl px-4 py-3 text-[17px] font-medium transition-all duration-300",
-                      isActive
-                        ? "bg-[#E8F8EF] text-[#16A34A]"
-                        : "text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#16A34A]",
-                    ].join(" ")
-                  }
-                >
+                <NavbarMobileLink to={link.to} end={link.end} onClick={closeMenu}>
                   {link.label}
-                </NavLink>
+                </NavbarMobileLink>
               </li>
             ))}
           </ul>
@@ -166,15 +156,21 @@ export default function Navbar() {
                 Login
               </Button>
             </Link>
-            <Link to="/donor" onClick={closeMenu}>
-              <Button
-                variant="primary"
-                icon={FaHeart}
-                className={`w-full min-w-0 ${actionButtonClass}`}
-              >
-                Donate Food
-              </Button>
-            </Link>
+            <Button
+              type="button"
+              variant="primary"
+              icon={FaHeart}
+              className={`w-full min-w-0 ${actionButtonClass}`}
+              onClick={() => {
+                closeMenu();
+                runProtected(() => navigate("/dashboard/donor/create"), {
+                  message: "Sign in as a donor to create a food donation.",
+                  requiredRole: "donor",
+                });
+              }}
+            >
+              Donate Food
+            </Button>
           </div>
         </div>
       </aside>
